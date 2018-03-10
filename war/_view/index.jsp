@@ -68,8 +68,9 @@
 		
 		}
 		#log{
+		cursor: pointer;
 		float: right;
-		margin-right:260px;
+		margin-right:280px;
 		transition: ease-in-out, margin .4s  ease-in-out;
 		}
 		
@@ -113,9 +114,9 @@
 		
 		
 		
-		<!-- start chat style -->
 		
-		#chatbuble{
+		
+		#pageoptions{
 		
 		position: fixed;
 		right:0;
@@ -126,8 +127,13 @@
 		float: right;
 		visibility: hidden;
 		}
+		
+		
+		<!-- start chat style -->
 		#hidechatbutt{
-		float: right;
+		position:fixed;
+		right:0px;
+		
 		
 		}
 		
@@ -193,15 +199,15 @@
 			document.getElementById("chatwindow").style.width = "0px";
 			document.getElementById("showchatbutt").style.visibility ="visible";
 			document.getElementById("featuredgames").style.marginRight="0px";
-			document.getElementById("log").style.marginRight="0px";
+			
 			
 				}
 	
 		function showchat(){
 				document.getElementById("chatwindow").style.width = "300px";
-				document.getElementById("showchatbutt").style.visibility ="hidden";
+				document.getElementById("showchatbutt").style.visibility ="collapse";
 				document.getElementById("featuredgames").style.marginRight="300px";
-				document.getElementById("log").style.marginRight="260px";
+				
 				
 		}
 		
@@ -239,20 +245,33 @@
 		
 		
 		
-		<!-- start chat html -->
-		<div id="chatbuble">
 		
-			<button id="showchatbutt" onclick="showchat() ">__</button>
-			<button id="log"  onclick="logclick()" >login</button>
+		
+			<a>
+				<img id="log" onclick="logclick()" src="img/loginicon.png"  />
+			
+			</a>
+			
 			<button id="acountopt"  onclick="acount()" >acount options</button>
 			<div id= "acountoptions">
 				
 				<button id="cancleacountopt"  onclick="closeacount()" >acount options</button>
 			</div>
+		
+		
+		
+		<div id="pageoptions">
+		
+			<button id="showchatbutt" onclick="showchat() ">__</button>
+	
 			
 			
 		
 		 </div>
+		 
+		 <!-- start chat html -->
+		 
+		 
 		<div id="chatwindow">
 			<div id="chatoptions">
 			<button id="hidechatbutt" onclick="hidechat() ">__</button>
@@ -311,11 +330,11 @@
 			
 			<div id="chatinput">
 				<p>add comment</p>
-				<form action="${pageContext.servletContext.contextPath}/index" method="get">
-					<textarea rows="6" cols="38"></textarea>
+				<form action="${pageContext.servletContext.contextPath}/index" method="post">
+					<textarea name="chatinputtext" rows="6" cols="38" > </textarea>
 				
 				
-					<input type="Submit" name="submit" value="post">
+					<input type="Submit" name="chatsubmit" value="post">
 				</form>
 			
 				
@@ -352,7 +371,7 @@
 		<div id="featuredgames"> 
 		
 			<div class= "gamedisplay">
-				<img src="img/giphy.gif" />
+				<img src="img/giph.gif" />
 	
 				<div class="gametitle">
 					game1
@@ -361,7 +380,7 @@
 			</div>
 			
 			<div class= "gamedisplay">
-				<img src="img/giphy.gif" />
+				<img src="img/giph.gif" />
 	
 				<div class="gametitle">
 					game2
@@ -370,7 +389,7 @@
 			</div>
 			
 			<div class= "gamedisplay">
-				<img src="img/giphy.gif"  />
+				<img src="img/giph.gif"  />
 					
 				<div class="gametitle">
 					game3
@@ -384,37 +403,8 @@
 		
 		
 		
-	
-	<div id="tbd">
-	
-		<div>
-               <form action="${pageContext.servletContext.contextPath}/multiplyNumbers" method="get">
 
-			<input type="Submit" name="submit" value="Multiply Numbers!">
-		</form>
         
-        </div>
-            <hr/>
-        <div>
-        <form action="${pageContext.servletContext.contextPath}/Gamewindow" method="get">
-	
-			<input type="Submit" name="submit" value="Add Numbers!">
-		</form>
-        
-        
-        </div>
-            <hr/>
-        <div>
-        <form action="${pageContext.servletContext.contextPath}/guessingGame" method="get">
-			
-				<input name="startGame" type="submit" value="guessing game" />
-			
-		
-			</form>
-
-        </div>
-        
-        </div>
         
         
         <form action="${pageContext.servletContext.contextPath}/userinfo" method="get">
@@ -428,20 +418,20 @@
         </div>
         
         <div id="loginwindow">
-			<form action="${pageContext.servletContext.contextPath}/index" method="get">
+			<form action="${pageContext.servletContext.contextPath}/index" method="post">
 				<table>
 					<tr>
 						<td class="label">username:</td>
-					<td><input  id="uzer" type="text" name="username" size="20" value="${ model.first     }" /></td>
+					<td><input  id="uzer" type="text" name="username" size="20" value="${ model.username     }" /></td>
 					</tr>
 					<tr>
 						<td class="label">Password:</td>
-					<td><input id="pass" type="password" name="password" size="20" value="${  model.first   }" /></td>
+					<td><input id="pass" type="password" name="password" size="20" value="${  model.password   }" /></td>
                     
 					</tr>
                 
 				</table>
-				<input type="Submit" name="submit" value="login">
+				<input type="Submit" name="loginsubmit" value="login">
 			</form>
 			
 			  <form action="${pageContext.servletContext.contextPath}/newuser" method="get">
