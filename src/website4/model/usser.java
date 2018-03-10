@@ -3,7 +3,7 @@ package website4.model;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-public class user {
+public class usser {
 
 	private String username, email;
 	
@@ -11,7 +11,7 @@ public class user {
 	
 	private int coins;
 	
-	private ArrayList<user>  blacklist;
+	private ArrayList<usser>  blacklist;
 	
 	private boolean islogedin;
 	
@@ -26,11 +26,11 @@ public class user {
 	 * @param username
 	 * @param password
 	 */
-	public user(String username,String password){
+	public usser(String username,String password){
 		this.username=username;
 		this.password=password;
 		coins=0;
-		blacklist=new ArrayList<user>();
+		blacklist=new ArrayList<usser>();
 		islogedin=true;
 	}
 	public void login() {
@@ -52,7 +52,7 @@ public class user {
 	public void setcoins(int coins) {
 		this.coins=coins;
 	}
-	public void addtoblacklist(user toblock) {
+	public void addtoblacklist(usser toblock) {
 		blacklist.add(toblock);
 	}
 	/**
@@ -61,7 +61,7 @@ public class user {
 	 * otherwise that user is removed from the blacklist
 	 * @param tounblock
 	 */
-	public void removefromblacklist(user tounblock) {
+	public void removefromblacklist(usser tounblock) {
 		if(blacklist.contains(tounblock)) {
 			blacklist.remove(blacklist.indexOf(tounblock));		
 		}
@@ -73,7 +73,7 @@ public class user {
 	 * returns an arraylist of user objects
 	 * @return
 	 */
-	public ArrayList<user> getblacklist(){
+	public ArrayList<usser> getblacklist(){
 		return blacklist;
 	
 	}
