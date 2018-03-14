@@ -67,10 +67,10 @@
 		 font-size: 400%;
 		
 		}
-		#log{
+		#acountopt{
 		cursor: pointer;
 		float: right;
-		margin-right:280px;
+		margin-right:300px;
 		transition: ease-in-out, margin .4s  ease-in-out;
 		}
 		
@@ -79,11 +79,13 @@
 		
 		}
 		#acountoptions{
-		float: right;
-		height: 0px;
+		position: fixed;
+		top:-200px;
+		right:300px;
+		height: 200px;
 		width:200px;
 		background-color: black;
-		transition: ease-in-out, height .4s  ease-in-out;
+		transition: ease-in-out, top .4s  ease-in-out;
 		}
 		
 		#loginwindow{
@@ -195,47 +197,62 @@
 		}
 		</style>
 		<script type="text/javascript">
-		function hidechat(){
-			document.getElementById("chatwindow").style.width = "0px";
-			document.getElementById("showchatbutt").style.visibility ="visible";
-			document.getElementById("featuredgames").style.marginRight="0px";
+		var chakvisable= true;
+		var acountoptionsvisible = false;
+		var loginvisable = false;
+		function togglechat(){
 			
-			
-				}
-	
-		function showchat(){
+			if(chakvisable){
+				document.getElementById("chatwindow").style.width = "0px";
+				document.getElementById("showchatbutt").style.visibility ="visible";
+				document.getElementById("featuredgames").style.marginRight="0px";
+				chakvisable=false;
+			}
+			else{
 				document.getElementById("chatwindow").style.width = "300px";
 				document.getElementById("showchatbutt").style.visibility ="collapse";
 				document.getElementById("featuredgames").style.marginRight="300px";
-				
-				
-		}
-		
-		function logclick(){
+				chakvisable=true;
+			}
 			
+			
+		}
+	
+		function logclick(){
+			if(loginvisable){
+				document.getElementById("uzer").value="";
+				document.getElementById("pass").value="";
+				document.getElementById("loginwindow").style.visibility ="hidden";
+				document.getElementById("loginoverlay").style.visibility ="hidden";
+				loginvisable= false;
+			}
+			else{
 			document.getElementById("loginwindow").style.visibility ="visible";
 			document.getElementById("loginoverlay").style.visibility ="visible";
 			
 			
+			loginvisable=true;
+			}
 		}
-		function canclelog(){
-			document.getElementById("uzer").value="";
-			document.getElementById("pass").value="";
-			document.getElementById("loginwindow").style.visibility ="hidden";
-			document.getElementById("loginoverlay").style.visibility ="hidden";
-		}
-		function acount(){
+		
+		function toggleacountoptions(){
+			if(acountoptionsvisible){
+				document.getElementById("acountopt").style.visibility="visible";
+				document.getElementById("acountoptions").style.top="-200px";
+				document.getElementById("cancleacountopt").style.visibility="hidden";
+				acountoptionsvisible=false;
+				document.getElementById("loginpost").method="get";
+				
+			}
+			else{
 			document.getElementById("acountopt").style.visibility="hidden";
-			document.getElementById("acountoptions").style.visibility="visible";
-			document.getElementById("acountoptions").style.height="200px";
+			document.getElementById("acountoptions").style.top="0px";
 			document.getElementById("cancleacountopt").style.visibility="visible";
+			acountoptionsvisible=true;
+			}
+			document.getElementById("loginpost").method = "post";
 		}
-		function closeacount(){
-			document.getElementById("acountopt").style.visibility="visible";
-		document.getElementById("acountoptions").style.visibility="hidden";
-			document.getElementById("acountoptions").style.height="0px";
-			document.getElementById("cancleacountopt").style.visibility="hidden";
-		}
+		
 	
 	</script>
 	</head>
@@ -248,21 +265,24 @@
 		
 		
 			<a>
-				<img id="log" onclick="logclick()" src="img/loginicon.png"  />
+				<img id="acountopt" onclick="toggleacountoptions()" src="img/loginicon.png"  />
 			
 			</a>
 			
-			<button id="acountopt"  onclick="acount()" >acount options</button>
+			
 			<div id= "acountoptions">
-				
-				<button id="cancleacountopt"  onclick="closeacount()" >acount options</button>
+				<button id="login"  onclick="logclick()" >login</button>
+				<form action="${pageContext.servletContext.contextPath}/userinfo" method="get">
+					<input type="Submit" name="submit" value="userinfo">
+				</form>
+				<button id="cancleacountopt"  onclick="toggleacountoptions()" >close acount options</button>
 			</div>
 		
 		
 		
 		<div id="pageoptions">
 		
-			<button id="showchatbutt" onclick="showchat() ">__</button>
+			<button id="showchatbutt" onclick="togglechat() ">__</button>
 	
 			
 			
@@ -274,7 +294,7 @@
 		 
 		<div id="chatwindow">
 			<div id="chatoptions">
-			<button id="hidechatbutt" onclick="hidechat() ">__</button>
+			<button id="hidechatbutt" onclick="togglechat() ">__</button>
 				
 				
 			</div>
@@ -330,7 +350,7 @@
 			
 			<div id="chatinput">
 				<p>add comment</p>
-				<form action="${pageContext.servletContext.contextPath}/index" method="post">
+				<form action="${pageContext.servletContext.contextPath}/index" method="get">
 					<textarea name="chatinputtext" rows="6" cols="38" > </textarea>
 				
 				
@@ -394,7 +414,17 @@
 				<div class="gametitle">
 					game3
 				</div>
-	
+
+			</div>
+			
+			
+			<div class= "gamedisplay">
+				<img src="img/giph.gif"  />
+					
+				<div class="gametitle">
+					game4
+				</div>
+
 			</div>
 			
 		</div>
@@ -407,18 +437,15 @@
         
         
         
-        <form action="${pageContext.servletContext.contextPath}/userinfo" method="get">
-
-			<input type="Submit" name="submit" value="userinfo">
-		</form>
+      
         
-        <div id="loginoverlay"  onclick="canclelog()" >
+        <div id="loginoverlay"  onclick="logclick()" >
         
         
         </div>
         
         <div id="loginwindow">
-			<form action="${pageContext.servletContext.contextPath}/index" method="post">
+			<form id="loginpost" action="${pageContext.servletContext.contextPath}/index" method="post">
 				<table>
 					<tr>
 						<td class="label">username:</td>
@@ -441,7 +468,7 @@
 		
 			</form>
 			
-			<button id="canclelog"  onclick="canclelog()" >cancle</button>
+			<button id="canclelog"  onclick="logclick()" >cancle</button>
 		</div>
 	</body>
 </html>
