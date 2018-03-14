@@ -48,9 +48,9 @@ public class usser {
 	public usser() {
 		this.username="guest_";
 		Random rand = new Random();
-		//int randnum= Random.nextInt(131072);
-		
-		
+		int randnum= rand.nextInt(131072);
+		String guestnum=String.valueOf(randnum) ;
+		this.username+=guestnum;
 		coins=0;
 		blacklist=new ArrayList<usser>();
 		isguest=true;
