@@ -2,6 +2,7 @@ package website4.model;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 public class usser {
 
@@ -13,7 +14,7 @@ public class usser {
 	
 	private ArrayList<usser>  blacklist;
 	
-	private boolean islogedin;
+	private boolean isguest;
 	
 	/**
 	 * WARNING!!!!!!! this method does not check
@@ -26,23 +27,41 @@ public class usser {
 	 * @param username
 	 * @param password
 	 */
+	
 	public usser(String username,String password){
 		this.username=username;
 		this.password=password;
 		coins=0;
 		blacklist=new ArrayList<usser>();
-		islogedin=true;
-	}
-	public void login() {
-		islogedin=true;
+		isguest=false;
 	}
 	
-	public void logout() {
-		islogedin=false;
+	/**
+	 * this constructor creates a guest user with a random username of the form
+	 * guest_#
+	 * 
+	 * 
+	 * 
+	 */
+	
+	
+	public usser() {
+		this.username="guest_";
+		Random rand = new Random();
+		int randnum= rand.nextInt(131072);
+		String guestnum=String.valueOf(randnum) ;
+		this.username+=guestnum;
+		coins=0;
+		blacklist=new ArrayList<usser>();
+		isguest=true;
 	}
 	
-	public boolean islogedin() {
-		return islogedin;
+	
+	
+	
+	
+	public boolean isguest() {
+		return isguest;
 	}
 	
 	public int getcoins() {

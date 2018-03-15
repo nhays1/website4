@@ -7,7 +7,7 @@
 		<title>our game site</title>
 		<style type="text/css">
 		body {
-		background-color: brown;
+		background-color: green;
 		
 		}
 		
@@ -16,6 +16,15 @@
 			margin:0;
 		}
 		
+		.smallroundcorners{
+		border-radius: 5px;
+		
+		}
+		
+		.medroundcorners{
+		border-radius: 15px 5px 15px 5px;
+		 
+		}
 		
 		.gamedisplay{
 		display: inline-block;
@@ -61,32 +70,41 @@
 		}
 		#banner{
 		margin-right:300px;
-		
+		cursor: pointer;
 		min-width:1000px;
 		height: 80px;
 		 font-size: 400%;
 		
 		}
-		#log{
+		#acountopt{
 		cursor: pointer;
 		float: right;
-		margin-right:280px;
+		margin-right:300px;
 		transition: ease-in-out, margin .4s  ease-in-out;
 		}
 		
 		#acountopt{
 		float: right;
+		height: 50px;
+		width:50px;
+		}
+		#userphoto{
+		padding-left:25px;
+		padding-right:25px;
 		
 		}
 		#acountoptions{
-		float: right;
-		height: 0px;
+		position: fixed;
+		top:-200px;
+		right:300px;
+		height: 200px;
 		width:200px;
 		background-color: black;
-		transition: ease-in-out, height .4s  ease-in-out;
+		transition: ease-in-out, top .4s  ease-in-out;
 		}
 		
 		#loginwindow{
+		padding: 20px;
 		heiht: 300px;
 		width: 300px;
 		background-color: white;
@@ -167,6 +185,18 @@
 		overflow: scroll;
 		}
 		
+		
+		.chatentry{
+		margin-left:16px;
+		
+		}
+		.chatheader{
+		text-decoration-color: orange;
+		color: #cc5200;
+	
+		
+		}
+		
 		#chatinput{
 		position: absolute;
 		width: 300px;
@@ -195,52 +225,70 @@
 		}
 		</style>
 		<script type="text/javascript">
-		function hidechat(){
-			document.getElementById("chatwindow").style.width = "0px";
-			document.getElementById("showchatbutt").style.visibility ="visible";
-			document.getElementById("featuredgames").style.marginRight="0px";
-			
-			
-				}
+		var chakvisable= true;
+		var acountoptionsvisible = false;
+		var loginvisable = false;
+		
 	
-		function showchat(){
+		
+		function togglechat(){
+			
+			if(chakvisable){
+				document.getElementById("chatwindow").style.width = "0px";
+				document.getElementById("showchatbutt").style.visibility ="visible";
+				document.getElementById("featuredgames").style.marginRight="0px";
+				chakvisable=false;
+			}
+			else{
 				document.getElementById("chatwindow").style.width = "300px";
 				document.getElementById("showchatbutt").style.visibility ="collapse";
 				document.getElementById("featuredgames").style.marginRight="300px";
-				
-				
-		}
-		
-		function logclick(){
+				chakvisable=true;
+			}
 			
+			
+		}
+	
+		function logclick(){
+			if(loginvisable){
+				document.getElementById("uzer").value="";
+				document.getElementById("pass").value="";
+				document.getElementById("loginwindow").style.visibility ="hidden";
+				document.getElementById("loginoverlay").style.visibility ="hidden";
+				loginvisable= false;
+			}
+			else{
 			document.getElementById("loginwindow").style.visibility ="visible";
 			document.getElementById("loginoverlay").style.visibility ="visible";
 			
 			
+			loginvisable=true;
+			}
 		}
-		function canclelog(){
-			document.getElementById("uzer").value="";
-			document.getElementById("pass").value="";
-			document.getElementById("loginwindow").style.visibility ="hidden";
-			document.getElementById("loginoverlay").style.visibility ="hidden";
-		}
-		function acount(){
+		
+		function toggleacountoptions(){
+			if(acountoptionsvisible){
+				document.getElementById("acountopt").style.visibility="visible";
+				document.getElementById("acountoptions").style.top="-200px";
+				//document.getElementById("cancleacountopt").style.visibility="hidden";
+				acountoptionsvisible=false;
+				document.getElementById("loginpost").method="get";
+				
+			}
+			else{
 			document.getElementById("acountopt").style.visibility="hidden";
-			document.getElementById("acountoptions").style.visibility="visible";
-			document.getElementById("acountoptions").style.height="200px";
-			document.getElementById("cancleacountopt").style.visibility="visible";
+			document.getElementById("acountoptions").style.top="0px";
+			//document.getElementById("cancleacountopt").style.visibility="visible";
+			acountoptionsvisible=true;
+			}
+			document.getElementById("loginpost").method = "post";
 		}
-		function closeacount(){
-			document.getElementById("acountopt").style.visibility="visible";
-		document.getElementById("acountoptions").style.visibility="hidden";
-			document.getElementById("acountoptions").style.height="0px";
-			document.getElementById("cancleacountopt").style.visibility="hidden";
-		}
+		 
 	
 	</script>
 	</head>
 
-	<body>
+	<body body onLoad="refreshchat()">
 	
 		
 		
@@ -248,21 +296,28 @@
 		
 		
 			<a>
-				<img id="log" onclick="logclick()" src="img/loginicon.png"  />
+				<img id="acountopt" onclick="toggleacountoptions()" src="img/loginicon.png"  />
 			
 			</a>
 			
-			<button id="acountopt"  onclick="acount()" >acount options</button>
-			<div id= "acountoptions">
+			
+			<div class="smallroundcorners" id= "acountoptions">
+			<img id="userphoto" onclick="toggleacountoptions()" src="img/largeloginicon.png"  />
+				<button id="login"  onclick="logclick()" >login</button>
+				<form action="${pageContext.servletContext.contextPath}/userinfo" method="get">
+					<input type="Submit" name="submit" value="userinfo">
+				</form>
+			
+			<!--<button id="cancleacountopt"  onclick="toggleacountoptions()" >close acount options</button>  -->	
+			
 				
-				<button id="cancleacountopt"  onclick="closeacount()" >acount options</button>
 			</div>
 		
 		
 		
 		<div id="pageoptions">
 		
-			<button id="showchatbutt" onclick="showchat() ">__</button>
+			<button id="showchatbutt" onclick="togglechat() ">__</button>
 	
 			
 			
@@ -274,64 +329,80 @@
 		 
 		<div id="chatwindow">
 			<div id="chatoptions">
-			<button id="hidechatbutt" onclick="hidechat() ">__</button>
-				
+			<button id="hidechatbutt" onclick="togglechat() ">__</button>
+			<button id="refresfchatbut" onclick="refreshchat() ">refresh</button>
+			
+			
 				
 			</div>
 			
 			<div id="chattext">
 			<script>
-			
-			
-			
-			
+			function refreshchat(){
+				 document.getElementById("chattext").innerHTML = "";
+				var numposts= 20;
+				var toAdd = document.createDocumentFragment();
+				for(var i=0; i < numposts; i++){
+				   var newDiv = document.createElement('div');
+				   var newHr = document.createElement('hr');
+				   var newP = document.createElement('p');
+				   var time= new Date();
+				   var posttext="";
+				   var username="jminor717 ";
+				   var now = time.getTime();
+				   var posttime=1521079138360;
+				   now-=posttime;
+				   if(now<60000){
+					   now=now/1000
+					   now= Math.floor(now);
+					   username+=now;
+					   username+=" seconds agao"  
+				   }
+				   else if(now<3600000){
+					   now=now/60000
+					   now= Math.floor(now);
+					   username+=now;
+					   username+=" minutes agao"
+				   }
+				   else if(now<86400000){
+					   now=now/3600000
+					   now= Math.floor(now);
+					   username+=now;
+					   username+=" hours agao"
+				   }
+				   else {
+					   now=now/86400000
+					   now= Math.floor(now);
+					   username+=now;
+					   username+=" days agao"
+				   }
+				   posttext+="\n tcasdhbajveffffffffffffffffffffffff fffffffffff       fffffffffffffffff fffffffffff fffffhve";
+				   newDiv.id = 'r'+i;
+				   newDiv.className = 'chatentry';
+				   newP.className='chatheader';
+				   newDiv.innerHTML = posttext;
+				   newP.innerHTML = username;
+				   toAdd.appendChild(newP);
+				   toAdd.appendChild(newDiv);
+				   toAdd.appendChild(newHr);
+				}
+				
+				document.getElementById("chattext").appendChild(toAdd);
+				
+				
+				var element = document.getElementById("chattext");
+				element.scrollTop = element.scrollHeight;
+			}
+		
 			</script>
-				<ul>
-					<li>comcmsvjsiojvsvi</li>
-					<hr/>
-					<li><script> document.write("some stuf");    </script></li>
-					<hr/>
-					<li>gaafaefazfefgrafs e3</li>
-					<hr/>
-					<li>gaafaefazfefgrafs e3</li>
-					<hr/>
-					<li>gaafaefazfefgrafs e3</li>
-					<hr/>
-					<li>gaafaefazfefgrafs e3</li>
-					<hr/>
-					<li>gaafaefazfefgrafs e3</li>
-					<hr/>
-					<li>gaafaefazfefgrafs e3</li>
-					
-					<hr/>
-					<li>gaafaefazfefgrafs e3</li>
-					
-					<hr/>
-					<li>gaafaefazfefgrafs e3</li>
-					<hr/>
-					<li>gaafaefazfefgrafs e3</li>
-					<hr/>
-					<li>gaafaefazfefgrafs e3</li>
-					<hr/>
-					<li>gaafaefazfefgrafs e3</li>
-					<hr/>
-					<li>ersgascafarfghe bawuhf hahew fheb fhebauebfu ebffhe bfuhbafa  h f beyb eushb hbrsuhb rbsihbvbsvj nuse u nu</li>
-					<hr/>
-					<li>ersgascafarfghe bawuhf hahew fheb fhebauebfu ebffhe bfuhbafa  h f beyb eushb hbrsuhb rbsihbvbsvj nuse u nu</li>
-					<hr/>
-					<li>ersgascafarfghe bawuhf hahew fheb fhebauebfu ebffhe bfuhbafa  h f beyb eushb hbrsuhb rbsihbvbsvj nuse u nu</li>
-					<hr/>
-					<li>ersgascafarfghe bawuhf hahew fheb fhebauebfu ebffhe bfuhbafa  h f beyb eushb hbrsuhb rbsihbvbsvj nuse u nu</li>
-					<hr/>
-					<li>ersgascafarfghe bawuhf hahew fheb fhebauebfu ebffhe bfuhbafa  h f beyb eushb hbrsuhb rbsihbvbsvj nuse u nu</li>
-				</ul>	
+			
 			</div>
 			
 			
 			<div id="chatinput">
 				<p>add comment</p>
-				<form action="${pageContext.servletContext.contextPath}/index" method="post">
-					<textarea name="chatinputtext" rows="6" cols="38" > </textarea>
+				<form action="${pageContext.servletContext.contextPath}/index" method="get">
+					<textarea class="smallroundcorners" name="chatinputtext" rows="6" cols="38" > </textarea>
 				
 				
 					<input type="Submit" name="chatsubmit" value="post">
@@ -348,7 +419,7 @@
 		<!--end chat html -->
 		
 		
-		<div id="banner">
+		<div id="banner" onclick="home()">
 			this is the title of our website (img)
 			
 		</div>
@@ -371,7 +442,7 @@
 		<div id="featuredgames"> 
 		
 			<div class= "gamedisplay">
-				<img src="img/giph.gif" />
+				<img src="img/giphy.gif" />
 	
 				<div class="gametitle">
 					game1
@@ -380,7 +451,7 @@
 			</div>
 			
 			<div class= "gamedisplay">
-				<img src="img/giph.gif" />
+				<img src="img/giphy.gif" />
 	
 				<div class="gametitle">
 					game2
@@ -389,12 +460,22 @@
 			</div>
 			
 			<div class= "gamedisplay">
-				<img src="img/giph.gif"  />
+				<img src="img/giphy.gif"  />
 					
 				<div class="gametitle">
 					game3
 				</div>
-	
+
+			</div>
+			
+			
+			<div class= "gamedisplay">
+				<img src="img/giphy.gif"  />
+					
+				<div class="gametitle">
+					game4
+				</div>
+
 			</div>
 			
 		</div>
@@ -407,26 +488,23 @@
         
         
         
-        <form action="${pageContext.servletContext.contextPath}/userinfo" method="get">
-
-			<input type="Submit" name="submit" value="userinfo">
-		</form>
+      
         
-        <div id="loginoverlay"  onclick="canclelog()" >
+        <div id="loginoverlay"  onclick="logclick()" >
         
         
         </div>
         
-        <div id="loginwindow">
-			<form action="${pageContext.servletContext.contextPath}/index" method="post">
+        <div class="medroundcorners" id="loginwindow">
+			<form id="loginpost" action="${pageContext.servletContext.contextPath}/index" method="post">
 				<table>
 					<tr>
 						<td class="label">username:</td>
-					<td><input  id="uzer" type="text" name="username" size="20" value="${ model.username     }" /></td>
+					<td><input  id="uzer" type="text" name="username" size="20" class="smallroundcorners" value="${ model.username     }" /></td>
 					</tr>
 					<tr>
 						<td class="label">Password:</td>
-					<td><input id="pass" type="password" name="password" size="20" value="${  model.password   }" /></td>
+					<td><input id="pass" type="password" name="password" size="20" class="smallroundcorners" value="${  model.password   }" /></td>
                     
 					</tr>
                 
@@ -441,7 +519,7 @@
 		
 			</form>
 			
-			<button id="canclelog"  onclick="canclelog()" >cancle</button>
+			<button id="canclelog"  onclick="logclick()" >cancle</button>
 		</div>
 	</body>
 </html>

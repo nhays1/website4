@@ -22,14 +22,5 @@ public class Userinfoservlet extends HttpServlet {
 		req.getRequestDispatcher("/_view/userinfo.jsp").forward(req, resp);
 	}
 	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		
-		System.out.println("userinfo Servlet: doPost");
-		
-		req.getRequestDispatcher("/_view/userinfo.jsp").forward(req, resp);
-		
-		
-	}
+	
 }
