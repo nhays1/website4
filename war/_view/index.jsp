@@ -270,7 +270,7 @@
 			if(acountoptionsvisible){
 				document.getElementById("acountopt").style.visibility="visible";
 				document.getElementById("acountoptions").style.top="-200px";
-				document.getElementById("cancleacountopt").style.visibility="hidden";
+				//document.getElementById("cancleacountopt").style.visibility="hidden";
 				acountoptionsvisible=false;
 				document.getElementById("loginpost").method="get";
 				
@@ -278,7 +278,7 @@
 			else{
 			document.getElementById("acountopt").style.visibility="hidden";
 			document.getElementById("acountoptions").style.top="0px";
-			document.getElementById("cancleacountopt").style.visibility="visible";
+			//document.getElementById("cancleacountopt").style.visibility="visible";
 			acountoptionsvisible=true;
 			}
 			document.getElementById("loginpost").method = "post";
@@ -302,13 +302,13 @@
 			
 			
 			<div class="smallroundcorners" id= "acountoptions">
-			<img id="userphoto" onclick="toggleacountoptions()" src="img/loginicon.png"  />
+			<img id="userphoto" onclick="toggleacountoptions()" src="img/largeloginicon.png"  />
 				<button id="login"  onclick="logclick()" >login</button>
 				<form action="${pageContext.servletContext.contextPath}/userinfo" method="get">
 					<input type="Submit" name="submit" value="userinfo">
 				</form>
 			
-				<button id="cancleacountopt"  onclick="toggleacountoptions()" >close acount options</button>
+			<!--<button id="cancleacountopt"  onclick="toggleacountoptions()" >close acount options</button>  -->	
 			
 				
 			</div>
