@@ -14,10 +14,17 @@
 		
 		}
 	
+			#banner{
+		margin-right:300px;
+		cursor: pointer;
+		min-width:1000px;
+		height: 80px;
+		 font-size: 400%;
 		
+		}
 		</style>
 		<script>
-		if(user.)
+		//if(user.)
 		
 		
 		
@@ -32,7 +39,7 @@
 
 	<body>
 	
-
+	
 
 	
 
