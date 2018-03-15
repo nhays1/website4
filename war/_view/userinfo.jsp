@@ -17,7 +17,7 @@
 		
 		</style>
 		<script>
-		if(user.)
+		//if(user.)
 		
 		
 		
@@ -32,7 +32,7 @@
 
 	<body>
 	
-
+	
 
 	
 

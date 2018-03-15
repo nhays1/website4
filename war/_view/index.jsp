@@ -200,6 +200,21 @@
 		var chakvisable= true;
 		var acountoptionsvisible = false;
 		var loginvisable = false;
+		
+		function home(){
+			var xhr = new XMLHttpRequest();
+		    xhr.onreadystatechange = function() {
+		        if (xhr.readyState == 4) {
+		            var data = xhr.responseText;
+		            alert(data);
+		        }
+		    }
+		    xhr.open('get', 'index');
+		    xhr.send(null);
+			
+			
+		}
+		
 		function togglechat(){
 			
 			if(chakvisable){
@@ -369,7 +384,7 @@
 		
 		
 		<div id="banner">
-			this is the title of our website (img)
+			<a onclick="home()">this is the title of our website (img)</a>
 			
 		</div>
 		
