@@ -85,6 +85,12 @@
 		
 		#acountopt{
 		float: right;
+		height: 50px;
+		width:50px;
+		}
+		#userphoto{
+		padding-left:25px;
+		padding-right:25px;
 		
 		}
 		#acountoptions{
@@ -277,12 +283,12 @@
 			}
 			document.getElementById("loginpost").method = "post";
 		}
-		
+		 
 	
 	</script>
 	</head>
 
-	<body>
+	<body body onLoad="refreshchat()">
 	
 		
 		
@@ -296,6 +302,7 @@
 			
 			
 			<div class="smallroundcorners" id= "acountoptions">
+			<img id="userphoto" onclick="toggleacountoptions()" src="img/loginicon.png"  />
 				<button id="login"  onclick="logclick()" >login</button>
 				<form action="${pageContext.servletContext.contextPath}/userinfo" method="get">
 					<input type="Submit" name="submit" value="userinfo">
@@ -323,62 +330,70 @@
 		<div id="chatwindow">
 			<div id="chatoptions">
 			<button id="hidechatbutt" onclick="togglechat() ">__</button>
+			<button id="refresfchatbut" onclick="refreshchat() ">refresh</button>
+			
 			
 				
 			</div>
 			
 			<div id="chattext">
 			<script>
-			var numposts= 20;
-			var toAdd = document.createDocumentFragment();
-			for(var i=0; i < numposts; i++){
-			   var newDiv = document.createElement('div');
-			   var newHr = document.createElement('hr');
-			   var newP = document.createElement('p');
-			   var time= new Date();
-			   var posttext="";
-			   var username="jminor717 ";
-			   var now = time.getTime();
-			   var posttime=1521079138360;
-			   now-=posttime;
-			   if(now<60000){
-				   now=now/1000
-				   now= Math.floor(now);
-				   username+=now;
-				   username+=" seconds agao"  
-			   }
-			   else if(now<3600000){
-				   now=now/60000
-				   now= Math.floor(now);
-				   username+=now;
-				   username+=" minutes agao"
-			   }
-			   else if(now<86400000){
-				   now=now/3600000
-				   now= Math.floor(now);
-				   username+=now;
-				   username+=" hours agao"
-			   }
-			   else {
-				   now=now/86400000
-				   now= Math.floor(now);
-				   username+=now;
-				   username+=" days agao"
-			   }
-			   posttext+="\n tcasdhbajveffffffffffffffffffffffff fffffffffff       fffffffffffffffff fffffffffff fffffhve";
-			   newDiv.id = 'r'+i;
-			   newDiv.className = 'chatentry';
-			   newP.className='chatheader';
-			   newDiv.innerHTML = posttext;
-			   newP.innerHTML = username;
-			   toAdd.appendChild(newP);
-			   toAdd.appendChild(newDiv);
-			   toAdd.appendChild(newHr);
+			function refreshchat(){
+				 document.getElementById("chattext").innerHTML = "";
+				var numposts= 20;
+				var toAdd = document.createDocumentFragment();
+				for(var i=0; i < numposts; i++){
+				   var newDiv = document.createElement('div');
+				   var newHr = document.createElement('hr');
+				   var newP = document.createElement('p');
+				   var time= new Date();
+				   var posttext="";
+				   var username="jminor717 ";
+				   var now = time.getTime();
+				   var posttime=1521079138360;
+				   now-=posttime;
+				   if(now<60000){
+					   now=now/1000
+					   now= Math.floor(now);
+					   username+=now;
+					   username+=" seconds agao"  
+				   }
+				   else if(now<3600000){
+					   now=now/60000
+					   now= Math.floor(now);
+					   username+=now;
+					   username+=" minutes agao"
+				   }
+				   else if(now<86400000){
+					   now=now/3600000
+					   now= Math.floor(now);
+					   username+=now;
+					   username+=" hours agao"
+				   }
+				   else {
+					   now=now/86400000
+					   now= Math.floor(now);
+					   username+=now;
+					   username+=" days agao"
+				   }
+				   posttext+="\n tcasdhbajveffffffffffffffffffffffff fffffffffff       fffffffffffffffff fffffffffff fffffhve";
+				   newDiv.id = 'r'+i;
+				   newDiv.className = 'chatentry';
+				   newP.className='chatheader';
+				   newDiv.innerHTML = posttext;
+				   newP.innerHTML = username;
+				   toAdd.appendChild(newP);
+				   toAdd.appendChild(newDiv);
+				   toAdd.appendChild(newHr);
+				}
+				
+				document.getElementById("chattext").appendChild(toAdd);
+				
+				
+				var element = document.getElementById("chattext");
+				element.scrollTop = element.scrollHeight;
 			}
-			
-			document.getElementById("chattext").appendChild(toAdd);
-			
-			
+		
 			</script>
 			
 			</div>
