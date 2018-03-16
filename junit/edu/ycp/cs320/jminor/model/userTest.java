@@ -21,7 +21,7 @@ public class userTest {
 	}
 	
 	@Test
-	public void testGenericUser() {
+	public void testGenericUser() { //tests real user constructor
 		assertTrue(user1.getcoins() == 0);
 		assertTrue(user1.isguest() == false);
 		assertTrue(user1.getusername() == "usernameXD");
