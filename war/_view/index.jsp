@@ -7,7 +7,7 @@
 		<title>our game site</title>
 		<style type="text/css">
 		body {
-		background-color: brown   ;
+		background-color: brown;
 		
 		}
 		
