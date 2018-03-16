@@ -7,7 +7,7 @@
 		<title>our game site</title>
 		<style type="text/css">
 		body {
-		background-color: green;
+		background-color: brown   ;
 		
 		}
 		
@@ -470,7 +470,7 @@
 			
 			
 			<div class= "gamedisplay">
-				<img src="img/giphy.gif"  />
+				<img src="img/giph.gif"  />
 					
 				<div class="gametitle">
 					game4
