@@ -24,6 +24,8 @@ public class userTest {
 	public void testGenericUser() {
 		assertTrue(user1.getcoins() == 0);
 		assertTrue(user1.isguest() == false);
+		assertTrue(user1.getusername() == "usernameXD");
+		assertTrue(user1.getpassword() == "passwordXD");
 	}
 	
 }
