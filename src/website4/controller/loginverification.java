@@ -2,10 +2,10 @@ package website4.controller;
 
 
 
-import website4.model.usser;
+import website4.model.User;
 
 public class loginverification {
-	private usser user;
+	private User user;
 	
 	
 	//TODO this controler will take username and password from servlet and check or reject the information

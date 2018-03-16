@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
-public class usser {
+public class User {
 
 	private String username, email;
 	
@@ -12,7 +12,7 @@ public class usser {
 	
 	private int coins;
 	
-	private ArrayList<usser>  blacklist;
+	private ArrayList<User>  blacklist;
 	
 	private boolean isguest;
 	
@@ -28,11 +28,11 @@ public class usser {
 	 * @param password
 	 */
 	
-	public usser(String username,String password){
+	public User(String username,String password){
 		this.username=username;
 		this.password=password;
 		coins=0;
-		blacklist=new ArrayList<usser>();
+		blacklist=new ArrayList<User>();
 		isguest=false;
 	}
 	
@@ -45,14 +45,14 @@ public class usser {
 	 */
 	
 	
-	public usser() {
+	public User() {
 		this.username="guest_";
 		Random rand = new Random();
 		int randnum= rand.nextInt(131072);
 		String guestnum=String.valueOf(randnum) ;
 		this.username+=guestnum;
 		coins=0;
-		blacklist=new ArrayList<usser>();
+		blacklist=new ArrayList<User>();
 		isguest=true;
 	}
 	
@@ -71,7 +71,7 @@ public class usser {
 	public void setcoins(int coins) {
 		this.coins=coins;
 	}
-	public void addtoblacklist(usser toblock) {
+	public void addtoblacklist(User toblock) {
 		blacklist.add(toblock);
 	}
 	/**
@@ -80,7 +80,7 @@ public class usser {
 	 * otherwise that user is removed from the blacklist
 	 * @param tounblock
 	 */
-	public void removefromblacklist(usser tounblock) {
+	public void removefromblacklist(User tounblock) {
 		if(blacklist.contains(tounblock)) {
 			blacklist.remove(blacklist.indexOf(tounblock));		
 		}
@@ -92,7 +92,7 @@ public class usser {
 	 * returns an arraylist of user objects
 	 * @return
 	 */
-	public ArrayList<usser> getblacklist(){
+	public ArrayList<User> getblacklist(){
 		return blacklist;
 	
 	}
@@ -123,7 +123,7 @@ public class usser {
 	public void setemail(String email) {
 		this.email=email;
 	}
-	
+
 	
 	public String getpassword(){
 		return password;

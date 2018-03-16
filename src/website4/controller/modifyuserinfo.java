@@ -2,12 +2,12 @@ package website4.controller;
 
 
 
-import website4.model.usser;
+import website4.model.User;
 
 public class modifyuserinfo {
-	private usser user;
+	private User user;
 	
-	public void setModel(usser user) {
+	public void setModel(User user) {
 		
 		
 		this.user = user;
