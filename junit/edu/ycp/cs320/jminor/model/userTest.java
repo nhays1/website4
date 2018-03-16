@@ -1,4 +1,4 @@
-package edu.ycp.cs320.jminor1.servlet;
+package edu.ycp.cs320.jminor.model;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -23,6 +23,9 @@ public class userTest {
 	@Test
 	public void testGenericUser() {
 		assertTrue(user1.getcoins() == 0);
+		assertTrue(user1.isguest() == false);
+		assertTrue(user1.getusername() == "usernameXD");
+		assertTrue(user1.getpassword() == "passwordXD");
 	}
 	
 }
