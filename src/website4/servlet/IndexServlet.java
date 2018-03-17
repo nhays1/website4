@@ -53,11 +53,28 @@ public class IndexServlet extends HttpServlet {
 			
 			
 			String chatinput =  req.getParameter("chatinputtext");
+			String username =  req.getParameter("username");
+			String password =  req.getParameter("password");
 			
+			
+			
+			
+			
+			System.out.println("username      _ "+username);
+			System.out.println("assword      _ "+password);
 			System.out.println("chat      _ "+chatinput);
+			
+			if(username!=null&&password!=null) {
+				if(username.trim().length()>0&&password.trim().length()>0) {
+				
+					
+					
+				}
+			}
 			if(chatinput!=null) {
 				if(chatinput.trim().length()>0) {
 					long now=Instant.now().toEpochMilli();
+					//if()
 					chat.makenewpost(now, "jmino", chatinput);
 					System.out.println("chatpassed      _ "+chatinput);
 					

@@ -434,6 +434,7 @@
 				var element = document.getElementById("chattext");
 				element.scrollTop = element.scrollHeight;
 			}
+			
 			setInterval(refreshchat(),1000);
 			</script>
 			

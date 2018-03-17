@@ -14,32 +14,40 @@ public class usser {
 	
 	private ArrayList<usser>  blacklist;
 	
+	private int userid;
+	
 	private boolean isguest;
 	
 	/**
-	 * WARNING!!!!!!! this method does not check
+	 * WARNING!!!!!!! this constructor does not check
 	 *  incoming data, use only after caller has
 	 *  Verified data
 	 *  
 	 * constructor, takes username and password of new user
 	 * then logs them in sets coins to zero and creates empty blacklist
-	 * 
+	 * once the data base is finished this method will also check that the generated user id does not exist yet
 	 * @param username
 	 * @param password
 	 */
 	
 	public usser(String username,String password){
+		Random rand = new Random();
 		this.username=username;
 		this.password=password;
 		coins=0;
 		blacklist=new ArrayList<usser>();
 		isguest=false;
+		userid=rand.nextInt();
+		//TODO call to data base method which will check this value in a while loop until unique value is generated
+		
+
+		
+		
 	}
 	
 	/**
-	 * this constructor creates a guest user with a random username of the form
-	 * guest_#
-	 * 
+	 * this constructor creates a guest user with a random username of the form guest_#
+	 * once the data base is finished this method will also check that the generated user id does not exist yet
 	 * 
 	 * 
 	 */
@@ -54,6 +62,10 @@ public class usser {
 		coins=0;
 		blacklist=new ArrayList<usser>();
 		isguest=true;
+		userid=rand.nextInt();
+		//TODO call to data base method which will check this value in a while loop until unique value is generated
+		
+		
 	}
 	
 	
@@ -137,6 +149,15 @@ public class usser {
 	public void setpassword(String password) {
 		this.password=password;
 	}
+	
+	public int getuserid() {
+		return userid;
+		
+	}
+	
+	
+	
+	
 	
 	
 }
