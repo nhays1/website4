@@ -188,12 +188,12 @@
 		
 		.chatentry{
 		margin-left:16px;
-		
+		white-space:pre-wrap;
 		}
 		.chatheader{
 		text-decoration-color: orange;
 		color: #cc5200;
-	
+		white-space:pre-wrap;
 		
 		}
 		
@@ -284,7 +284,7 @@
 			document.getElementById("loginpost").method = "post";
 		}
 		 
-	
+		
 	</script>
 	</head>
 
@@ -337,20 +337,55 @@
 			</div>
 			
 			<div id="chattext">
+			
+			<% String chatpos=(String)  request.getAttribute("chatposts");%>
 			<script>
 			function refreshchat(){
+				var xmlreq = new XMLHttpRequest(); 
+				var numposts=${ chatlength    };
+				var chat;
+				xmlreq.open('get','index',true);
+				
+				//console.log(xmlreq);
+					xmlreq.send();
+				xmlreq.onload=function(){
+					if (this.status==200){
+						
+					//console.log(xmlreq.response);
+						//var chatjson= (chatposts.val);
+						//chat=JSON.parse(this.responseText);
+						//console.log(chat);
+						//console.log(res);
+						//console.log(xmlreq.response);
+					
+					//console.log(xmlreq.response);
+					}
+				}
+				
+			
+				
+				chat=<%=chatpos%>;
+				console.log(chat[1].milstime);
+			
+				console.log(numposts);
+				
+				
 				 document.getElementById("chattext").innerHTML = "";
-				var numposts= 20;
+				
+			
 				var toAdd = document.createDocumentFragment();
 				for(var i=0; i < numposts; i++){
 				   var newDiv = document.createElement('div');
 				   var newHr = document.createElement('hr');
 				   var newP = document.createElement('p');
 				   var time= new Date();
-				   var posttext="";
-				   var username="jminor717 ";
 				   var now = time.getTime();
-				   var posttime=1521079138360;
+
+				   
+				   var posttext=chat[i].post;
+				   var username=chat[i].username;
+				   username+=" ";
+				   var posttime=chat[i].milstime;
 				   now-=posttime;
 				   if(now<60000){
 					   now=now/1000
@@ -370,13 +405,19 @@
 					   username+=now;
 					   username+=" hours agao"
 				   }
-				   else {
-					   now=now/86400000
+				   else if(now<(86400000*365)) {
+					   now=now/86400000;
 					   now= Math.floor(now);
 					   username+=now;
 					   username+=" days agao"
 				   }
-				   posttext+="\n tcasdhbajveffffffffffffffffffffffff fffffffffff       fffffffffffffffff fffffffffff fffffhve";
+				   else {
+					   now=now/(86400000*365)
+					   now= Math.floor(now);
+					   username+=now;
+					   username+=" years agao"  
+				   }
+				
 				   newDiv.id = 'r'+i;
 				   newDiv.className = 'chatentry';
 				   newP.className='chatheader';
@@ -393,7 +434,8 @@
 				var element = document.getElementById("chattext");
 				element.scrollTop = element.scrollHeight;
 			}
-		
+			
+			setInterval(refreshchat(),1000);
 			</script>
 			
 			</div>
@@ -401,7 +443,7 @@
 			
 			<div id="chatinput">
 				<p>add comment</p>
-				<form action="${pageContext.servletContext.contextPath}/index" method="get">
+				<form action="${pageContext.servletContext.contextPath}/index" method="post">
 					<textarea class="smallroundcorners" name="chatinputtext" rows="6" cols="38" > </textarea>
 				
 				
@@ -470,7 +512,7 @@
 			
 			
 			<div class= "gamedisplay">
-				<img src="img/giph.gif"  />
+				<img src="img/giphy.gif"  />
 					
 				<div class="gametitle">
 					game4

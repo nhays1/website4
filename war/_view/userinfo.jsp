@@ -26,6 +26,10 @@
 		<script>
 		//if(user.)
 		
+			
+			
+			
+			
 		
 		
 		</script>
@@ -39,7 +43,10 @@
 
 	<body>
 	
-	
+	<div id="banner" >
+			this is the title of our website (img)
+			
+		</div>
 
 	
 
