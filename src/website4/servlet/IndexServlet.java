@@ -117,6 +117,7 @@ public class IndexServlet extends HttpServlet {
 		result = null;
 	
 	//START CHAT
+		/*
 		try {
 			String text = req.getParameter("chatinputtext");
 			
@@ -155,7 +156,12 @@ public class IndexServlet extends HttpServlet {
 		//Comment made for testing
 		
 		
-		
+		*/
 		
 	}//End of doPost//
+	
+	
+	
+	
+
 }
