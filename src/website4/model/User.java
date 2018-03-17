@@ -85,7 +85,7 @@ public class User {
 			blacklist.remove(blacklist.indexOf(tounblock));		
 		}
 		else {
-			throw new NoSuchElementException();
+			throw new NoSuchElementException("User not on blacklist");
 		}
 	}
 	/**
