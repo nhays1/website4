@@ -8,31 +8,44 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.apache.taglibs.standard.tag.common.core.NullAttributeException;
+
 import website4.model.usser;
 
 public class createUser {
 
 	// Map<Integer, String> userMap = new HashMap<Integer, String>();
 
-	// private usser user = new usser();
+	 private usser user = new usser();
 
 	// This information will come from the servlet, these are just temporary
 	// variables
-	private String userName = "name";
-	private String password = "pass";
-	private String email = "email";
+	private String userName;
+	private String password;
+	private String email;
 	// private boolean isUserGuest = true;
 
 	private Connection conn;
 
-	createUser() throws SQLException {
+//	userName = user.getusername();
+//	password = user.getpassword();
+//	email = user.getemail();
+//	
+	
+	createUser(String userName, String password, String email) throws SQLException {
+		
+		
+		
 		if (userName != null && password != null && email != null) {
 			boolean validInfo = isValid(userName, password, email);
 			PreparedStatement insertNewID = null;
 
 			if (validInfo == true) {
 				// Add information to database
-
+				
+				
+				//Inserts new Username and Password into database with a new ID
 				String newID = "insert into userInfo(userName, password) values (?, ?)";
 
 				insertNewID = conn.prepareStatement(newID);
@@ -48,6 +61,14 @@ public class createUser {
 				// user.setcoins(1000);
 
 			}
+			
+			else {
+				//send error to user that account already exists with user or email
+			}
+			
+		}
+		else {
+			//send error to user that information entered was not valid
 		}
 	}
 
@@ -73,9 +94,9 @@ public class createUser {
 			int rowsReturned = 0;
 
 			while (resultSet.next()) {
-				for (int i = 1; i <= resultSchema.getColumnCount(); i++) {
-
+				
 					// startBlock: this block will probably be removed later
+				for (int i = 1; i <= resultSchema.getColumnCount(); i++) {
 					Object obj = resultSet.getObject(i);
 					if (i > 1) {
 						System.out.print(",");
