@@ -17,7 +17,7 @@ public class createUser {
 
 	// Map<Integer, String> userMap = new HashMap<Integer, String>();
 
-	 private usser user = new usser();
+	private usser user = new usser();
 
 	// This information will come from the servlet, these are just temporary
 	// variables
@@ -33,7 +33,12 @@ public class createUser {
 //	email = user.getemail();
 //	
 	
-	createUser(String userName, String password, String email) throws SQLException {
+	
+	public createUser() {
+		
+	}
+	
+	public void createNewUser(String userName, String password, String email) throws SQLException {
 		
 		
 		
