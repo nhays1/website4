@@ -21,18 +21,14 @@ public class createUser {
 
 	// This information will come from the servlet, these are just temporary
 	// variables
-	private String userName;
-	private String password;
-	private String email;
+	//private String userName;
+	//private String password;
+	//private String email;
 	// private boolean isUserGuest = true;
 
 	private Connection conn;
 
-//	userName = user.getusername();
-//	password = user.getpassword();
-//	email = user.getemail();
-//	
-	
+
 	
 	public createUser() {
 		
