@@ -3,25 +3,29 @@ package website4.controller;
 
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
+//	import website4.database.DatabaseProvider;
+//	import website4.database.IDatabase;
+//	import website4.databsecontroler.InitDatabase;
 import website4.model.post;
 
 
 public class chatcontroler {
 	private post incomingpost;
-	private ArrayList<post> chatposts=new ArrayList<post>();
-	private int test=7;
+	private ArrayList<post> posts=new ArrayList<post>();
 	public chatcontroler() {
-		
 		incomingpost=new post(15210791386L,"jminor","this cant be right");
-		chatposts.add(incomingpost);
+		posts.add(incomingpost);
 		incomingpost=new post(1511079138360L,"jminor","iim from teh past");
-		chatposts.add(incomingpost);
+		posts.add(incomingpost);
 		incomingpost=new post(1521079138360L,"jminor","this is a post with some text");
-		chatposts.add(incomingpost);
+		posts.add(incomingpost);
 		incomingpost=new post(1521079138360L,"jminor","so is this");
-		chatposts.add(incomingpost);
-		
+		posts.add(incomingpost);
+		incomingpost=new post(1523079138360L,"jminor","i can see the future");
+		posts.add(incomingpost);
 	
 	}
 	
@@ -47,25 +51,26 @@ public class chatcontroler {
 			
 			
 			incomingpost=new post(mils_time,username,posttext);
-			chatposts.add(incomingpost);
-
+			
+			posts.add(incomingpost);
 		}	
 	}
 	
 	
-	public ArrayList<post> Getchat(){
-		return chatposts;
+	public List<post> Getchat(){
+		//Scanner keyboard = new Scanner(System.in);
+		
+		//InitDatabase.init(keyboard);
+		
+		//IDatabase db = DatabaseProvider.getInstance();
+		
+		//return db.getpostsnoblacklist();
 
-		
+		return posts;
 	}
 	
 	
-	public int getval(){
-		return test;
-		
-		
-		
-	}
+	
 	
 	
 	
