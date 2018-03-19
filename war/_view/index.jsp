@@ -238,6 +238,9 @@
 		var numposts;
 		var chat;
 		
+		
+		
+		
 		function togglechat(){
 			
 			if(chakvisable){
@@ -272,14 +275,39 @@
 			loginvisable=true;
 			}
 		}
+		function logout(){
+			
+			
+			
+			
+		}
+		
+		
+		
+		
+		
 		
 		function toggleacountoptions(){
+			
 			if(acountoptionsvisible){
 				document.getElementById("acountopt").style.visibility="visible";
 				document.getElementById("acountoptions").style.top="-200px";
 				//document.getElementById("cancleacountopt").style.visibility="hidden";
 				acountoptionsvisible=false;
 				document.getElementById("loginpost").method="get";
+				
+				
+				
+				
+				 if(!${ user.isguest    }){
+					 document.getElementById("login").innerHTML = "logout";
+					 document.getElementById("login").onclick="logout()"
+				 }
+				 else{
+					 document.getElementById("login").innerHTML = "login";
+					 document.getElementById("login").onclick="logclick()"
+					 
+				 }
 				
 			}
 			else{
@@ -312,7 +340,7 @@
 			
 			xmlreq.onload=function(){
 				if (this.status==200){
-					 
+					
 					refreshchat();
 				}
 			}
@@ -324,7 +352,7 @@
 		
 		function get(){
 			var xmlreq = new XMLHttpRequest(); 
-			xmlreq.open('get','index'+ encodeURIComponent(ussing));
+			xmlreq.open('get','index'+ encodeURIComponent(ussing),true);
 			xmlreq.send();
 			
 			xmlreq.onload=function(){
@@ -346,13 +374,7 @@
 		
 		
 		
-		 if(!${ user.isguest    }){
-			 
-			 
-			 document.getElementById("login").style.visibility="hidden";
-			 
-			 
-		 }
+		
 		 //Window.sessionStorage.setItem('using', "${ user.username    }");
 	</script>
 	</head>
@@ -415,11 +437,11 @@
 				numposts=${ chatlength };
 				chat=${chatposts};
 				
-				//console.log("${ user.isguest    }");
+				console.log(chat);
 				console.log("${ user.username    }");
 				console.log(numposts);
-				   numposts = Object.keys(chat).length;
-				  console.log(numposts);
+				  var count = Object.keys(chat).length;
+				  console.log(count);
 				
 				 document.getElementById("chattext").innerHTML = "";
 				

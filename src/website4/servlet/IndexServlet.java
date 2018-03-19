@@ -33,6 +33,8 @@ public class IndexServlet extends HttpServlet {
 		chatcontroler chat =new chatcontroler();
 		ArrayList<post> chatposts;
 		chatposts= (ArrayList<post>) chat.Getchat();
+		usser user=new usser();
+		
 		
 		chatlength=chatposts.size();
 		
@@ -41,6 +43,7 @@ public class IndexServlet extends HttpServlet {
 		
 		//System.out.println("jsonobj      _"+jsonchstpost);
 		
+		req.setAttribute("user", user);
 		req.setAttribute("chatposts", jsonchstpost);
 		req.setAttribute("chatlength", chatlength);
 		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);

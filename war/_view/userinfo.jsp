@@ -49,8 +49,21 @@
 		</div>
 
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	 <form action="${pageContext.servletContext.contextPath}/index" method="get">
-	 	<input type="Submit" name="chatsubmit" value="post">
+	 	<input type="Submit" name="chatsubmit" value="home">
 	 </form>
 	
 
