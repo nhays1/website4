@@ -22,7 +22,8 @@ public class loginverification {
 		usser user;
 		user=new usser("placeholder","skanfurnsgiemdtenale023n!");
 		ussrs.add(user);
-		user=new usser("jake","123");
+		user=new usser("jake","123","notMyEmail@hotmail.gov");
+		user.setcoins(9999999);
 		ussrs.add(user);
 		user=new usser("jake1","1234");
 		ussrs.add(user);
@@ -30,7 +31,9 @@ public class loginverification {
 		ussrs.add(user);
 		user=new usser("jake3","123456");
 		ussrs.add(user);
-		
+		user=new usser("jason","1111","jasonp@json.net");
+		user.setcoins(-554);
+		ussrs.add(user);
 		
 	}
 	/**

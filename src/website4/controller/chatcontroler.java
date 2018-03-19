@@ -16,6 +16,18 @@ public class chatcontroler {
 	private post incomingpost;
 	private ArrayList<post> posts=new ArrayList<post>();
 	public chatcontroler() {
+		incomingpost=new post(15210791386L,"jminor","we wejn fjwneif newqf ienw fefnw fnwqfen wjn fjenw jfni wjnaahbfjafew fnaewj fhawbef");
+		posts.add(incomingpost);
+		incomingpost=new post(15210791386L,"jminor","we wejn fjwneif newqf ienw fefnw fnwqfen wjn fjenw jfni wjnaahbfjafew fnaewj fhawbef");
+		posts.add(incomingpost);
+		incomingpost=new post(15210791386L,"jminor","we wejn fjwneif newqf ienw fefnw fnwqfen wjn fjenw jfni wjnaahbfjafew fnaewj fhawbef");
+		posts.add(incomingpost);
+		incomingpost=new post(15210791386L,"jminor","we wejn fjwneif newqf ienw fefnw fnwqfen wjn fjenw jfni wjnaahbfjafew fnaewj fhawbef");
+		posts.add(incomingpost);
+		incomingpost=new post(15210791386L,"jminor","we wejn fjwneif newqf ienw fefnw fnwqfen wjn fjenw jfni wjnaahbfjafew fnaewj fhawbef");
+		posts.add(incomingpost);
+		incomingpost=new post(15210791386L,"jminor","we wejn fjwneif newqf ienw fefnw fnwqfen wjn fjenw jfni wjnaahbfjafew fnaewj fhawbef");
+		posts.add(incomingpost);
 		incomingpost=new post(15210791386L,"jminor","this cant be right");
 		posts.add(incomingpost);
 		incomingpost=new post(1511079138360L,"jminor","iim from teh past");
