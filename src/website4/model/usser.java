@@ -45,6 +45,25 @@ public class usser {
 		
 	}
 	
+	
+	
+	
+	public usser(String username,String password,String email){
+		Random rand = new Random();
+		this.username=username;
+		this.password=password;
+		this.email=email;
+		coins=0;
+		blacklist=new ArrayList<usser>();
+		isguest=false;
+		userid=rand.nextInt();
+		//TODO call to data base method which will check this value in a while loop until unique value is generated
+		
+
+		
+		
+	}
+	
 	/**
 	 * this constructor creates a guest user with a random username of the form guest_#
 	 * once the data base is finished this method will also check that the generated user id does not exist yet
