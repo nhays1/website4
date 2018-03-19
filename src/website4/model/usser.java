@@ -30,7 +30,7 @@ public class usser {
 	 * @param password
 	 */
 	
-	public usser(String username,String password){
+	public usser(String username,String password, String email){
 		Random rand = new Random();
 		this.username=username;
 		this.password=password;
