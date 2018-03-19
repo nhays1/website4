@@ -3,7 +3,7 @@ package website4.controller;
 
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
+
 
 import website4.model.usser;
 
@@ -20,6 +20,8 @@ public class loginverification {
 	
 	public loginverification() {
 		usser user;
+		user=new usser("placeholder","skanfurnsgiemdtenale023n!");
+		ussrs.add(user);
 		user=new usser("jake","123");
 		ussrs.add(user);
 		user=new usser("jake1","1234");
@@ -46,11 +48,13 @@ public class loginverification {
 	 */
 	public usser loguserin(String username,String password) {
 		usser retur = null;
+		//retur.setusername(null);
+		//retur.setpassword(null);
+		
 		for(int i=0;i<ussrs.size();i++) {
 			if(ussrs.get(i).getusername().equals(username)&&ussrs.get(i).getpassword().equals(password)) {
 				retur=ussrs.get(i);
-				break;
-			}
+				break;			}
 		}
 		
 			return retur;

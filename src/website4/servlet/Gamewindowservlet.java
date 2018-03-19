@@ -7,8 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import website4.controller.NumbersController;
-import website4.model.numbers;
+
 
 public class Gamewindowservlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -29,82 +28,16 @@ public class Gamewindowservlet extends HttpServlet {
 		
 		System.out.println("Gamewindow Servlet: doPost");
 		
-		NumbersController controller = new NumbersController();
 		
-		numbers model=new numbers();
-		
-		controller.setModel(model);
 		
 		// holds the error message text, if there is any
-		String errorMessage = null;
-
-		// result of calculation goes here
-		Double result = null;
 		
-		// decode POSTed form parameters and dispatch to controller
-		try {
-			
-			Double first = getDoubleFromParameter(req.getParameter("first"));
-			Double second = getDoubleFromParameter(req.getParameter("second"));
-			Double third = getDoubleFromParameter(req.getParameter("third"));
-			model.setfirst(first);
-			model.setsecond(second);
-			model.setthird(third);
-			// check for errors in the form data before using is in a calculation
-			int valid=0;
-		
-			if(first == null) {first=(double) 0;}	else valid++;
-			if(second == null) {second=(double) 0;}	else valid++;
-			if(third == null) {third=(double) 0;} 	else valid++;
-			if (valid<2) {
-				
-				
-				errorMessage = "how u sposta ad jus one nuber ehh";
-				
-			}
-			
-			// otherwise, data is good, do the calculation
-			// must create the controller each time, since it doesn't persist between POSTs
-			// the view does not alter data, only controller methods should be used for that
-			// thus, always call a controller method to operate on the data
-			else {
-							
-				result = controller.add(first, second,third);
-			}
-			
-			
-			
-			
-		}
-		catch (NumberFormatException e) {
-			errorMessage = "bisch dat aint a double";
-		}
-		
-		// Add parameters as request attributes
-		// this creates attributes named "first" and "second for the response, and grabs the
-		// values that were originally assigned to the request attributes, also named "first" and "second"
-		// they don't have to be named the same, but in this case, since we are passing them back
-		// and forth, it's a good idea
-		//req.setAttribute("first", req.getParameter("first"));
-		//req.setAttribute("second", req.getParameter("second"));
-		//req.setAttribute("third", req.getParameter("third"));
-		
-		req.setAttribute("model", model);
-		// add result objects as attributes
-		// this adds the errorMessage text and the result to the response
-		req.setAttribute("errorMessage", errorMessage);
-		req.setAttribute("result", result);
+	
 		
 		// Forward to view to render the result HTML document
 		req.getRequestDispatcher("/_view/Gamewindow.jsp").forward(req, resp);
 	}
 
-	// gets double from the request with attribute named s
-	private Double getDoubleFromParameter(String s) {
-		if (s == null || s.equals("")) {
-			return null;
-		} else {
-			return Double.parseDouble(s);
-		}
-	}
+	
+	
 }
