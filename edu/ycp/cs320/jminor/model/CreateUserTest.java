@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import website4.model.User;
 
-
-public class NewUserServletTest {
+public class CreateUserTest {
 	
 	@Before
 	public void setUp() {
@@ -15,7 +15,7 @@ public class NewUserServletTest {
 	}
 	
 	@Test
-	public void testNewUser() {
+	public void testUser() {
 		
 	}
 	

@@ -18,7 +18,7 @@ public class userTest {
 	public void setup() throws Exception{
 		username =  "usernameXD";
 		password = "passwordXD";
-		user1 = new usser(username, password, email);
+		user1 = new usser(username, password);
 	}
 	
 	@Test

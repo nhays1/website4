@@ -18,4 +18,4 @@ public class modifyuserinfo {
 	//similar caveat about the database structure    however for this class id imagine we could prety easyly just modify the user 
 	// object directly
 	
-	
+}

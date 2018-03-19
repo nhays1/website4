@@ -299,15 +299,15 @@
 				
 				
 				
-				 if(!${ user.isguest    }){
-					 document.getElementById("login").innerHTML = "logout";
-					 document.getElementById("login").onclick="logout()"
-				 }
-				 else{
-					 document.getElementById("login").innerHTML = "login";
-					 document.getElementById("login").onclick="logclick()"
+				// if(){
+				//	 document.getElementById("login").innerHTML = "logout";
+				//	 document.getElementById("login").onclick="logout()"
+				// }
+				// else{
+				//	 document.getElementById("login").innerHTML = "login";
+				//	 document.getElementById("login").onclick="logclick()"
 					 
-				 }
+				// }
 				
 			}
 			else{
