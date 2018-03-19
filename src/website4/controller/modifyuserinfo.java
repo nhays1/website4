@@ -19,13 +19,3 @@ public class modifyuserinfo {
 	// object directly
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-}

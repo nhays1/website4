@@ -12,12 +12,13 @@ public class userTest {
 	private String username;
 	private String password;
 	private usser userGuest;
+	String email = "email";
 	
 	@Before
 	public void setup() throws Exception{
 		username =  "usernameXD";
 		password = "passwordXD";
-		user1 = new usser(username, password);
+		user1 = new usser(username, password, email);
 	}
 	
 	@Test
