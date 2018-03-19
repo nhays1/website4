@@ -68,7 +68,7 @@ public class UserController {
 	}
 	
 	
-	//testing
+	//testingtesting
 	
 	// Checks that the user name and email do not already exist
 		public boolean isValid(String userName, String password, String email) throws SQLException {
