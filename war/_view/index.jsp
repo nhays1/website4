@@ -130,7 +130,13 @@
 		visibility: hidden;
 		}
 		
+		#login{
+		visibility: visible;
 		
+		
+		
+		
+		}
 		
 		
 		
@@ -228,8 +234,12 @@
 		var chakvisable= true;
 		var acountoptionsvisible = false;
 		var loginvisable = false;
+		var ussing  = "${ user.username    }"
+		var numposts;
+		var chat;
 		
-	
+		
+		
 		
 		function togglechat(){
 			
@@ -265,14 +275,39 @@
 			loginvisable=true;
 			}
 		}
+		function logout(){
+			
+			
+			
+			
+		}
+		
+		
+		
+		
+		
 		
 		function toggleacountoptions(){
+			
 			if(acountoptionsvisible){
 				document.getElementById("acountopt").style.visibility="visible";
 				document.getElementById("acountoptions").style.top="-200px";
 				//document.getElementById("cancleacountopt").style.visibility="hidden";
 				acountoptionsvisible=false;
 				document.getElementById("loginpost").method="get";
+				
+				
+				
+				
+				 if(!${ user.isguest    }){
+					 document.getElementById("login").innerHTML = "logout";
+					 document.getElementById("login").onclick="logout()"
+				 }
+				 else{
+					 document.getElementById("login").innerHTML = "login";
+					 document.getElementById("login").onclick="logclick()"
+					 
+				 }
 				
 			}
 			else{
@@ -283,14 +318,70 @@
 			}
 			document.getElementById("loginpost").method = "post";
 		}
-		 
+		function post(){
+			
+			 var urlEncodedData = "";
+			var urlEncodedDataPairs = [];
+			var text = document.getElementById("chattextarea").value;
+			document.getElementById("chattextarea").value='';
+			
+			urlEncodedDataPairs.push(encodeURIComponent("usreing") + '=' + encodeURIComponent(ussing));
+			urlEncodedDataPairs.push(encodeURIComponent("chatinputtext") + '=' + encodeURIComponent(text));
+			
+			
+			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+			 
+			 
+			 
+			var xmlreq = new XMLHttpRequest();
+			xmlreq.open("post", "index");
+			xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xmlreq.send(urlEncodedData);
+			
+			xmlreq.onload=function(){
+				if (this.status==200){
+					
+					refreshchat();
+				}
+			}
+			
+			
+			
+			
+		}
 		
+		function get(){
+			var xmlreq = new XMLHttpRequest(); 
+			xmlreq.open('get','index'+ encodeURIComponent(ussing),true);
+			xmlreq.send();
+			
+			xmlreq.onload=function(){
+				if (this.status==200){
+					
+				
+				}
+			}
+			refreshchat();
+			 
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		 //Window.sessionStorage.setItem('using', "${ user.username    }");
 	</script>
 	</head>
 
 	<body body onLoad="refreshchat()">
 	
-		
+	
 		
 		
 		
@@ -330,7 +421,7 @@
 		<div id="chatwindow">
 			<div id="chatoptions">
 			<button id="hidechatbutt" onclick="togglechat() ">__</button>
-			<button id="refresfchatbut" onclick="refreshchat() ">refresh</button>
+			<button id="refresfchatbut" onclick="post() ">refresh</button>
 			
 			
 				
@@ -338,37 +429,19 @@
 			
 			<div id="chattext">
 			
-			<% String chatpos=(String)  request.getAttribute("chatposts");%>
+		
 			<script>
 			function refreshchat(){
-				var xmlreq = new XMLHttpRequest(); 
-				var numposts=${ chatlength    };
-				var chat;
-				xmlreq.open('get','index',true);
 				
-				//console.log(xmlreq);
-					xmlreq.send();
-				xmlreq.onload=function(){
-					if (this.status==200){
-						
-					//console.log(xmlreq.response);
-						//var chatjson= (chatposts.val);
-						//chat=JSON.parse(this.responseText);
-						//console.log(chat);
-						//console.log(res);
-						//console.log(xmlreq.response);
-					
-					//console.log(xmlreq.response);
-					}
-				}
 				
-			
+				numposts=${ chatlength };
+				chat=${chatposts};
 				
-				chat=<%=chatpos%>;
-				console.log(chat[1].milstime);
-			
+				console.log(chat);
+				console.log("${ user.username    }");
 				console.log(numposts);
-				
+				  var count = Object.keys(chat).length;
+				  console.log(count);
 				
 				 document.getElementById("chattext").innerHTML = "";
 				
@@ -444,12 +517,12 @@
 			<div id="chatinput">
 				<p>add comment</p>
 				<form action="${pageContext.servletContext.contextPath}/index" method="post">
-					<textarea class="smallroundcorners" name="chatinputtext" rows="6" cols="38" > </textarea>
+					<textarea class="smallroundcorners" name="chatinputtext" rows="5" cols="38" id="chattextarea" > </textarea>
 				
 				
-					<input type="Submit" name="chatsubmit" value="post">
+					<button>Send Meeeeeee!</button>
 				</form>
-			
+				<button onclick="post() ">Send Me!</button>
 				
 				
 				

@@ -14,7 +14,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.Gson;
 
 import website4.controller.chatcontroler;
+import website4.controller.loginverification;
 import website4.model.post;
+import website4.model.usser;
 
 
 public class IndexServlet extends HttpServlet {
@@ -30,7 +32,9 @@ public class IndexServlet extends HttpServlet {
 		int chatlength;
 		chatcontroler chat =new chatcontroler();
 		ArrayList<post> chatposts;
-		chatposts= chat.Getchat();
+		chatposts= (ArrayList<post>) chat.Getchat();
+		usser user=new usser();
+		
 		
 		chatlength=chatposts.size();
 		
@@ -39,6 +43,7 @@ public class IndexServlet extends HttpServlet {
 		
 		//System.out.println("jsonobj      _"+jsonchstpost);
 		
+		req.setAttribute("user", user);
 		req.setAttribute("chatposts", jsonchstpost);
 		req.setAttribute("chatlength", chatlength);
 		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
@@ -51,10 +56,27 @@ public class IndexServlet extends HttpServlet {
 		
 		System.out.println("index Servlet: doPost");
 		int chatlength;
+		
 		chatcontroler chat =new chatcontroler();
+		usser user=new usser();
+		
+		System.out.println("__________________________________________________________");
+	
+		
+		
+		
 		
 		try {
 			
+			String ussing =  req.getParameter("usreing");
+			
+			if(ussing!=null) {
+				if(ussing!="") {
+					user.setusername(ussing);
+				}
+
+				
+			}
 			
 			String chatinput =  req.getParameter("chatinputtext");
 			String username =  req.getParameter("username");
@@ -62,7 +84,7 @@ public class IndexServlet extends HttpServlet {
 			
 			
 			
-			
+			System.out.println("ussing      _ "+ussing);
 			
 			System.out.println("username      _ "+username);
 			System.out.println("assword      _ "+password);
@@ -70,19 +92,25 @@ public class IndexServlet extends HttpServlet {
 			
 			if(username!=null&&password!=null) {
 				if(username.trim().length()>0&&password.trim().length()>0) {
-				
-					
-					
+					loginverification loger=new loginverification();
+						usser temp=loger.loguserin(username, password);
+						
+					if(temp!=null) {
+						user=temp;
+					}
 				}
 			}
+			
 			if(chatinput!=null) {
 				if(chatinput.trim().length()>0) {
 					long now=Instant.now().toEpochMilli();
 					//if()
-					chat.makenewpost(now, "jmino", chatinput);
+					chat.makenewpost(now, user.getusername(), chatinput);
 					System.out.println("chatpassed      _ "+chatinput);
+					System.out.println("chatpasseduser  _ "+user.getusername());
+					ArrayList<post> chatposts= (ArrayList<post>) chat.Getchat();
 					
-					
+					System.out.println("chatpassed      _ "+chatposts.get(chatposts.size()-1));
 					
 					
 					
@@ -100,21 +128,22 @@ public class IndexServlet extends HttpServlet {
 
 		
 		ArrayList<post> chatposts;
-		chatposts= chat.Getchat();
+		chatposts= (ArrayList<post>) chat.Getchat();
 		
 		chatlength=chatposts.size();
 		
 		Gson gson = new GsonBuilder().create();
 		String jsonchstpost = gson.toJson(chatposts);
 		
-		//System.out.println("jsonobj      _"+jsonchstpost);
-		
+		System.out.println("jsonobj      _"+jsonchstpost);
+		System.out.println("username      _ "+user.getusername());
 		req.setAttribute("chatposts", jsonchstpost);
 		req.setAttribute("chatlength", chatlength);
+		req.setAttribute("user", user);
 		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
 		
-		errorMessage = null;
-		result = null;
+		//errorMessage = null;
+		//result = null;
 	
 	//START CHAT
 		/*

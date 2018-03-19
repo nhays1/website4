@@ -12,7 +12,7 @@ public class usser {
 	
 	private int coins;
 	
-	private ArrayList<usser>  blacklist;
+	private ArrayList<Integer>  blacklist;
 	
 	private int userid;
 	
@@ -35,7 +35,7 @@ public class usser {
 		this.username=username;
 		this.password=password;
 		coins=0;
-		blacklist=new ArrayList<usser>();
+		blacklist=new ArrayList<Integer>();
 		isguest=false;
 		userid=rand.nextInt();
 		//TODO call to data base method which will check this value in a while loop until unique value is generated
@@ -60,7 +60,8 @@ public class usser {
 		String guestnum=String.valueOf(randnum) ;
 		this.username+=guestnum;
 		coins=0;
-		blacklist=new ArrayList<usser>();
+		Integer i;
+		blacklist=new ArrayList<Integer>();
 		isguest=true;
 		userid=rand.nextInt();
 		//TODO call to data base method which will check this value in a while loop until unique value is generated
@@ -72,7 +73,7 @@ public class usser {
 	
 	
 	
-	public boolean isguest() {
+	public boolean getisguest() {
 		return isguest;
 	}
 	
@@ -83,8 +84,8 @@ public class usser {
 	public void setcoins(int coins) {
 		this.coins=coins;
 	}
-	public void addtoblacklist(usser toblock) {
-		blacklist.add(toblock);
+	public void addtoblacklist(int useridtoblock) {
+		blacklist.add(useridtoblock);
 	}
 	/**
 	 * throws NoSuchElementException if the input 
@@ -104,7 +105,7 @@ public class usser {
 	 * returns an arraylist of user objects
 	 * @return
 	 */
-	public ArrayList<usser> getblacklist(){
+	public ArrayList<Integer> getblacklist(){
 		return blacklist;
 	
 	}
@@ -154,7 +155,9 @@ public class usser {
 		return userid;
 		
 	}
-	
+	public void setuserid(int id) {
+		this.userid=id;
+	}
 	
 	
 	

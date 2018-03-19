@@ -19,6 +19,28 @@ public class post {
 		this.post=post;
 	}
 	
+	public post() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public void setmils_time(long mils_time) {
+		this.milstime=mils_time;
+	}
+	
+	public void setpost(String post) {
+		this.post=post;
+	}
+	
+	public void setusername(String post) {
+		this.post=post;
+	}
+	
+	public void setuserid(int usserid) {
+		this.userid=usserid;
+	}
+	
+	
+	
 	public long Getmils_time() {
 		return milstime;
 	}
@@ -31,7 +53,10 @@ public class post {
 		return post;
 	}
 	
-	
+	public int getuserid() {
+		return userid;
+		
+	}
 	
 	
 	

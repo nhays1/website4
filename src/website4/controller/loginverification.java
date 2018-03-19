@@ -44,20 +44,17 @@ public class loginverification {
 	 * @param password
 	 * @return
 	 */
-	public String loguserin(String username,String password) {
-		String retur = null;
-		for(int i=0;i<ussrs.size()-1;i++) {
-			if(ussrs.get(i).getusername()==username||ussrs.get(i).getpassword()==password) {
-				retur=ussrs.get(i).getusername();
+	public usser loguserin(String username,String password) {
+		usser retur = null;
+		for(int i=0;i<ussrs.size();i++) {
+			if(ussrs.get(i).getusername().equals(username)&&ussrs.get(i).getpassword().equals(password)) {
+				retur=ussrs.get(i);
 				break;
 			}
-			
-
 		}
-		if(retur!=null)
+		
 			return retur;
-		else 
-			throw new NoSuchElementException();
+		
 		
 	}
 	
