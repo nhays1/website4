@@ -69,13 +69,31 @@
 		
 		}
 		#banner{
-		margin-right:300px;
+		top:0px;
+		left:0px;
+		position:fixed;
+		margin-right:200px;
 		cursor: pointer;
 		min-width:1000px;
-		height: 80px;
+		height: 100px;
+		width:100%;
 		 font-size: 400%;
-		
+		background-color: #e60000;
 		}
+		
+		#bannerholder{
+		
+		margin-bottom:10px;
+		padding:0px;
+		min-width:1000px;
+		height: 150px;
+		width:100%;
+		 font-size: 400%;
+		background-color: #e60000;
+		}
+		
+		
+		
 		#acountopt{
 		cursor: pointer;
 		float: right;
@@ -382,14 +400,23 @@
 	<body body onLoad="refreshchat()">
 	
 	
-		
-		
-		
-		
+	
+	<div id="bannerholder" onclick="home()">
+			
+			
+		</div>
+		<div id="banner" onclick="home()">
+			this is the title of our website (img)
 			<a>
 				<img id="acountopt" onclick="toggleacountoptions()" src="img/loginicon.png"  />
 			
 			</a>
+		</div>
+		
+		
+		
+		
+			
 			
 			
 			<div class="smallroundcorners" id= "acountoptions">
@@ -399,7 +426,7 @@
 					<input type="Submit" name="submit" value="userinfo">
 				</form>
 			
-			<!--<button id="cancleacountopt"  onclick="toggleacountoptions()" >close acount options</button>  -->	
+			
 			
 				
 			</div>
@@ -534,10 +561,7 @@
 		<!--end chat html -->
 		
 		
-		<div id="banner" onclick="home()">
-			this is the title of our website (img)
-			
-		</div>
+		
 		
 		<div id ="allgames">
 		<ul>
@@ -615,11 +639,11 @@
 				<table>
 					<tr>
 						<td class="label">username:</td>
-					<td><input  id="uzer" type="text" name="username" size="20" class="smallroundcorners" value="${ model.username     }" /></td>
+					<td><input  id="uzer" type="text" placeholder="Enter Username" name="username" size="20" class="smallroundcorners" value="${ model.username     }" /></td>
 					</tr>
 					<tr>
 						<td class="label">Password:</td>
-					<td><input id="pass" type="password" name="password" size="20" class="smallroundcorners" value="${  model.password   }" /></td>
+					<td><input id="pass" type="password" placeholder="Enter password" name="password" size="20" class="smallroundcorners" value="${  model.password   }" /></td>
                     
 					</tr>
                 
