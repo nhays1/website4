@@ -20,18 +20,20 @@ public class loginverification {
 	
 	public loginverification() {
 		usser user;
-		user=new usser("placeholder","skanfurnsgiemdtenale023n!");
+		user=new usser("placeholder","skanfurnsgiemdtenale023n!",129814);
 		ussrs.add(user);
-		user=new usser("jake","123","notMyEmail@hotmail.gov");
+		user=new usser("jake","123",111);
+		user.setemail("notMyEmail@hotmail.gov");
 		user.setcoins(9999999);
 		ussrs.add(user);
-		user=new usser("jake1","1234");
+		user=new usser("jake1","1234",222);
 		ussrs.add(user);
-		user=new usser("jake2","12345");
+		user=new usser("jake2","12345",333);
 		ussrs.add(user);
-		user=new usser("jake3","123456");
+		user=new usser("jake3","123456",444);
 		ussrs.add(user);
-		user=new usser("jason","1111","jasonp@json.net");
+		user=new usser("jason","1111",-9999999);
+		user.setemail("jasonp@json.net");
 		user.setcoins(-554);
 		ussrs.add(user);
 		

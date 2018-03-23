@@ -252,7 +252,8 @@
 		var chakvisable= true;
 		var acountoptionsvisible = false;
 		var loginvisable = false;
-		var ussing  = "${ user.username    }"
+		var ussing  = "${ user.username    }";
+		var usserid=${user.userid};
 		var numposts;
 		var chat;
 		
@@ -383,12 +384,12 @@
 			 
 			
 		}
+		window.sessionStorage.useriid= usserid;
+	
 		
+		console.log(window.sessionStorage.useriid);
 		
-		
-		
-		
-		
+		//session.setAttribute( "useriid", usserid );
 		
 		
 		
@@ -565,11 +566,15 @@
 		
 		<div id ="allgames">
 		<ul>
-			<li>game1</li>
+			<li> 
+				<form action="${pageContext.servletContext.contextPath}/Gamewindow" method="get">
+					<input name="newuser" type="submit" value="new user" />
+				</form>
+			</li>
 			<li>game2</li>
 			<li>game3</li>
 		</ul>	
-		
+		<%= session.getAttribute( "useriid" ) %>
 		
 		 </div>
 		
@@ -581,7 +586,7 @@
 		<div id="featuredgames"> 
 		
 			<div class= "gamedisplay">
-				<img src="img/giphy.gif" />
+				<img src="img/giph.gif" />
 	
 				<div class="gametitle">
 					game1
@@ -590,7 +595,7 @@
 			</div>
 			
 			<div class= "gamedisplay">
-				<img src="img/giphy.gif" />
+				<img src="img/giph.gif" />
 	
 				<div class="gametitle">
 					game2
@@ -599,7 +604,7 @@
 			</div>
 			
 			<div class= "gamedisplay">
-				<img src="img/giphy.gif"  />
+				<img src="img/giph.gif"  />
 					
 				<div class="gametitle">
 					game3
@@ -609,7 +614,7 @@
 			
 			
 			<div class= "gamedisplay">
-				<img src="img/giphy.gif"  />
+				<img src="img/giph.gif"  />
 					
 				<div class="gametitle">
 					game4

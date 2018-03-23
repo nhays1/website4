@@ -38,9 +38,10 @@
 		#gamecontent{
 			padding:5px;
 		margin-left:160px;
-		
+		margin-right:300px;
+	
 		height: 600px;
-		max-widht: 600px;
+		min-width: 600px;
 		border: 3px solid blue;
 		
 		
@@ -101,36 +102,6 @@
 	
 	
 	
-		<c:if test="${! empty errorMessage}">
-			<div class="error">${errorMessage}</div>
-		</c:if>
 	
-		<form action="${pageContext.servletContext.contextPath}/Gamewindow" method="post">
-			<table>
-				<tr>
-					<td class="label">First number:</td>
-					<td><input type="text" name="first" size="12" value="${model.first}" /></td>
-				</tr>
-				<tr>
-					<td class="label">Second number:</td>
-					<td><input type="text" name="second" size="12" value="${model.second}" /></td>
-                    
-				</tr>
-                <tr>
-					<td class="label">third number:</td>
-					<td><input type="text" name="third" size="12" value="${model.third}" /></td>
-				</tr>
-				<tr>
-					<td class="label">Result:</td>
-					<td>${result}</td>
-				</tr>
-			</table>
-			<input type="Submit" name="submit" value="gammmamam!">
-		</form>
-         <hr/>
-        <hr/>
-        <form action="${pageContext.servletContext.contextPath}/index" method="get">
-        <input type="Submit" name="submit" value="home">
-            <form/>
 	</body>
 </html>

@@ -45,7 +45,20 @@ public class usser {
 		
 	}
 	
-	
+	public usser(String username,String password,int id){
+		
+		this.username=username;
+		this.password=password;
+		coins=0;
+		blacklist=new ArrayList<usser>();
+		isguest=false;
+		userid=id;
+		//TODO call to data base method which will check this value in a while loop until unique value is generated
+		
+
+		
+		
+	}
 	
 	
 	public usser(String username,String password,String email){
