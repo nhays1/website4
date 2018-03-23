@@ -14,6 +14,10 @@
     <servlet-name>Gamewindowservlet</servlet-name>
     <servlet-class>website4.servlet.Gamewindowservlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>Game2windowservlet</servlet-name>
+    <servlet-class>website4.servlet.Gamewindowservlet</servlet-class>
+  </servlet>
  <servlet>
     <servlet-name>Userinfoservlet</servlet-name>
     <servlet-class>website4.servlet.Userinfoservlet</servlet-class>
@@ -33,6 +37,10 @@
   <servlet-mapping>
     <servlet-name>Gamewindowservlet</servlet-name>
     <url-pattern>/Gamewindow</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Game2windowservlet</servlet-name>
+    <url-pattern>/Game2window</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Userinfoservlet</servlet-name>

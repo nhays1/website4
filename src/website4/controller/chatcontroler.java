@@ -2,11 +2,12 @@ package website4.controller;
 
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-//	import website4.database.DatabaseProvider;
+
 //	import website4.database.IDatabase;
 //	import website4.databsecontroler.InitDatabase;
 import website4.model.post;
@@ -43,6 +44,17 @@ public class chatcontroler {
 	
 	
 	
+	
+	public static void main(String[] args) throws IOException {
+		ArrayList posts;
+		chatcontroler c=new chatcontroler();
+		posts=(ArrayList) c.Getchat();
+		
+		System.out.println(posts);
+		
+	}
+	
+	
 	//TODO this controler will take username and password from servlet and check or reject the information
 	// if the information is invalid it should throw an exception to the servlet which will send the message to the user
 	
@@ -70,14 +82,12 @@ public class chatcontroler {
 	
 	
 	public List<post> Getchat(){
-		//Scanner keyboard = new Scanner(System.in);
 		
-		//InitDatabase.init(keyboard);
-		
-		//IDatabase db = DatabaseProvider.getInstance();
-		
-		//return db.getpostsnoblacklist();
-
+	/*	Scanner keyboard = new Scanner(System.in);
+		InitDatabase.init(keyboard);
+		IDatabase db = DatabaseProvider.getInstance();
+		return db.getposts_no_blacklist();
+	*/
 		return posts;
 	}
 	

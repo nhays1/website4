@@ -69,14 +69,12 @@
 
 	<body>
 	
-	
-	
 	<!-- once the chat is flushed out it will go here -->
 	
 		
 		
 		
-	<!-- end chat -->	
+		<!-- end chat -->	
 		<div id="bannerholder" onclick="home()">
 			
 			
@@ -114,10 +112,10 @@
 	
 	
 	
-	
 		 <form action="${pageContext.servletContext.contextPath}/index" method="get">
 	 	<input type="Submit" name="chatsubmit" value="home">
 	 </form>
+	
 	
 	
 	

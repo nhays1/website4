@@ -568,10 +568,14 @@
 		<ul>
 			<li> 
 				<form action="${pageContext.servletContext.contextPath}/Gamewindow" method="get">
-					<input name="newuser" type="submit" value="new user" />
+					<input name="newuser" type="submit" value="game 1?!?!?!?!?" />
 				</form>
 			</li>
-			<li>game2</li>
+			<li>
+			<form action="${pageContext.servletContext.contextPath}/Game2window" method="get">
+					<input name="newuser" type="submit" value="game 2!!!!!!!!" />
+				</form>
+			</li>
 			<li>game3</li>
 		</ul>	
 		<%= session.getAttribute( "useriid" ) %>
