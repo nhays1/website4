@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
+import website4.database.DatabaseProvider;
+import website4.database.IDatabase;
+import website4.databsecontroler.InitDatabase;
 //	import website4.database.IDatabase;
 //	import website4.databsecontroler.InitDatabase;
 import website4.model.post;
@@ -83,12 +85,12 @@ public class chatcontroler {
 	
 	public List<post> Getchat(){
 		
-	/*	Scanner keyboard = new Scanner(System.in);
-		InitDatabase.init(keyboard);
+		
+		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();
 		return db.getposts_no_blacklist();
-	*/
-		return posts;
+	
+		//return posts;
 	}
 	
 	

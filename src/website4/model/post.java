@@ -31,8 +31,8 @@ public class post {
 		this.post=post;
 	}
 	
-	public void setusername(String post) {
-		this.post=post;
+	public void setusername(String username) {
+		this.username=username;
 	}
 	
 	public void setuserid(int usserid) {
