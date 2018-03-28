@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import website4.controller.loginverification;
+import website4.controller.UserController;
 import website4.model.usser;
 
 
@@ -15,12 +15,12 @@ public class LoginVerificationTest {
 	private usser incorrectuser;
 	private usser incorrectpassword;
 	private usser logedin1,logedin2,logedin3;
-	private loginverification loger;
+	private UserController loger;
 	
 	
 	@Before
 	public void setUp() {
-		loger= new loginverification() ;
+		loger= new UserController() ;
 		
 		 correctuser= new usser("jake","123");
 		 incorrectuser= new usser("jske","1235");

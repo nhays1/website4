@@ -32,7 +32,7 @@ public class userTest {
 	@Test
 	public void testGenericUser() { //test test
 		assertTrue(user1.getcoins() == 0);
-		assertTrue(user1.isguest() == false);
+		assertTrue(user1.getisguest() == false);
 		assertTrue(user1.getusername() == "usernameXD");
 		assertTrue(user1.getpassword() == "passwordXD");
 	}
@@ -47,9 +47,9 @@ public class userTest {
 		}
 	
 		assertTrue(userGuest.getcoins() == 0);
-		assertTrue(userGuest.isguest() == true);
+		assertTrue(userGuest.getisguest() == true);
 		assertTrue(userGuest2.getcoins() == 0);
-		assertTrue(userGuest2.isguest() == true);
+		assertTrue(userGuest2.getisguest() == true);
 		assertTrue(userGuest.getusername() != userGuest2.getusername());
 	}
 	

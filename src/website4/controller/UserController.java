@@ -14,12 +14,76 @@ import website4.model.usser;
 public class UserController {
 	
 	private Connection conn;
-	private ArrayList<usser> userList = new ArrayList<usser>();
 	private ArrayList<usser> user =new ArrayList<usser>();
 	
 	public UserController() {
+		usser user1;
+		user1=new usser("placeholder","skanfurnsgiemdtenale023n!",129814,"none",0);
+		user.add(user1);
+		user1=new usser("jake","123",111,"notMyEmail@hotmail.gov",9999999);
+		user.add(user1);
+		user1=new usser("jake1","1234",222,"none",0);
+		user.add(user1);
+		user1=new usser("jake2","12345",333,"none",0);
+		user.add(user1);
+		user1=new usser("jake3","123456",444,"none",0);
+		user.add(user1);
+		user1=new usser("jason","1111",99999,"jasonp@json.net",-554);
+		user.add(user1);
 		
 	}
+	
+	
+	
+	/**
+	 * this mithod will take in a user name and password and search the data base(for now an array)
+	 * and return the the user id  ascocated with that user if the user exists, if no user with that name or 
+	 * password is found it will throw no such element excetion.
+	 * 
+	 * the user id will later be used by other methods to search the data base to find relavent information
+	 * 
+	 * 
+	 * 
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	public usser loguserin(String username,String password) {
+		usser retur = null;
+		//retur.setusername(null);
+		//retur.setpassword(null);
+		
+		for(int i=0;i<user.size();i++) {
+			if(user.get(i).getusername().equals(username)&&user.get(i).getpassword().equals(password)) {
+				retur=user.get(i);
+				break;			}
+		}
+		
+			return retur;
+		
+		
+	}
+	/**
+	 * intended to be used for sesion verivication
+	 * 
+	 * 
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public usser getuserbyid(int id) {
+		for (int i=0;i<user.size()-1;i++) {
+			if(user.get(i).getuserid()==id)
+				return user.get(i);
+			
+		}
+		
+		
+		
+		
+		return null;
+	}
+	
 	
 	public void createUser(String userName, String password, String email) throws SQLException {
 		if (userName != null && password != null && email != null) {
@@ -30,7 +94,7 @@ public class UserController {
 				// Add information to database
 				
 				//After information is tested to be valid, add a new user to the array list
-				userList.add(new usser(userName, password, email));
+				user.add(new usser(userName, password, email));
 				
 			
 				
