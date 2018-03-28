@@ -13,8 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.GsonBuilder;
 import com.google.gson.Gson;
 
+import website4.controller.UserController;
 import website4.controller.chatcontroler;
-import website4.controller.loginverification;
+
 import website4.model.post;
 import website4.model.usser;
 
@@ -31,10 +32,24 @@ public class IndexServlet extends HttpServlet {
 		System.out.println("index Servlet: doGet");
 		int chatlength;
 		chatcontroler chat =new chatcontroler();
+		
 		ArrayList<post> chatposts;
 		chatposts= (ArrayList<post>) chat.Getchat();
-		usser user=new usser();
 		
+		//
+		usser user = null;
+		Integer userid = (Integer) req.getSession().getAttribute("userid");
+		if(userid!=null) {
+			UserController control=new UserController();
+			user=control.getuserbyid(userid);
+			
+		}
+	
+		if(user==null) {//if user id was not found creates a new guest 
+			user= new usser();
+		}
+		req.getSession().setAttribute("userid", user.getuserid());
+		//
 		
 		chatlength=chatposts.size();
 		
@@ -43,7 +58,7 @@ public class IndexServlet extends HttpServlet {
 		
 		//System.out.println("jsonobj      _"+jsonchstpost);
 		
-		req.setAttribute("user", user);
+		
 		req.setAttribute("chatposts", jsonchstpost);
 		req.setAttribute("chatlength", chatlength);
 		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
@@ -58,25 +73,32 @@ public class IndexServlet extends HttpServlet {
 		int chatlength;
 		
 		chatcontroler chat =new chatcontroler();
-		usser user=new usser();
+		
 		
 		System.out.println("__________________________________________________________");
 	
 		
-		
+		//
+		usser user = null;
+		Integer userid = (Integer) req.getSession().getAttribute("userid");
+		if(userid!=null) {
+			UserController control=new UserController();
+			user=control.getuserbyid(userid);
+			
+		}
+	
+		if(user==null) {//if user id was not found creates a new guest 
+			user= new usser();
+		}
+		//req.getSession().setAttribute("userid", userid);
+		//
 		
 		
 		try {
 			
-			String ussing =  req.getParameter("usreing");
 			
-			if(ussing!=null) {
-				if(ussing!="") {
-					user.setusername(ussing);
-				}
-
-				
-			}
+			
+			
 			
 			String chatinput =  req.getParameter("chatinputtext");
 			String username =  req.getParameter("username");
@@ -84,7 +106,7 @@ public class IndexServlet extends HttpServlet {
 			
 			
 			
-			System.out.println("ussing      _ "+ussing);
+		
 			
 			System.out.println("username      _ "+username);
 			System.out.println("assword      _ "+password);
@@ -92,7 +114,7 @@ public class IndexServlet extends HttpServlet {
 			
 			if(username!=null&&password!=null) {
 				if(username.trim().length()>0&&password.trim().length()>0) {
-					loginverification loger=new loginverification();
+					UserController loger=new UserController();
 						usser temp=loger.loguserin(username, password);
 						
 					if(temp!=null) {
@@ -134,6 +156,8 @@ public class IndexServlet extends HttpServlet {
 		
 		Gson gson = new GsonBuilder().create();
 		String jsonchstpost = gson.toJson(chatposts);
+		
+		req.getSession().setAttribute("userid", user.getuserid());
 		
 		System.out.println("jsonobj      _"+jsonchstpost);
 		System.out.println("username      _ "+user.getusername());

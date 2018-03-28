@@ -12,8 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import website4.controller.UserController;
 import website4.controller.chatcontroler;
-import website4.controller.loginverification;
+
 import website4.model.post;
 import website4.model.usser;
 
@@ -28,14 +29,23 @@ public class Userinfoservlet extends HttpServlet {
 
 		System.out.println("userinfo Servlet: doGet");	
 		
-		usser user=new usser();
-		
-		req.setAttribute("user", user);
-		
-		
+		usser user = null;
+		Integer userid = (Integer) req.getSession().getAttribute("userid");
+		if(userid!=null) {
+			UserController control=new UserController();
+			user=control.getuserbyid(userid);
+			
+		}
+	
+		if(user==null) {//if user id was not found creates a new guest 
+			user= new usser();
+		}
+		req.getSession().setAttribute("userid", user.getuserid());
+		//
 		
 		
 		// call JSP to generate empty form
+		req.setAttribute("user", user);
 		req.getRequestDispatcher("/_view/userinfo.jsp").forward(req, resp);
 	}
 	
@@ -45,25 +55,29 @@ public class Userinfoservlet extends HttpServlet {
 		
 		System.out.println("userinfo Servlet: doPost");
 		
-		usser user=new usser();
+		
 		
 		System.out.println("__________________________________________________________");
 	
 		
-		
+		usser user = null;
+		Integer userid = (Integer) req.getSession().getAttribute("userid");
+		if(userid!=null) {
+			UserController control=new UserController();
+			user=control.getuserbyid(userid);
+			
+		}
+	
+		if(user==null) {//if user id was not found creates a new guest 
+			user= new usser();
+		}
+		//req.getSession().setAttribute("userid", user.getuserid());
+		//
 		
 		
 		try {
 			
-			String ussing =  req.getParameter("usreing");
 			
-			if(ussing!=null) {
-				if(ussing!="") {
-					user.setusername(ussing);
-				}
-
-				
-			}
 			
 			
 			String username =  req.getParameter("username");
@@ -71,7 +85,7 @@ public class Userinfoservlet extends HttpServlet {
 			
 			
 			
-			System.out.println("ussing      _ "+ussing);
+			
 			
 			System.out.println("username      _ "+username);
 			System.out.println("assword      _ "+password);
@@ -79,7 +93,7 @@ public class Userinfoservlet extends HttpServlet {
 			
 			if(username!=null&&password!=null) {
 				if(username.trim().length()>0&&password.trim().length()>0) {
-					loginverification loger=new loginverification();
+					UserController loger=new UserController();
 						usser temp=loger.loguserin(username, password);
 						
 					if(temp!=null) {
@@ -94,7 +108,7 @@ public class Userinfoservlet extends HttpServlet {
 		}
 		
 
-		
+		req.getSession().setAttribute("userid", user.getuserid());
 		
 		System.out.println("username      _ "+user.getusername());
 		req.setAttribute("user", user);

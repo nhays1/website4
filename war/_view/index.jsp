@@ -253,6 +253,7 @@
 		var acountoptionsvisible = false;
 		var loginvisable = false;
 		var ussing  = "${ user.username    }";
+		var isguest="${user.isguest}";
 		var usserid=${user.userid};
 		var numposts;
 		var chat;
@@ -296,7 +297,7 @@
 		}
 		function logout(){
 			
-			
+			// <!-- %= session.setAttribute( "userid",null ) %> -->
 			
 			
 		}
@@ -318,15 +319,15 @@
 				
 				
 				
-				// if(){
-				//	 document.getElementById("login").innerHTML = "logout";
-				//	 document.getElementById("login").onclick="logout()"
-				// }
-				// else{
-				//	 document.getElementById("login").innerHTML = "login";
-				//	 document.getElementById("login").onclick="logclick()"
+				 if(isguest){
+					 document.getElementById("login").innerHTML = "logout";
+					 document.getElementById("login").onclick="logout()"
+				 }
+				 else{
+					 document.getElementById("login").innerHTML = "login";
+					 document.getElementById("login").onclick="logclick()"
 					 
-				// }
+				 }
 				
 			}
 			else{
@@ -384,17 +385,7 @@
 			 
 			
 		}
-		window.sessionStorage.useriid= usserid;
-	
 		
-		console.log(window.sessionStorage.useriid);
-		
-		//session.setAttribute( "useriid", usserid );
-		
-		
-		
-		
-		 //Window.sessionStorage.setItem('using', "${ user.username    }");
 	</script>
 	</head>
 
@@ -550,7 +541,7 @@
 				
 					<button>Send Meeeeeee!</button>
 				</form>
-				<button onclick="post() ">Send Me!</button>
+				<button onclick="post()">Send Me!</button>
 				
 				
 				
@@ -578,7 +569,7 @@
 			</li>
 			<li>game3</li>
 		</ul>	
-		<%= session.getAttribute( "useriid" ) %>
+		<%= session.getAttribute( "userid" ) %>
 		
 		 </div>
 		

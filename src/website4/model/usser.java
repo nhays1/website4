@@ -30,6 +30,30 @@ public class usser {
 	 * @param password
 	 */
 	
+	public usser(String username,String password,String email){
+		Random rand = new Random();
+		this.username=username;
+		this.password=password;
+		coins=0;
+		blacklist=new ArrayList<Integer>();
+		isguest=false;
+		userid=rand.nextInt();
+		//TODO call to data base method which will check this value in a while loop until unique value is generated
+		
+
+		
+		
+	}
+	
+	
+	/**
+	 * !!!!! method is for testing purposes only do not use
+	 * 
+	 * 
+	 * 
+	 * @param username
+	 * @param password
+	 */
 	public usser(String username,String password){
 		Random rand = new Random();
 		this.username=username;
@@ -45,11 +69,23 @@ public class usser {
 		
 	}
 	
-	public usser(String username,String password,int id){
+	
+	
+	/**
+	 * this constructor is intended to create a usser object from existing data
+	 * 
+	 * 
+	 * 
+	 * @param username
+	 * @param password
+	 * @param id
+	 */
+	public usser(String username,String password,int id,String email,int coins){
 		
 		this.username=username;
 		this.password=password;
-		coins=0;
+		this.email=email;
+		this.coins=coins;
 		blacklist=new ArrayList<Integer>();
 		isguest=false;
 		userid=id;
@@ -61,21 +97,7 @@ public class usser {
 	}
 	
 	
-	public usser(String username,String password,String email){
-		Random rand = new Random();
-		this.username=username;
-		this.password=password;
-		this.email=email;
-		coins=0;
-		blacklist=new ArrayList<Integer>();
-		isguest=false;
-		userid=rand.nextInt();
-		//TODO call to data base method which will check this value in a while loop until unique value is generated
-		
-
-		
-		
-	}
+	
 	
 	/**
 	 * this constructor creates a guest user with a random username of the form guest_#
@@ -104,7 +126,7 @@ public class usser {
 	
 	
 	
-	public boolean isguest() {
+	public boolean getisguest() {
 		return isguest;
 	}
 	
