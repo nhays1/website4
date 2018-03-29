@@ -15,7 +15,7 @@ public class FakeDatabase implements IDatabase {
 
 
 
-	public List<post> getposts_no_blacklist() {
+	public List<post> getposts_no_blacklist(int chatindex,int numposts) {
 		// TODO Auto-generated method stub
 		return null;
 	}
