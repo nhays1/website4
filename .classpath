@@ -9,5 +9,10 @@
 	<classpathentry kind="lib" path="externaljres/gson-2.6.2-javadoc.jar"/>
 	<classpathentry kind="lib" path="externaljres/gson-2.6.2-sources.jar"/>
 	<classpathentry kind="lib" path="externaljres/gson-2.6.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jacob minor/Documents/eclipse/website4/externaljres/derby.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jacob minor/Documents/eclipse/website4/externaljres/derbyclient.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jacob minor/Documents/eclipse/website4/externaljres/derbynet.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jacob minor/Documents/eclipse/website4/externaljres/derbyrun.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jacob minor/Documents/eclipse/website4/externaljres/derbytools.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

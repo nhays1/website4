@@ -243,7 +243,7 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 
-	public List<post> getposts_no_blacklist() {
+	public List<post> getposts_no_blacklist(int chatindex,int numposts) {
 		// TODO Auto-generated method stub
 		
 	
@@ -253,7 +253,21 @@ public class DerbyDatabase implements IDatabase {
 				ResultSet resultSet = null;
 				
 				try {
-					// retreive all attributes from both Books and Authors tables
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
 					stmt = conn.prepareStatement(
 							"select * from posts " 
 							
