@@ -345,7 +345,7 @@
 			var text = document.getElementById("chattextarea").value;
 			document.getElementById("chattextarea").value='';
 			
-			urlEncodedDataPairs.push(encodeURIComponent("usreing") + '=' + encodeURIComponent(ussing));
+			
 			urlEncodedDataPairs.push(encodeURIComponent("chatinputtext") + '=' + encodeURIComponent(text));
 			
 			
@@ -471,9 +471,11 @@
 			
 			
 			
-			
+		    var	count;
 			
 			function refreshchat(){
+				
+				
 				
 				var previousheight=document.getElementById('chattext').scrollHeight;
 				numposts=${ chatlength };
@@ -482,7 +484,7 @@
 				console.log(chat);
 			//	console.log("${ user.username    }");
 			//	console.log(numposts);
-				  var count = Object.keys(chat).length;
+				  count = Object.keys(chat).length;
 				  console.log(count);
 				
 				
@@ -494,7 +496,8 @@
 				var neHr = document.createElement('hr');
 				var newbutt = document.createElement('button');
 				newbutt.innerHTML="show more posts";
-				newbutt.onclick=  logout();
+				newbutt.id="morepostsbutt";
+				//newbutt.onclick=  logout();
 				 toAdd.appendChild(newbutt);
 				 toAdd.appendChild(neHr);
 				
@@ -562,6 +565,33 @@
 				var element = document.getElementById("chattext");
 				element.scrollTo(0, previousheight);
 				//element.scrollTop = element.scrollHeight;
+				document.getElementById("morepostsbutt").onclick = function(){
+					console.log("sup");
+					
+					var urlEncodedData = "";
+					var urlEncodedDataPairs = [];
+					
+					
+					
+					urlEncodedDataPairs.push(encodeURIComponent("numberofpost") + '=' + encodeURIComponent(count));
+					
+					
+					 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+					
+					
+					var xmlreq = new XMLHttpRequest();
+					xmlreq.open("post", "index");
+					xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+					xmlreq.send(urlEncodedData);
+						
+					xmlreq.onload=function(){
+						if (this.status==200){
+								
+							refreshchat();
+						}
+					}
+					
+				};
 			}
 			
 			setInterval(refreshchat(),1);

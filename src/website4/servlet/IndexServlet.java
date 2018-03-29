@@ -28,8 +28,9 @@ public class IndexServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
-		System.out.println("index Servlet: doGet");
+		System.out.println("__________________________________________________________");
+		System.out.println("index Servlet: DOGET");
+		System.out.println("__________________________________________________________");
 		int chatlength;
 		chatcontroler chat =new chatcontroler();
 		UserController usecontrol=new UserController();
@@ -71,14 +72,14 @@ public class IndexServlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+		System.out.println("__________________________________________________________");
 		System.out.println("index Servlet: doPost");
 		int chatlength;
-		
+		Integer numpost = 0 ;
 		chatcontroler chat =new chatcontroler();
 		UserController usecontrol=new UserController();
 		
-		System.out.println("__________________________________________________________");
+		
 	
 		
 		//
@@ -108,9 +109,10 @@ public class IndexServlet extends HttpServlet {
 			String chatinput =  req.getParameter("chatinputtext");
 			String username =  req.getParameter("username");
 			String password =  req.getParameter("password");
-			
-			
-			
+			String numberofposts = req.getParameter("numberofpost");
+			if(numberofposts!=null&&Integer.parseInt(numberofposts)!=0)
+				 numpost =Integer.parseInt(numberofposts);
+			System.out.println("number of posts   "+numpost);
 		
 			
 			System.out.println("username      _ "+username);
@@ -158,7 +160,11 @@ public class IndexServlet extends HttpServlet {
 
 		
 		ArrayList<post> chatposts;
-		chatposts= (ArrayList<post>) chat.Getchat(0);
+		System.out.println("numpostsssss      _ "+numpost);
+		chatposts= (ArrayList<post>) chat.Getchat(numpost);
+		System.out.println("numpostdddddd      _ "+chatposts.size());
+		
+		
 		
 		chatlength=chatposts.size();
 		
@@ -167,7 +173,7 @@ public class IndexServlet extends HttpServlet {
 		
 		req.getSession().setAttribute("userid", user.getuserid());
 		
-		System.out.println("jsonobj      _"+jsonchstpost);
+		//System.out.println("jsonobj      _"+jsonchstpost);
 		System.out.println("username      _ "+user.getusername());
 		req.setAttribute("chatposts", jsonchstpost);
 		req.setAttribute("chatlength", chatlength);
