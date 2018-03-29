@@ -135,7 +135,7 @@ public class IndexServlet extends HttpServlet {
 					System.out.println("chatpasseduser  _ "+user.getusername());
 					ArrayList<post> chatposts= (ArrayList<post>) chat.Getchat();
 					
-					System.out.println("chatpassed      _ "+chatposts.get(chatposts.size()-1));
+					System.out.println("chatpassed      _ "+chatposts.get(chatposts.size()-1).Getpost());
 					
 					
 					

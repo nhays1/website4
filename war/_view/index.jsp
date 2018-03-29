@@ -353,17 +353,34 @@
 			 
 			 
 			 
-			var xmlreq = new XMLHttpRequest();
-			xmlreq.open("post", "index");
-			xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-			xmlreq.send(urlEncodedData);
+			 
+			 
+			 
+			 
+			 var xhttp = new XMLHttpRequest();
+			    xhttp.onreadystatechange = function() {
+			        if (this.readyState == 4 && this.status == 200) {
+			        	refreshchat();
+			        	console.log("check")
+			       }
+			    };
+			    xhttp.open("post", "index", true);
+			    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			    xhttp.send(urlEncodedData); 
+			 
+			 
+			 
+		//	var xmlreq = new XMLHttpRequest();
+		//	xmlreq.open("post", "index");
+		//	xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		//	xmlreq.send(urlEncodedData);
 			
-			xmlreq.onload=function(){
-				if (this.status==200){
+		//	xmlreq.onload=function(){
+		//		if (this.status==200){
 					
-					refreshchat();
-				}
-			}
+		//			refreshchat();
+		//		}
+		//	}
 			
 			
 			
@@ -450,15 +467,21 @@
 			
 		
 			<script>
+			
+			
+			
+			
+			
+			
 			function refreshchat(){
 				
 				
 				numposts=${ chatlength };
 				chat=${chatposts};
 				
-				console.log(chat);
-				console.log("${ user.username    }");
-				console.log(numposts);
+			//	console.log(chat);
+			//	console.log("${ user.username    }");
+			//	console.log(numposts);
 				  var count = Object.keys(chat).length;
 				  console.log(count);
 				
@@ -475,9 +498,9 @@
 
 				   
 				   var posttext=chat[i].post;
-				   var username=chat[i].username;
+				   var username=chat[i].user;
 				   username+=" ";
-				   var posttime=chat[i].milstime;
+				   var posttime=chat[i].mit;
 				   now-=posttime;
 				   if(now<60000){
 					   now=now/1000
@@ -524,10 +547,11 @@
 				
 				
 				var element = document.getElementById("chattext");
-				element.scrollTop = element.scrollHeight;
+				element.scrollTo(0, element.scrollHeight);
+				//element.scrollTop = element.scrollHeight;
 			}
 			
-			setInterval(refreshchat(),1000);
+			setInterval(refreshchat(),1);
 			</script>
 			
 			</div>
@@ -581,7 +605,7 @@
 		<div id="featuredgames"> 
 		
 			<div class= "gamedisplay">
-				<img src="img/giph.gif" />
+				<img src="img/giphy.gif" />
 	
 				<div class="gametitle">
 					game1
@@ -590,7 +614,7 @@
 			</div>
 			
 			<div class= "gamedisplay">
-				<img src="img/giph.gif" />
+				<img src="img/giphy.gif" />
 	
 				<div class="gametitle">
 					game2
@@ -599,7 +623,7 @@
 			</div>
 			
 			<div class= "gamedisplay">
-				<img src="img/giph.gif"  />
+				<img src="img/giphy.gif"  />
 					
 				<div class="gametitle">
 					game3
@@ -609,7 +633,7 @@
 			
 			
 			<div class= "gamedisplay">
-				<img src="img/giph.gif"  />
+				<img src="img/giphy.gif"  />
 					
 				<div class="gametitle">
 					game4

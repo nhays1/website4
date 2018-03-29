@@ -2,9 +2,9 @@ package website4.model;
 
 public class post {
 	
-	private int userid;
-	private long milstime;
-	private String username,post;
+	private int usid;
+	private long mit;
+	private String user,post;
 	
 	// onece the data bese is set up the user id will be used as oposed to username 
 	
@@ -14,8 +14,8 @@ public class post {
 	
 	
 	public post(long mils_time ,String username,String post) {
-		this.milstime=mils_time;
-		this.username=username;
+		this.mit=mils_time;
+		this.user=username;
 		this.post=post;
 	}
 	
@@ -24,7 +24,7 @@ public class post {
 	}
 	
 	public void setmils_time(long mils_time) {
-		this.milstime=mils_time;
+		this.mit=mils_time;
 	}
 	
 	public void setpost(String post) {
@@ -32,21 +32,21 @@ public class post {
 	}
 	
 	public void setusername(String username) {
-		this.username=username;
+		this.user=username;
 	}
 	
 	public void setuserid(int usserid) {
-		this.userid=usserid;
+		this.usid=usserid;
 	}
 	
 	
 	
 	public long Getmils_time() {
-		return milstime;
+		return mit;
 	}
 	
 	public String Getusername() {
-		return username;
+		return user;
 	}
 	
 	public String Getpost() {
@@ -54,7 +54,7 @@ public class post {
 	}
 	
 	public int getuserid() {
-		return userid;
+		return usid;
 		
 	}
 	
