@@ -34,7 +34,8 @@ public class UserControllerTest {
 	
 	
 	@Test
-	public void testCreateNewUser() throws SQLException { //tests isValid()
+	//This tests createUser and isValid
+	public void testCreateNewUser() throws SQLException {
 		
 		String username = "username";
 		String password = "password";
@@ -67,8 +68,113 @@ public class UserControllerTest {
 		
 		assertTrue(userCrl.isValid(username, password, email));
 		
+	}
+	
+	
+	@Test
+	public void testModifyPassword() {
+		
+		String password = "testPassword";
+		String newPass = "newPassword";
+		user.setpassword(password);
+		
+		assertTrue(user.getpassword() == "testPassword");
+		
+		userCrl.modifyPassword(newPass);
+		
+		assertEquals(user.getpassword(), newPass);	
+	}
+	
+	@Test
+	public void testModifyUsername() {
+		
+		String username = "testUsername";
+		String newUsername = "newUsername";
+		user.setusername(username);
+		
+		assertEquals(user.getusername(), username);
+		
+		userCrl.modifyUsername(newUsername);
+		//user.setusername(newUsername);
+		assertEquals(user.getusername(), newUsername);
 		
 		
 	}
+	
+	@Test
+	public void testCheckPasswordLength() {
+		String shortPassword = "short";
+		String longPassword = "thisPasswordIsOver20Characters";
+		String goodPassword ="goodPassword";
+		
+		//Test for short password
+		assertFalse(userCrl.checkPasswordLength(shortPassword));
+		//Test for long password
+		assertFalse(userCrl.checkPasswordLength(longPassword));
+		//Test for correct length password
+		assertTrue(userCrl.checkPasswordLength(goodPassword));	
+	}
+	
+	@Test
+	public void testCheckUsernameLength() {
+		String shortUser = "short";
+		String longUser = "thisIsAReallyLongUsername";
+		String goodUser = "Goose123";
+		
+		//Test for short user name
+		assertFalse(userCrl.checkUsernameLength(shortUser));
+		//Test for long user name
+		assertFalse(userCrl.checkUsernameLength(longUser));
+		//Test for correct length user name
+		assertTrue(userCrl.checkUsernameLength(goodUser));
+	}
+	
+	
+	@Test
+	public void testLogUserIn() {
+		
+	}
+	
+	@Test
+	public void testGetUserByID() {
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

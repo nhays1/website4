@@ -135,9 +135,9 @@ public class UserController {
 
 	//Changes the user's password 
 	public void modifyPassword(String password){
-		if(password != null && checkPasswordLength(password) == true) {
+		//if(password != null && checkPasswordLength(password) == true) {
 			userModel.setpassword(password);
-		}
+		//}
 	}
 	
 	//Changes the user's user name
