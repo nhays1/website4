@@ -128,6 +128,7 @@ public class DerbyDatabase implements IDatabase {
 									"	password varchar(64)," +
 									"	coins integer ," +
 									"   email varchar(64)" +
+									//"   isguset integer "+
 									")"
 					);	
 					stmt1.executeUpdate();
@@ -178,16 +179,17 @@ public class DerbyDatabase implements IDatabase {
 				try {
 					
 					
+					//insertuser = conn.prepareStatement("insert into users (userid, username, password, coins, email,isguset) values (?, ?, ?, ?, ?,?)");
 					insertuser = conn.prepareStatement("insert into users (userid, username, password, coins, email) values (?, ?, ?, ?, ?)");
 					for (usser user : userlist) {
-//						insertBook.setInt(1, book.getBookId());		// auto-generated primary key, don't insert this
+				
 						
 						insertuser.setInt(1, user.getuserid());
 						insertuser.setString(2, user.getusername());
 						insertuser.setString(3, user.getpassword());
 						insertuser.setInt(4, user.getcoins());
 						insertuser.setString(5, user.getemail());
-						
+						//insertuser.setBoolean(6, user.getisguest());
 						
 					
 						insertuser.addBatch();
@@ -243,7 +245,7 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 
-	public List<post> getposts_no_blacklist(int chatindex,int numposts) {
+	public List<post> getposts_no_blacklist(final int chatindex,final int numposts) {
 		// TODO Auto-generated method stub
 		
 	
@@ -253,6 +255,31 @@ public class DerbyDatabase implements IDatabase {
 				ResultSet resultSet = null;
 				
 				try {
+					stmt = conn.prepareStatement(
+							"SELECT MAX(postid) " +
+							"FROM posts"
+							
+					);
+					
+					resultSet = stmt.executeQuery();
+					
+					
+					
+					
+				
+					
+					
+						
+						int totalposts=0 ;
+						if (resultSet.next()) 
+							totalposts =   (Integer) resultSet.getObject(1);
+						
+						
+						
+						
+						int bottomindexindb = totalposts-chatindex;
+						int topindexindb = bottomindexindb - numposts;
+						
 					
 					
 					
@@ -261,19 +288,19 @@ public class DerbyDatabase implements IDatabase {
 					
 					
 					
-					
-					
-					
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
 					
 					
 					
 					
 					stmt = conn.prepareStatement(
 							"select * from posts " 
-							
+							+"where postid >= ? " + 
+							" and postid <= ? "
 					);
-					
-					
+					stmt.setInt(1, topindexindb);
+					stmt.setInt(2, bottomindexindb);
 					
 					
 					ArrayList<post> result=new ArrayList<post>();
@@ -504,17 +531,203 @@ public class DerbyDatabase implements IDatabase {
 		
 	}
 
+	public void addusertodb(final int userid, final String username,final String password,final String email,final int coins) {
+		// TODO Auto-generated method stubfinal
+		
+		executeTransaction(new Transaction<post>() {
+			public post execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					// retreive all attributes from both Books and Authors tables
+					
+					
+					
+					
+						stmt = conn.prepareStatement(
+						
+						
+								"insert into users (userid, username, password, coins, email) values (?, ?, ?, ?, ?)"
+
+					
+						);
+				
+						stmt.setInt(1, userid);
+						stmt.setString(2, username);
+						stmt.setString(3, password);
+						stmt.setInt(4, coins);
+						stmt.setString(5, email);
+						
+						// execute the query
+				
+						stmt.executeUpdate();
+				
+			
+					
+					
+					
+					
+					
+							
+					
+					
+					
+					
+				
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+				return null;
+			}
+		});
+		
+		
+		
+		
+		
+	}
+
+	public boolean checkdbcontainsuserid(final int id) {
+		// TODO Auto-generated method stub
+		
+		return executeTransaction(new Transaction<Boolean >() {
+			Boolean found = false;
+				public Boolean execute(Connection conn) throws SQLException {
+					
+					PreparedStatement stmt = null;
+					ResultSet resultSet = null;
+					
+					try {
+						// retreive all attributes from both Books and Authors tables
+						stmt = conn.prepareStatement(
+								"select *   "
+								+"  from users  "
+								+"  where 	users.userid =  ?  "
+								
+								
+								
+							
+						);
+
+						// substitute the title entered by the user for the placeholder in the query
+						stmt.setInt(1, id);
+						
+						
+						resultSet = stmt.executeQuery();
+						
+						
+						
+						
+					
+						
+						if (resultSet.next()) {
+							found = true;
+							
+							
+						}
+						
+						
+						
+						
+						
+					
+						
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+						
+					
+						
+						
+						
+						
+						return found;
+				
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					
+						
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+
+	public boolean checkdbcontainsusername(final String username) {
+		// TODO Auto-generated method stub
+		
+		return executeTransaction(new Transaction<Boolean >() {
+			Boolean found = false;
+				public Boolean execute(Connection conn) throws SQLException {
+					
+					PreparedStatement stmt = null;
+					ResultSet resultSet = null;
+					
+					try {
+						// retreive all attributes from both Books and Authors tables
+						stmt = conn.prepareStatement(
+								"select *   "
+								+"  from users  "
+								+"  where 	users.username =  ?  "
+								
+								
+								
+							
+						);
+
+						// substitute the title entered by the user for the placeholder in the query
+						stmt.setString(1, username);
+						
+						resultSet = stmt.executeQuery();
+						
+						if (resultSet.next()) {
+							found = true;
+							
+							
+						}
+		
+						
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+
+						
+						return found;
+
+						
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
+
+		
+		
 	
+	}
 
 
-		
-		
-		
-		
-		
-		
-		
-		
 		
 	}
 	

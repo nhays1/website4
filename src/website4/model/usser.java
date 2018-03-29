@@ -108,15 +108,28 @@ public class usser {
 	
 	
 	public usser() {
-		this.username="guest_";
 		Random rand = new Random();
 		int randnum= rand.nextInt(131072);
 		String guestnum=String.valueOf(randnum) ;
+		
+		
+	    String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+	    StringBuilder rnadstring = new StringBuilder();
+	    int index;
+	    while (rnadstring.length() < 31) { // determins length of the random string.
+	    	index =   rand.nextInt(chars.length()) ;
+	    	rnadstring.append(chars.charAt(index));
+	   }
+
+	    this.password=rnadstring.toString();
+		System.out.println("random gen password "+this.password);
+		this.username="guest_";
 		this.username+=guestnum;
-		coins=0;
-		blacklist=new ArrayList<Integer>();
-		isguest=true;
-		userid=rand.nextInt();
+		
+		this.coins=0;
+		this.blacklist=new ArrayList<Integer>();
+		this.isguest=true;
+		this.userid=randnum;
 		//TODO call to data base method which will check this value in a while loop until unique value is generated
 		
 		

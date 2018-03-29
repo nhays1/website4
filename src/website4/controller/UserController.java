@@ -90,6 +90,41 @@ public class UserController {
 		
 	}
 	
+	/**
+	 * method cerates guest user and checks that their not in the database and then adds 
+	 * the new guest to the database
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @return
+	 */
+	
+	public usser createguestuser() {
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		int i=0;
+		usser user = null;
+		while(i<100) {
+			user=new usser();
+			if (!db.checkdbcontainsuserid(user.getuserid())) {
+				if (!db.checkdbcontainsusername(user.getusername())) {
+					break;
+					
+					
+				}
+			
+			}
+			System.out.println("create guest user atempt #   "+i);
+			i++;
+		}
+		db.addusertodb(user.getuserid(), user.getusername(), user.getpassword(), user.getemail(), user.getcoins());;
+		
+		
+		return user;
+	}
+	
+	
 	
 	public void createUser(String userName, String password, String email) throws SQLException {
 		if (userName != null && password != null && email != null) {
@@ -104,21 +139,7 @@ public class UserController {
 				
 			
 				
-				//Finish this implementation after we have a database	
 				
-				//Inserts new Username and Password into database with a new ID
-
-//				String newID = "insert into userInfo(userName, password) values (?, ?)";
-//				insertNewID = conn.prepareStatement(newID);
-//				insertNewID.setString(1, userName);
-//				insertNewID.setString(2, password);
-//				insertNewID.execute();
-
-				// user.setusername(userName);
-				// user.setpassword(password);
-				// user.setemail(email);
-				// user.setcoins(1000);
-
 			}
 			
 			else {

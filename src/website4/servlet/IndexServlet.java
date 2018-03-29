@@ -32,21 +32,24 @@ public class IndexServlet extends HttpServlet {
 		System.out.println("index Servlet: doGet");
 		int chatlength;
 		chatcontroler chat =new chatcontroler();
+		UserController usecontrol=new UserController();
+		
 		
 		ArrayList<post> chatposts;
-		chatposts= (ArrayList<post>) chat.Getchat();
+		chatposts= (ArrayList<post>) chat.Getchat(0);
 		
 		//
 		usser user = null;
 		Integer userid = (Integer) req.getSession().getAttribute("userid");
 		if(userid!=null) {
-			UserController control=new UserController();
-			user=control.getuserbyid(userid);
+		
+			user=usecontrol.getuserbyid(userid);
 			
 		}
 	
 		if(user==null) {//if user id was not found creates a new guest 
-			user= new usser();
+			user=usecontrol.createguestuser();
+			
 		}
 		req.getSession().setAttribute("userid", user.getuserid());
 		//
@@ -88,7 +91,9 @@ public class IndexServlet extends HttpServlet {
 		}
 	
 		if(user==null) {//if user id was not found creates a new guest 
-			user= new usser();
+			user=usecontrol.createguestuser() ;
+			
+			
 		}
 		//req.getSession().setAttribute("userid", userid);
 		//
@@ -133,9 +138,9 @@ public class IndexServlet extends HttpServlet {
 					
 					System.out.println("chatpassed      _ "+chatinput);
 					System.out.println("chatpasseduser  _ "+user.getusername());
-					ArrayList<post> chatposts= (ArrayList<post>) chat.Getchat();
+					//ArrayList<post> chatposts= (ArrayList<post>) chat.Getchat(0);
 					
-					System.out.println("chatpassed      _ "+chatposts.get(chatposts.size()-1).Getpost());
+					//System.out.println("chatpassed      _ "+chatposts.get(chatposts.size()-1).Getpost());
 					
 					
 					
@@ -153,7 +158,7 @@ public class IndexServlet extends HttpServlet {
 
 		
 		ArrayList<post> chatposts;
-		chatposts= (ArrayList<post>) chat.Getchat();
+		chatposts= (ArrayList<post>) chat.Getchat(0);
 		
 		chatlength=chatposts.size();
 		

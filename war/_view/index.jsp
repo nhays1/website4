@@ -402,11 +402,11 @@
 			 
 			
 		}
-		
+		//body onLoad="refreshchat()"
 	</script>
 	</head>
 
-	<body body onLoad="refreshchat()">
+	<body>
 	
 	
 	
@@ -475,20 +475,32 @@
 			
 			function refreshchat(){
 				
-				
+				var previousheight=document.getElementById('chattext').scrollHeight;
 				numposts=${ chatlength };
 				chat=${chatposts};
 				
-			//	console.log(chat);
+				console.log(chat);
 			//	console.log("${ user.username    }");
 			//	console.log(numposts);
 				  var count = Object.keys(chat).length;
 				  console.log(count);
 				
-				 document.getElementById("chattext").innerHTML = "";
 				
-			
+				
+				var previousposts = document.getElementById('chattext').innerHTML;
+				document.getElementById("chattext").innerHTML = "";
 				var toAdd = document.createDocumentFragment();
+				
+				var neHr = document.createElement('hr');
+				var newbutt = document.createElement('button');
+				newbutt.innerHTML="show more posts";
+				newbutt.onclick=  logout();
+				 toAdd.appendChild(newbutt);
+				 toAdd.appendChild(neHr);
+				
+				
+				
+				
 				for(var i=0; i < numposts; i++){
 				   var newDiv = document.createElement('div');
 				   var newHr = document.createElement('hr');
@@ -542,12 +554,13 @@
 				   toAdd.appendChild(newDiv);
 				   toAdd.appendChild(newHr);
 				}
-				
+				//toAdd.appendChild(previousposts);
 				document.getElementById("chattext").appendChild(toAdd);
+				//document.getElementById("chattext").appendChild(previousposts);
 				
 				
 				var element = document.getElementById("chattext");
-				element.scrollTo(0, element.scrollHeight);
+				element.scrollTo(0, previousheight);
 				//element.scrollTop = element.scrollHeight;
 			}
 			
