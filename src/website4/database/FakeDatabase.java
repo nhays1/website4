@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import website4.model.post;
+import website4.model.usser;
 
 
 
@@ -22,6 +23,11 @@ public class FakeDatabase implements IDatabase {
 	public void addpost(long mils_time, int userid, String posttext) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public usser getuser_by_id(int id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

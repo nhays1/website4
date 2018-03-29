@@ -73,7 +73,7 @@ public class IndexServlet extends HttpServlet {
 		int chatlength;
 		
 		chatcontroler chat =new chatcontroler();
-		
+		UserController usecontrol=new UserController();
 		
 		System.out.println("__________________________________________________________");
 	
@@ -82,9 +82,9 @@ public class IndexServlet extends HttpServlet {
 		usser user = null;
 		Integer userid = (Integer) req.getSession().getAttribute("userid");
 		if(userid!=null) {
-			UserController control=new UserController();
-			user=control.getuserbyid(userid);
 			
+			user=usecontrol.getuserbyid(userid);
+			System.out.println("sesion usser     "+user);
 		}
 	
 		if(user==null) {//if user id was not found creates a new guest 
@@ -114,8 +114,8 @@ public class IndexServlet extends HttpServlet {
 			
 			if(username!=null&&password!=null) {
 				if(username.trim().length()>0&&password.trim().length()>0) {
-					UserController loger=new UserController();
-						usser temp=loger.loguserin(username, password);
+					
+						usser temp=usecontrol.loguserin(username, password);
 						
 					if(temp!=null) {
 						user=temp;

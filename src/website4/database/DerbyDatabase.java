@@ -94,6 +94,18 @@ public class DerbyDatabase implements IDatabase {
 		
 	}
 	
+	private void loaduser(usser user, ResultSet resultSet, int index) throws SQLException {
+		user.setuserid(resultSet.getInt(index++));
+		user.setusername(resultSet.getString(index++));
+		user.setpassword(resultSet.getString(index++));
+		user.setcoins(resultSet.getInt(index++));
+		user.setemail(resultSet.getString(index++));
+		
+		
+	}
+	
+	
+	
 	//private void loadBook(usser book, ResultSet resultSet, int index) throws SQLException {
 	//	book.setBookId(resultSet.getInt(index++));
 	//	book.setAuthorId(resultSet.getInt(index++));
@@ -367,6 +379,106 @@ public class DerbyDatabase implements IDatabase {
 					return null;
 				}
 			});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+
+	public usser getuser_by_id(final int id) {
+		// TODO Auto-generated method stub
+		
+		 return executeTransaction(new Transaction<usser>() {
+			 usser user = new usser();
+				public usser execute(Connection conn) throws SQLException {
+					
+					PreparedStatement stmt = null;
+					ResultSet resultSet = null;
+					
+					try {
+						// retreive all attributes from both Books and Authors tables
+						stmt = conn.prepareStatement(
+								"select *   "
+								+"  from users  "
+								+"  where 	users.userid =  ?  "
+								
+								
+								
+							
+						);
+
+						// substitute the title entered by the user for the placeholder in the query
+						stmt.setInt(1, id);
+						
+						
+						resultSet = stmt.executeQuery();
+						
+						
+						
+						
+						Boolean found = false;
+						
+						if (resultSet.next()) {
+							found = true;
+							
+							
+							
+							loaduser(user, resultSet, 1);
+							
+							
+							
+							
+						}
+						
+						
+						if (!found) {
+							System.out.println("no posts found");
+							return null;
+						}
+						
+						
+						
+					
+						
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+						
+					
+						
+						
+						
+						
+						
+				
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					
+						
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+					}
+					return user;
+				}
+			});
+		
+		
+		 
+		
+		
 		
 		
 		

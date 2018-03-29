@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+import website4.database.DatabaseProvider;
+import website4.database.IDatabase;
+import website4.databsecontroler.InitDatabase;
 import website4.model.usser;
 
 public class UserController {
@@ -72,16 +75,19 @@ public class UserController {
 	 * @return
 	 */
 	public usser getuserbyid(int id) {
+		/*
 		for (int i=0;i<user.size()-1;i++) {
 			if(user.get(i).getuserid()==id)
 				return user.get(i);
 			
 		}
+		*/
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		return db.getuser_by_id(id);
 		
 		
 		
-		
-		return null;
 	}
 	
 	
