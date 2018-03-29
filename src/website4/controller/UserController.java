@@ -20,7 +20,7 @@ public class UserController {
 		usser user1;
 		user1=new usser("placeholder","skanfurnsgiemdtenale023n!",129814,"none",0);
 		user.add(user1);
-		user1=new usser("jake","123",111,"notMyEmail@hotmail.gov",9999999);
+		user1=new usser("jake","123",2,"notMyEmail@hotmail.gov",9999999);
 		user.add(user1);
 		user1=new usser("jake1","1234",222,"none",0);
 		user.add(user1);

@@ -284,6 +284,100 @@ public class DerbyDatabase implements IDatabase {
 		});
 	}
 
+	public void addpost(final long mils_time, final int userid, final String posttext) {
+		 executeTransaction(new Transaction<post>() {
+				public post execute(Connection conn) throws SQLException {
+					
+					PreparedStatement stmt = null;
+					ResultSet resultSet = null;
+					
+					try {
+						// retreive all attributes from both Books and Authors tables
+						stmt = conn.prepareStatement(
+								"select username   "
+								+"  from users  "
+								+"  where 	users.userid =  ?  "
+								
+								
+								
+							
+						);
+
+						// substitute the title entered by the user for the placeholder in the query
+						stmt.setInt(1, userid);
+						
+						
+						resultSet = stmt.executeQuery();
+						
+						String username = null ;
+						if (resultSet.next()) 
+							username =  (String) resultSet.getObject(1);
+						System.out.println("in db username        "+username);
+						
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+						
+						if(username==null) {
+							
+							return null;
+						}
+						
+						
+						
+						
+						
+					stmt = conn.prepareStatement(
+							
+							
+							"insert into posts (userid, username, timeposted, posttext)"
+							+" values( ? , ?, ?, ?)"
+							
+							
+						
+					);
+					
+					
+					
+					
+					stmt.setInt(1, userid);
+					stmt.setString(2, username);
+					stmt.setLong(3, mils_time);
+					stmt.setString(4, posttext);
+					// execute the query
+					
+					stmt.executeUpdate();
+					
+				
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					
+						
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+					}
+					return null;
+				}
+			});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+
 	
 
 

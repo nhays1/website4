@@ -18,6 +18,13 @@ public class FakeDatabase implements IDatabase {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public void addpost(long mils_time, int userid, String posttext) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 	
 	
 

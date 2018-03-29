@@ -28,7 +28,7 @@ public class chatcontrolertest {
 	
 	@Test
 	public void testaddtochat() {
-		chat.makenewpost(15210791386L, "jminip", "this si a psot");
+		chat.makenewpost(15210791386L, 1, "this si a psot");
 		
 		posts=(ArrayList<post>) chat.Getchat();
 		

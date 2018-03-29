@@ -9,4 +9,5 @@ import website4.model.post;
 public interface IDatabase {
 	
 	public List<post> getposts_no_blacklist();
+	public void addpost(long mils_time ,int userid,String posttext);
 }

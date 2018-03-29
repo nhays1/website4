@@ -127,7 +127,10 @@ public class IndexServlet extends HttpServlet {
 				if(chatinput.trim().length()>0) {
 					long now=Instant.now().toEpochMilli();
 					//if()
-					chat.makenewpost(now, user.getusername(), chatinput);
+					chat.makenewpost(now,user.getuserid() , chatinput);
+					
+					
+					
 					System.out.println("chatpassed      _ "+chatinput);
 					System.out.println("chatpasseduser  _ "+user.getusername());
 					ArrayList<post> chatposts= (ArrayList<post>) chat.Getchat();
