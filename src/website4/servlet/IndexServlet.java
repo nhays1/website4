@@ -76,6 +76,8 @@ public class IndexServlet extends HttpServlet {
 		System.out.println("index Servlet: doPost");
 		int chatlength;
 		Integer numpost = 0 ;
+		boolean logout=false;
+		
 		chatcontroler chat =new chatcontroler();
 		UserController usecontrol=new UserController();
 		
@@ -88,13 +90,12 @@ public class IndexServlet extends HttpServlet {
 		if(userid!=null) {
 			
 			user=usecontrol.getuserbyid(userid);
-			System.out.println("sesion usser     "+user);
+			System.out.println("sesion usser     "+user.getusername());
 		}
 	
 		if(user==null) {//if user id was not found creates a new guest 
 			user=usecontrol.createguestuser() ;
-			
-			
+
 		}
 		//req.getSession().setAttribute("userid", userid);
 		//
@@ -110,8 +111,22 @@ public class IndexServlet extends HttpServlet {
 			String username =  req.getParameter("username");
 			String password =  req.getParameter("password");
 			String numberofposts = req.getParameter("numberofpost");
+			if(req.getParameter("logout")!=null)
+				logout= Boolean.parseBoolean( req.getParameter("logout"));
+			
 			if(numberofposts!=null&&Integer.parseInt(numberofposts)!=0)
 				 numpost =Integer.parseInt(numberofposts);
+			
+			System.out.println("wants logout   "+logout);
+			
+			if(logout) {
+				user=usecontrol.createguestuser();
+				
+				
+				
+			}
+			
+			
 			System.out.println("number of posts   "+numpost);
 		
 			
@@ -155,7 +170,8 @@ public class IndexServlet extends HttpServlet {
 		finally{
 			
 		}
-		
+		if( logout)
+			req.logout();
 		
 
 		
@@ -175,6 +191,7 @@ public class IndexServlet extends HttpServlet {
 		
 		//System.out.println("jsonobj      _"+jsonchstpost);
 		System.out.println("username      _ "+user.getusername());
+		//req.logout();
 		req.setAttribute("chatposts", jsonchstpost);
 		req.setAttribute("chatlength", chatlength);
 		req.setAttribute("user", user);
@@ -183,48 +200,7 @@ public class IndexServlet extends HttpServlet {
 		//errorMessage = null;
 		//result = null;
 	
-	//START CHAT
-		/*
-		try {
-			String text = req.getParameter("chatinputtext");
-			
-		//checks if there was any data entered
-			if (text == null) {
-				errorMessage = "Please enter a valid submission.";
-			}
-			
-			// must create the controller each time, since it doesn't persist between POSTs
-			// the view does not alter data, only controller methods should be used for that
-			// thus, always call a controller method to operate on the data
-			else {
-				//Need to create a controller and then store the data somewhere
-			
-			
-			//IndexController controller = new IndexController();
-			//controller.postChat(text);
-
-			}
-		} catch (NumberFormatException e) {
-			errorMessage = "Invalid Submission";
-		}
-		
-		//Add parameter as request attribute
-		req.setAttribute("chatinputtext", req.getParameter("chatinputtext"));
-		
-		//Add result object as attribute
-		req.setAttribute("result", result);
-		req.setAttribute("errorMessage", errorMessage); //this needs to be added to the jsp
-		
-		//Forward to view to render the result HTML document
-		req.getRequestDispatcher("/_view/addNumbers.jsp").forward(req, resp);
-		
-		
-		
-		//Comment made for testing
-		
-		
-		*/
-		
+	
 	}//End of doPost//
 	
 	

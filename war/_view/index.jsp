@@ -296,10 +296,31 @@
 			}
 		}
 		function logout(){
-			
+			console.log("logout");
 			// <!-- %= session.setAttribute( "userid",null ) %> -->
 			
+			 var urlEncodedData = "";
+			var urlEncodedDataPairs = [];
+			var logout = true;
 			
+			
+			urlEncodedDataPairs.push(encodeURIComponent("logout") + '=' + encodeURIComponent(logout));
+			
+			
+			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+			
+			
+			var xmlreq = new XMLHttpRequest();
+			xmlreq.open("post", "index");
+			xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xmlreq.send(urlEncodedData);
+			
+			xmlreq.onload=function(){
+				if (this.status==200){
+					
+					
+				}
+			}
 		}
 		
 		
@@ -321,11 +342,40 @@
 				
 				 if(isguest){
 					 document.getElementById("login").innerHTML = "logout";
-					 document.getElementById("login").onclick="logout()"
+					 document.getElementById("login").onclick=function(){
+						 
+						 console.log("logout");
+							// <!-- %= session.setAttribute( "userid",null ) %> -->
+							
+							 var urlEncodedData = "";
+							var urlEncodedDataPairs = [];
+							var logout = true;
+							
+							
+							urlEncodedDataPairs.push(encodeURIComponent("logout") + '=' + encodeURIComponent(logout));
+							
+							
+							 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+							
+							
+							var xmlreq = new XMLHttpRequest();
+							xmlreq.open("post", "index");
+							xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+							xmlreq.send(urlEncodedData);
+							
+							xmlreq.onload=function(){
+								if (this.status==200){
+									
+									
+								}
+							}
+						 
+						 
+					 }
 				 }
 				 else{
 					 document.getElementById("login").innerHTML = "login";
-					 document.getElementById("login").onclick="logclick()"
+					 document.getElementById("login").onclick="logclick()";
 					 
 				 }
 				
@@ -634,7 +684,10 @@
 					<input name="newuser" type="submit" value="game 2!!!!!!!!" />
 				</form>
 			</li>
-			<li>game3</li>
+			<li><form action="${pageContext.servletContext.contextPath}/Game3window" method="get">
+					<input name="newuser" type="submit" value="game 3¡¡¡¡¡iIi¡¡¡¡¡¡" />
+				</form>
+			</li>
 		</ul>	
 		<%= session.getAttribute( "userid" ) %>
 		
