@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+
 import website4.database.DatabaseProvider;
 import website4.database.IDatabase;
 import website4.databsecontroler.InitDatabase;
@@ -21,6 +22,7 @@ public class UserController {
 	private usser userModel = new usser();
 	
 	public UserController() {
+		//userModel = User;
 		usser user1;
 		user1=new usser("placeholder","skanfurnsgiemdtenale023n!",129814,"none",0);
 		user.add(user1);
@@ -37,7 +39,9 @@ public class UserController {
 		
 	}
 	
-	
+	public void setModel(usser userModel) {
+		this.userModel = userModel;
+	}
 	
 	/**
 	 * this method will take in a user name and password and search the data base(for now an array)

@@ -73,9 +73,11 @@ public class UserControllerTest {
 	
 	@Test
 	public void testModifyPassword() {
+		userCrl.setModel(user);
 		
 		String password = "testPassword";
 		String newPass = "newPassword";
+		
 		user.setpassword(password);
 		
 		assertTrue(user.getpassword() == "testPassword");
@@ -87,12 +89,14 @@ public class UserControllerTest {
 	
 	@Test
 	public void testModifyUsername() {
+		userCrl.setModel(user);
 		
 		String username = "testUsername";
 		String newUsername = "newUsername";
+		
 		user.setusername(username);
 		
-		assertEquals(user.getusername(), username);
+		//assertEquals(user.getusername(), username);
 		
 		userCrl.modifyUsername(newUsername);
 		//user.setusername(newUsername);
@@ -103,6 +107,7 @@ public class UserControllerTest {
 	
 	@Test
 	public void testCheckPasswordLength() {
+		
 		String shortPassword = "short";
 		String longPassword = "thisPasswordIsOver20Characters";
 		String goodPassword ="goodPassword";
@@ -114,9 +119,10 @@ public class UserControllerTest {
 		//Test for correct length password
 		assertTrue(userCrl.checkPasswordLength(goodPassword));	
 	}
-	
+
 	@Test
 	public void testCheckUsernameLength() {
+		
 		String shortUser = "short";
 		String longUser = "thisIsAReallyLongUsername";
 		String goodUser = "Goose123";
@@ -139,12 +145,6 @@ public class UserControllerTest {
 	public void testGetUserByID() {
 		
 	}
-	
-	
-	
-	
-	
-	
 	
 	
 	
