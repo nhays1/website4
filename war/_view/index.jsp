@@ -255,7 +255,6 @@
 		var ussing  = "${ user.username    }";
 		var isguest="${user.isguest}";
 		var usserid=${user.userid};
-		var numposts;
 		var chat;
 		
 		
@@ -395,17 +394,9 @@
 			var text = document.getElementById("chattextarea").value;
 			document.getElementById("chattextarea").value='';
 			
-			
 			urlEncodedDataPairs.push(encodeURIComponent("chatinputtext") + '=' + encodeURIComponent(text));
 			
-			
 			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
-			 
-			 
-			 
-			 
-			 
-			 
 			 
 			 var xhttp = new XMLHttpRequest();
 			    xhttp.onreadystatechange = function() {
@@ -528,12 +519,12 @@
 				
 				
 				var previousheight=document.getElementById('chattext').scrollHeight;
-				numposts=${ chatlength };
+			
 				chat=${chatposts};
 				
 				console.log(chat);
 			//	console.log("${ user.username    }");
-			//	console.log(numposts);
+			
 				  count = Object.keys(chat).length;
 				  console.log(count);
 				
@@ -554,7 +545,7 @@
 				
 				
 				
-				for(var i=0; i < numposts; i++){
+				for(var i=0; i < chat.length; i++){
 				   var newDiv = document.createElement('div');
 				   var newHr = document.createElement('hr');
 				   var newP = document.createElement('p');

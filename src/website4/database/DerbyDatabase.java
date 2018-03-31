@@ -6,10 +6,16 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
-
+import website4.model.per_game_scores;
+import website4.model.per_user_scores;
 import website4.model.post;
 import website4.model.usser;
 import website4.sqldemo.DBUtil;
@@ -109,7 +115,8 @@ public class DerbyDatabase implements IDatabase {
 			public Boolean execute(Connection conn) throws SQLException {
 				PreparedStatement stmt1 = null;
 				PreparedStatement stmt2 = null;
-				
+				PreparedStatement stmt3 = null;
+				PreparedStatement stmt4 = null;
 				try {
 					stmt1 = conn.prepareStatement(
 							"create table users (" +
@@ -137,6 +144,50 @@ public class DerbyDatabase implements IDatabase {
 					);
 					stmt2.executeUpdate(); 
 					
+					
+					stmt3= conn.prepareStatement(
+							
+							"create table per_user_hs (" +
+							"	hs_id integer primary key " +
+							"	generated always as identity (start with 1, increment by 1), " +
+							"	userid integer , " +		
+							"	nameofthegame varchar(64)," +
+							"	hs0 integer," +
+							"	hs1 integer," +
+							"	hs2 integer," +
+							"	hs3 integer," +
+							"	hs4 integer," +
+							"	hs5 integer," +
+							"	hs6 integer," +
+							"	hs7 integer," +
+							"	hs8 integer," +
+							"	hs9 integer" +
+							")"
+
+					);
+					stmt3.executeUpdate(); 
+					
+					
+					
+					
+					stmt4= conn.prepareStatement(//the per game scores will be stored in a treemap with the score as the key( for esay ordering)
+												//to reconstruct the treemap from the db all the entries with a certian nameofthegame
+												// will be placed into the map
+							"create table per_game_hs (" +
+							"	hs_id integer primary key " +
+							"	generated always as identity (start with 1, increment by 1), " +	
+							"	hs integer," +
+							"	nameofthegame varchar(64)," +
+							
+							"	userid integer,  " +
+							"   username varchar(64)"+
+							")"
+
+					);
+					stmt4.executeUpdate(); 
+					
+					
+					
 					return true;
 				} finally {
 					DBUtil.closeQuietly(stmt1);
@@ -151,25 +202,30 @@ public class DerbyDatabase implements IDatabase {
 			public Boolean execute(Connection conn) throws SQLException {
 				List<post> postlist;
 				List<usser> userlist;
+				List<per_user_scores>  userscoreslist;    
+				List<per_game_scores>  gamescoreslist;
 				
 				try {
 					postlist = InitialData.getposts();
 					userlist = InitialData.getusers();
+					userscoreslist = InitialData.getuserscores();
+					gamescoreslist= InitialData.getgamecores();
+					
 				} catch (IOException e) {
 					throw new SQLException("Couldn't read initial data", e);
 				}
 
 				PreparedStatement insertpost = null;
 				PreparedStatement insertuser  = null;
-
+				PreparedStatement insertuserscores  = null;
+				PreparedStatement insertgamescores = null;
+				
+				
 				try {
-					
-					
 					//insertuser = conn.prepareStatement("insert into users (userid, username, password, coins, email,isguset) values (?, ?, ?, ?, ?,?)");
 					insertuser = conn.prepareStatement("insert into users (userid, username, password, coins, email) values (?, ?, ?, ?, ?)");
 					for (usser user : userlist) {
-				
-						
+
 						insertuser.setInt(1, user.getuserid());
 						insertuser.setString(2, user.getusername());
 						insertuser.setString(3, user.getpassword());
@@ -177,19 +233,17 @@ public class DerbyDatabase implements IDatabase {
 						insertuser.setString(5, user.getemail());
 						//insertuser.setBoolean(6, user.getisguest());
 						
-					
 						insertuser.addBatch();
 					}
 					insertuser.executeBatch();
 
-					// populate authors table (do authors first, since author_id is foreign key in books table)
+					
 					insertpost = conn.prepareStatement("insert into posts (userid, username ,  timeposted , posttext) values (?, ?,?, ?)");
 					
 					
 					for (post post : postlist) {
 //						insertAuthor.setInt(1, author.getAuthorId());	// auto-generated primary key, don't insert this
 
-						
 						insertpost.setInt(1, post.getuserid());
 						insertpost.setString(2, post.Getusername());
 						insertpost.setLong(3, post.Getmils_time());
@@ -199,8 +253,46 @@ public class DerbyDatabase implements IDatabase {
 					}
 					insertpost.executeBatch();
 					
-					// populate books table (do this after authors table,
-					// since author_id must exist in authors table before inserting book)
+	
+					
+					insertuserscores = conn.prepareStatement("insert into per_user_hs (userid, nameofthegame,  "
+							+ "hs0 , hs1, hs2, hs3, hs4, hs5, hs6, hs7, hs8, hs9) values (?, ?,    ?,?,?,?,?,?,?,?,?,?)");
+					
+					
+					for (per_user_scores score : userscoreslist) {
+						ArrayList<Integer> skors=score.getscores();
+
+						insertuserscores.setInt(1, score.getusid());
+						insertuserscores.setString(2, score.getnameofgame());
+						for(int i=0;i<skors.size();i++) {
+							insertuserscores.setInt(i+3, skors.get(i));
+						}
+						
+						insertuserscores.addBatch();
+					}
+					insertuserscores.executeBatch();
+					
+					
+					
+					insertgamescores = conn.prepareStatement("insert into per_game_hs (hs, nameofthegame ,  userid,username ) values (?, ?,?,?)");
+					
+					
+					for (per_game_scores score : gamescoreslist) {
+						//System.out.println(score.getscore());
+						insertgamescores.setString(2, score.getnameofgame());
+						insertgamescores.setInt(1, score.getscore());
+						insertgamescores.setInt(3, score.getusid());
+						insertgamescores.setString(4, score.getusername());						
+							
+						
+						
+						insertgamescores.addBatch();
+					}
+					insertgamescores.executeBatch();
+					
+					
+					
+					
 					
 					
 					return true;
@@ -526,4 +618,94 @@ public class DerbyDatabase implements IDatabase {
 
 	}
 
+	public List<Map.Entry<String, Integer>> getper_game_scores(final String nameofthegame) {
+		// TODO Auto-generated method stub
+		return executeTransaction(new Transaction<List<Map.Entry<String, Integer>>>() {
+			public List<Map.Entry<String, Integer>> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							
+							"SELECT per_game_hs.hs , per_game_hs.username "+
+							"FROM per_game_hs "+
+							"where per_game_hs.nameofthegame = ? "+
+							"ORDER BY per_game_hs.hs DESC"
+
+					);//gets the 
+					stmt.setString(1, nameofthegame);
+					
+					resultSet = stmt.executeQuery();
+
+					
+					List<Map.Entry<String, Integer>> result=new ArrayList<Map.Entry<String, Integer>>();
+					//List<Map.Entry<String, Integer>> result=new LinkedList(Map.entrySet());
+					
+					// for testing that a result was returned
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						
+						// Entry<Integer, Integer> skore = null;
+						found = true;
+						int index=1;
+						
+						int score=resultSet.getInt(index++);
+						String usid=resultSet.getString(index++);		
+						
+						Map.Entry<String,Integer> skore =new AbstractMap.SimpleEntry<String, Integer>(usid, score);
+						//System.out.println( "map score        "+skore);
+						result.add(skore);
+					}
+					
+					// check if any posts were found
+					if (!found) {
+						System.out.println("no posts found");
+					}
+					
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
+
+	public List<Entry<String, Integer>> addscoretogmaedb(final String nameofthegame, final int userid, final int score, final String username) {
+		 executeTransaction(new Transaction<post>() {
+				public post execute(Connection conn) throws SQLException {
+					
+					PreparedStatement stmt = null;
+					ResultSet resultSet = null;
+					
+					try {
+						
+						
+
+					stmt = conn.prepareStatement(
+	
+							"insert into per_game_hs (hs, nameofthegame ,  userid,username)"
+							+" values( ? , ?, ?, ?)"
+					);
+
+					stmt.setInt(1, score);
+					stmt.setString(2, nameofthegame);
+					stmt.setInt(3, userid);
+					stmt.setString(4, username);
+					// execute the query
+					
+					stmt.executeUpdate();
+
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+					}
+					return null;
+				}
+			});
+		return getper_game_scores(nameofthegame);
+	}
+
+}
