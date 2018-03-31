@@ -1,5 +1,8 @@
 package website4.database;
 
+
+//This class allows us to relate 3 things today similarly to how we used Pair<> in Lab06
+//The application of this class is in the FakeDatabase
 public class Triplet <T, U, V> {
 	
 
