@@ -170,8 +170,6 @@ public class IndexServlet extends HttpServlet {
 		finally{
 			
 		}
-		if( logout)
-			req.logout();
 		
 
 		

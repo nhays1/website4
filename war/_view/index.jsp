@@ -395,17 +395,9 @@
 			var text = document.getElementById("chattextarea").value;
 			document.getElementById("chattextarea").value='';
 			
-			
 			urlEncodedDataPairs.push(encodeURIComponent("chatinputtext") + '=' + encodeURIComponent(text));
 			
-			
 			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
-			 
-			 
-			 
-			 
-			 
-			 
 			 
 			 var xhttp = new XMLHttpRequest();
 			    xhttp.onreadystatechange = function() {

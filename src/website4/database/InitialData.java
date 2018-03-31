@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-
+import website4.model.per_game_scores;
+import website4.model.per_user_scores;
 import website4.model.post;
 import website4.model.usser;
 
@@ -69,4 +70,81 @@ public class InitialData {
 			readusers.close();
 		}
 	}
+	
+	public static List<per_user_scores> getuserscores() throws IOException {
+		List<per_user_scores> userscorelist = new ArrayList<per_user_scores>();
+		ReadCSV readper_user_scores = new ReadCSV("per_user_scores.csv");
+		try {
+			// auto-generated primary key for authors table
+			
+			while (true) {
+				List<String> tuple = readper_user_scores.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				per_user_scores score =new per_user_scores();
+				ArrayList<Integer> scores=new ArrayList<Integer>() ;
+				
+				
+				score.setusid(Integer.parseInt(i.next()));
+				score.setnameofgame(i.next());
+				scores.add(Integer.parseInt(i.next()));//0
+				scores.add(Integer.parseInt(i.next()));//1
+				scores.add(Integer.parseInt(i.next()));//2
+				scores.add(Integer.parseInt(i.next()));//3
+				scores.add(Integer.parseInt(i.next()));//4
+				scores.add(Integer.parseInt(i.next()));//5
+				scores.add(Integer.parseInt(i.next()));//6
+				scores.add(Integer.parseInt(i.next()));//7
+				scores.add(Integer.parseInt(i.next()));//8
+				scores.add(Integer.parseInt(i.next()));//9
+				
+				score.setscores(scores);
+				
+				
+				userscorelist.add(score);
+			}
+			return userscorelist;
+		} finally {
+			readper_user_scores.close();
+		}
+	}
+	public static List<per_game_scores> getgamecores() throws IOException {
+		List<per_game_scores> gamescorelist = new ArrayList<per_game_scores>();
+		ReadCSV readper_game_scores = new ReadCSV("per_game_scores.csv");
+		try {
+			// auto-generated primary key for authors table
+			
+			while (true) {
+				List<String> tuple = readper_game_scores.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				per_game_scores score =new per_game_scores();
+			
+				
+				score.setnameofgame(i.next());
+				score.setscore(Integer.parseInt(i.next()));
+				score.setusid(Integer.parseInt(i.next()));
+				
+				
+
+				
+				gamescorelist.add(score);
+			}
+			return gamescorelist;
+		} finally {
+			readper_game_scores.close();
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

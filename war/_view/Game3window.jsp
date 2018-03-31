@@ -282,6 +282,7 @@
 				    	 if(disttotarget<25){//if this was fired at my tank and moves withinn my tank, end the game
 				    		 console.log("kill");
 				    		 gameover=true;
+				    		 post();
 				    	 }
 				     }	
 			    }
@@ -337,6 +338,9 @@
 
 			function updateGameArea() { 
 			    if(gameover==true){ // if the games over dont update
+			    	
+			    	
+
 			    	return;
 			    }
 			    
@@ -390,8 +394,27 @@
 			    if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
 			    return false;
 			}
-
-			
+			function post(){
+			 var urlEncodedData = "";
+				var urlEncodedDataPairs = [];
+				
+				urlEncodedDataPairs.push(encodeURIComponent("score") + '=' + encodeURIComponent(score));
+				
+				 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+				 
+				 var xhttp = new XMLHttpRequest();
+				    xhttp.onreadystatechange = function() {
+				        if (this.readyState == 4 && this.status == 200) {
+				        	
+				        	console.log("check")
+				       }
+				    };
+				    xhttp.open("post", "Game3window", true);
+				    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				    xhttp.send(urlEncodedData); 
+				
+				
+			}
 				
 				
 			</script>
