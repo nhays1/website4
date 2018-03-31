@@ -1,7 +1,7 @@
 package website4.servlet;
 
 import java.io.IOException;
-import java.time.Instant;
+//import java.time.Instant;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -14,6 +14,7 @@ import com.google.gson.GsonBuilder;
 
 import website4.controller.UserController;
 import website4.controller.chatcontroler;
+import website4.controller.highscorecontroller;
 import website4.model.post;
 import website4.model.usser;
 
@@ -21,7 +22,8 @@ import website4.model.usser;
 
 public class Game3windowservlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private static String gamename="towerdef1";
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -34,6 +36,15 @@ public class Game3windowservlet extends HttpServlet {
 		int chatlength;
 		chatcontroler chat =new chatcontroler();
 		UserController usecontrol=new UserController();
+		highscorecontroller scorectrl= new highscorecontroller();
+		
+		
+		
+		
+		Gson gson = new GsonBuilder().create();
+		String jsongamescore = gson.toJson(scorectrl.getgamehighscores(gamename));
+		System.out.println(jsongamescore);
+		
 		
 		
 		ArrayList<post> chatposts;
@@ -54,16 +65,13 @@ public class Game3windowservlet extends HttpServlet {
 		}
 		req.getSession().setAttribute("userid", user.getuserid());
 		//
-		
 		chatlength=chatposts.size();
-		
-		Gson gson = new GsonBuilder().create();
 		String jsonchstpost = gson.toJson(chatposts);
 		
 		//System.out.println("jsonobj      _"+jsonchstpost);
 		
-		
 		req.setAttribute("chatposts", jsonchstpost);
+		req.setAttribute("gemescores", jsongamescore);
 		req.setAttribute("chatlength", chatlength);
 		
 		
@@ -74,24 +82,20 @@ public class Game3windowservlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
-		System.out.println("Gamewindow Servlet: doPost");
-		
-		
-		
+
 		System.out.println("__________________________________________________________");
-		System.out.println("index Servlet: doPost");
+		System.out.println("Gamewindow Servlet: doPost");
 		int chatlength;
 		Integer numpost = 0 ;
-		boolean logout=false;
+		//boolean logout=false;
 		
 		int score = 0;
 		
 		chatcontroler chat =new chatcontroler();
 		UserController usecontrol=new UserController();
-		
-		
-	
+		highscorecontroller scorectrl= new highscorecontroller();
+		Gson gson = new GsonBuilder().create();
+		String jsongamescore = "";
 		
 		//
 		usser user = null;
@@ -114,9 +118,12 @@ public class Game3windowservlet extends HttpServlet {
 			
 			
 			String skore= req.getParameter("score");
-			if(skore!=null)
+			if(skore!=null) {
 				score =Integer.parseInt(skore);
-			
+				
+				jsongamescore = gson.toJson(scorectrl.addscoretodb(gamename, user.getuserid(), score, user.getusername()));
+				System.out.println("score json      _"+jsongamescore);
+			}
 			System.out.println("score      _"+score);
 			
 			/*
@@ -196,18 +203,19 @@ public class Game3windowservlet extends HttpServlet {
 		
 		chatlength=chatposts.size();
 		
-		Gson gson = new GsonBuilder().create();
 		String jsonchstpost = gson.toJson(chatposts);
+		
 		
 		req.getSession().setAttribute("userid", user.getuserid());
 		
 		//System.out.println("jsonobj      _"+jsonchstpost);
 		System.out.println("username      _ "+user.getusername());
 		//req.logout();
+		
 		req.setAttribute("chatposts", jsonchstpost);
 		req.setAttribute("chatlength", chatlength);
 		req.setAttribute("user", user);
-		
+		req.setAttribute("gemescores", jsongamescore);
 		
 
 		

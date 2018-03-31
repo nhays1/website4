@@ -7,6 +7,7 @@ public class per_game_scores {
 	private int usid;
 	private int scores;
 	private String nameofthegame;
+	private String username;
 	// onece the data bese is set up the user id will be used as oposed to username 
 	
 	
@@ -33,6 +34,9 @@ public class per_game_scores {
 		this.nameofthegame=nameofthegame;
 	}
 	
+	public void setusername(String username) {
+		this.username=username;
+	}
 	public void setscore(int  score) {
 		this.scores=score;
 	}
@@ -51,7 +55,10 @@ public class per_game_scores {
 		return usid;
 
 	}
-	
+	public String getusername() {
+		return username;
+		
+	}
 	
 	
 	

@@ -128,7 +128,7 @@ public class InitialData {
 				score.setnameofgame(i.next());
 				score.setscore(Integer.parseInt(i.next()));
 				score.setusid(Integer.parseInt(i.next()));
-				
+				score.setusername(i.next());
 				
 
 				

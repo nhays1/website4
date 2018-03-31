@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
@@ -48,11 +49,16 @@ public class FakeDatabase implements IDatabase {
 		return false;
 	}
 
-	public List<Map.Entry<Integer, Integer>> getper_game_scores(String nameofthegame) {
+	public List<Map.Entry<String, Integer>> getper_game_scores(String nameofthegame) {
 		// TODO Auto-generated method stub
 		return null;
 		
-		//Map.Entry<Integer,Integer> skore =new AbstractMap.SimpleEntry<Integer, Integer>(usid, score);// how to create new entry
+		//Map.Entry<String,Integer> skore =new AbstractMap.SimpleEntry<Integer, Integer>(usid, score);// how to create new entry
+	}
+
+	public List<Entry<String, Integer>> addscoretogmaedb(String nameofthegame, int userid, int score, String username) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

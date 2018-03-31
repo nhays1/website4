@@ -22,5 +22,6 @@ public interface IDatabase {
 	 * @param nameofthegame
 	 * @return
 	 */
-	public List<Map.Entry<Integer, Integer>> getper_game_scores(String nameofthegame);//List<Map.Entry<Integer, Integer>>
+	public List<Map.Entry<String, Integer>> getper_game_scores(String nameofthegame);//List<Map.Entry<Integer, Integer>>
+	public List<Map.Entry<String, Integer>> addscoretogmaedb(String nameofthegame,int userid,int score,String username );
 }

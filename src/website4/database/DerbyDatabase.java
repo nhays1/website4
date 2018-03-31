@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -178,7 +179,8 @@ public class DerbyDatabase implements IDatabase {
 							"	hs integer," +
 							"	nameofthegame varchar(64)," +
 							
-							"	userid integer  " +
+							"	userid integer,  " +
+							"   username varchar(64)"+
 							")"
 
 					);
@@ -271,16 +273,8 @@ public class DerbyDatabase implements IDatabase {
 					insertuserscores.executeBatch();
 					
 					
-					/*
-					 * 	"create table per_game_hs (" +
-							"	hs_id integer primary key " +
-							"	generated always as identity (start with 1, increment by 1), " +		
-							"	nameofthegame varchar(64)," +
-							"	hs integer," +
-							"	userid integer  " +
-							")"
-					 */
-					insertgamescores = conn.prepareStatement("insert into per_game_hs (hs, nameofthegame ,  userid ) values (?, ?,?)");
+					
+					insertgamescores = conn.prepareStatement("insert into per_game_hs (hs, nameofthegame ,  userid,username ) values (?, ?,?,?)");
 					
 					
 					for (per_game_scores score : gamescoreslist) {
@@ -288,8 +282,7 @@ public class DerbyDatabase implements IDatabase {
 						insertgamescores.setString(2, score.getnameofgame());
 						insertgamescores.setInt(1, score.getscore());
 						insertgamescores.setInt(3, score.getusid());
-						
-						
+						insertgamescores.setString(4, score.getusername());						
 							
 						
 						
@@ -625,19 +618,20 @@ public class DerbyDatabase implements IDatabase {
 
 	}
 
-	public List<Map.Entry<Integer, Integer>> getper_game_scores(final String nameofthegame) {
+	public List<Map.Entry<String, Integer>> getper_game_scores(final String nameofthegame) {
 		// TODO Auto-generated method stub
-		return executeTransaction(new Transaction<List<Map.Entry<Integer, Integer>>>() {
-			public List<Map.Entry<Integer, Integer>> execute(Connection conn) throws SQLException {
+		return executeTransaction(new Transaction<List<Map.Entry<String, Integer>>>() {
+			public List<Map.Entry<String, Integer>> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
 				
 				try {
 					stmt = conn.prepareStatement(
 							
-							"SELECT per_game_hs.hs , per_game_hs.userid"+
-							"FROM per_game_hs"+
-							"where per_game_hs.nameofthegame = ?"
+							"SELECT per_game_hs.hs , per_game_hs.username "+
+							"FROM per_game_hs "+
+							"where per_game_hs.nameofthegame = ? "+
+							"ORDER BY per_game_hs.hs DESC"
 
 					);//gets the 
 					stmt.setString(1, nameofthegame);
@@ -645,8 +639,8 @@ public class DerbyDatabase implements IDatabase {
 					resultSet = stmt.executeQuery();
 
 					
-					List<Map.Entry<Integer, Integer>> result=new ArrayList<Map.Entry<Integer, Integer>>();
-
+					List<Map.Entry<String, Integer>> result=new ArrayList<Map.Entry<String, Integer>>();
+					//List<Map.Entry<String, Integer>> result=new LinkedList(Map.entrySet());
 					
 					// for testing that a result was returned
 					Boolean found = false;
@@ -656,12 +650,12 @@ public class DerbyDatabase implements IDatabase {
 						// Entry<Integer, Integer> skore = null;
 						found = true;
 						int index=1;
-						index++;
-						int score=resultSet.getInt(index++);
-						int usid=resultSet.getInt(index++);		
 						
-						Map.Entry<Integer,Integer> skore =new AbstractMap.SimpleEntry<Integer, Integer>(usid, score);
-						System.out.println( "map score        "+skore);
+						int score=resultSet.getInt(index++);
+						String usid=resultSet.getString(index++);		
+						
+						Map.Entry<String,Integer> skore =new AbstractMap.SimpleEntry<String, Integer>(usid, score);
+						//System.out.println( "map score        "+skore);
 						result.add(skore);
 					}
 					
@@ -679,4 +673,39 @@ public class DerbyDatabase implements IDatabase {
 		});
 	}
 
+	public List<Entry<String, Integer>> addscoretogmaedb(final String nameofthegame, final int userid, final int score, final String username) {
+		 executeTransaction(new Transaction<post>() {
+				public post execute(Connection conn) throws SQLException {
+					
+					PreparedStatement stmt = null;
+					ResultSet resultSet = null;
+					
+					try {
+						
+						
+
+					stmt = conn.prepareStatement(
+	
+							"insert into per_game_hs (hs, nameofthegame ,  userid,username)"
+							+" values( ? , ?, ?, ?)"
+					);
+
+					stmt.setInt(1, score);
+					stmt.setString(2, nameofthegame);
+					stmt.setInt(3, userid);
+					stmt.setString(4, username);
+					// execute the query
+					
+					stmt.executeUpdate();
+
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+					}
+					return null;
+				}
+			});
+		return getper_game_scores(nameofthegame);
 	}
+
+}

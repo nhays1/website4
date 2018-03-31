@@ -18,9 +18,9 @@
 		
 		}
 		canvas {
-    border:1px solid #d3d3d3;
-    background-color: #f1f1f1;
-}
+   		border:1px solid #d3d3d3;
+    	background-color: #f1f1f1;
+		}
 		
 		#allgames{
 		float:left;
@@ -35,6 +35,13 @@
 			top:0px;
 		left:0px;
 		position:fixed;
+		}
+		.gamescoreentry{
+		
+		margin:5px;
+		font-size: 200%;
+		padding: 5px;
+		border: solid red;
 		}
 		#banner{
 		
@@ -65,12 +72,14 @@
 		height: 600px;
 		min-width: 600px;
 		border: 3px solid blue;
-		
-		
-		
-		
 		}
 		
+		#gamescores{
+		width:300px;
+		
+		margin-left:160px;
+		
+		}
 		</style>
 	</head>
 
@@ -161,6 +170,10 @@
 			//console.log(p1);
 			//console.log(vect.normalize().length());
 			//console.log(vect.x);
+			var gamescore=${gemescores};
+			
+			console.log(gamescore);
+			
 			var score=0;
 			var myGamePiece;//this is the black spining ball
 			var piece;//larger stationary circle
@@ -181,7 +194,7 @@
 			    myGamePiece = new circle(10,200,200,"black");   //inicalizes the game piece oblects
 			    piece = new circle(20,gwidth/2, ghight/2,"red");
 			    myScore = new rect("30px", "Consolas", "black", 280, 40);
-			    
+			    score=0;
 
 			    myGameArea.start();
 			}
@@ -193,7 +206,7 @@
 			        this.canvas.height = ghight;
 			        this.canvas.id = "cnvs";
 			        this.context = this.canvas.getContext("2d"); // im not certian what this dose but it seems to be improtant
-			      
+			        score=0;
 			       origon=new Point(gwidth/2,ghight/2)//sets the origon
 	
 			        var dx = this.canvas.offsetLeft;  //if i could get thhis block to work it would determine the 
@@ -242,11 +255,7 @@
 			        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 			    }
 			}
-			
-			
-			
-			
-			
+
 			function bulet(veloictyvector,origionpoint,color,mine){//serves as constructor for bullet class
 				this.x=origionpoint.x;
 				this.y=origionpoint.y;
@@ -416,6 +425,14 @@
 				
 			}
 				
+			
+			
+			
+			
+			
+			
+			
+			
 				
 			</script>
 		</div>
@@ -433,8 +450,45 @@
 		 <form action="${pageContext.servletContext.contextPath}/index" method="get">
 	 	<input type="Submit" name="chatsubmit" value="home">
 	 </form>
+	<div id="gamescores">
 	
 	
+	
+	</div>
+		<script>
+		var gamescore=${gemescores};
+		
+		var toAdd = document.createDocumentFragment();
+		
+		for(var i=0; i < gamescore.length; i++){
+			   var newDiv = document.createElement('div');
+			   var newHr = document.createElement('hr');
+			 
+			   var time= new Date();
+			   var now = time.getTime();
+
+			   
+			   var score=gamescore[i].value;
+			   var username=gamescore[i].key;
+			   username+=" |-| ";
+			   username+=score;
+			  
+			   //newDiv.id = 'r'+i;
+			   newDiv.className = 'gamescoreentry';
+			  
+			   newDiv.innerHTML = username;
+			  
+			   toAdd.appendChild(newDiv);
+			   toAdd.appendChild(newHr);
+			}
+			//toAdd.appendChild(previousposts);
+			document.getElementById("gamescores").appendChild(toAdd);
+			
+		
+		
+		
+		
+		</script>
 	
 	
 	
