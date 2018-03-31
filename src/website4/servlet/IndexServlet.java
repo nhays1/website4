@@ -28,25 +28,29 @@ public class IndexServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
-		System.out.println("index Servlet: doGet");
+		System.out.println("__________________________________________________________");
+		System.out.println("index Servlet: DOGET");
+		System.out.println("__________________________________________________________");
 		int chatlength;
 		chatcontroler chat =new chatcontroler();
+		UserController usecontrol=new UserController();
+		
 		
 		ArrayList<post> chatposts;
-		chatposts= (ArrayList<post>) chat.Getchat();
+		chatposts= (ArrayList<post>) chat.Getchat(0);
 		
 		//
 		usser user = null;
 		Integer userid = (Integer) req.getSession().getAttribute("userid");
 		if(userid!=null) {
-			UserController control=new UserController();
-			user=control.getuserbyid(userid);
+		
+			user=usecontrol.getuserbyid(userid);
 			
 		}
 	
 		if(user==null) {//if user id was not found creates a new guest 
-			user= new usser();
+			user=usecontrol.createguestuser();
+			
 		}
 		req.getSession().setAttribute("userid", user.getuserid());
 		//
@@ -68,14 +72,16 @@ public class IndexServlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+		System.out.println("__________________________________________________________");
 		System.out.println("index Servlet: doPost");
 		int chatlength;
+		Integer numpost = 0 ;
+		boolean logout=false;
 		
 		chatcontroler chat =new chatcontroler();
 		UserController usecontrol=new UserController();
 		
-		System.out.println("__________________________________________________________");
+		
 	
 		
 		//
@@ -84,11 +90,12 @@ public class IndexServlet extends HttpServlet {
 		if(userid!=null) {
 			
 			user=usecontrol.getuserbyid(userid);
-			System.out.println("sesion usser     "+user);
+			System.out.println("sesion usser     "+user.getusername());
 		}
 	
 		if(user==null) {//if user id was not found creates a new guest 
-			user= new usser();
+			user=usecontrol.createguestuser() ;
+
 		}
 		//req.getSession().setAttribute("userid", userid);
 		//
@@ -103,9 +110,24 @@ public class IndexServlet extends HttpServlet {
 			String chatinput =  req.getParameter("chatinputtext");
 			String username =  req.getParameter("username");
 			String password =  req.getParameter("password");
+			String numberofposts = req.getParameter("numberofpost");
+			if(req.getParameter("logout")!=null)
+				logout= Boolean.parseBoolean( req.getParameter("logout"));
+			
+			if(numberofposts!=null&&Integer.parseInt(numberofposts)!=0)
+				 numpost =Integer.parseInt(numberofposts);
+			
+			System.out.println("wants logout   "+logout);
+			
+			if(logout) {
+				user=usecontrol.createguestuser();
+				
+				
+				
+			}
 			
 			
-			
+			System.out.println("number of posts   "+numpost);
 		
 			
 			System.out.println("username      _ "+username);
@@ -133,9 +155,9 @@ public class IndexServlet extends HttpServlet {
 					
 					System.out.println("chatpassed      _ "+chatinput);
 					System.out.println("chatpasseduser  _ "+user.getusername());
-					ArrayList<post> chatposts= (ArrayList<post>) chat.Getchat();
+					//ArrayList<post> chatposts= (ArrayList<post>) chat.Getchat(0);
 					
-					System.out.println("chatpassed      _ "+chatposts.get(chatposts.size()-1).Getpost());
+					//System.out.println("chatpassed      _ "+chatposts.get(chatposts.size()-1).Getpost());
 					
 					
 					
@@ -148,12 +170,17 @@ public class IndexServlet extends HttpServlet {
 		finally{
 			
 		}
-		
+		if( logout)
+			req.logout();
 		
 
 		
 		ArrayList<post> chatposts;
-		chatposts= (ArrayList<post>) chat.Getchat();
+		System.out.println("numpostsssss      _ "+numpost);
+		chatposts= (ArrayList<post>) chat.Getchat(numpost);
+		System.out.println("numpostdddddd      _ "+chatposts.size());
+		
+		
 		
 		chatlength=chatposts.size();
 		
@@ -162,8 +189,9 @@ public class IndexServlet extends HttpServlet {
 		
 		req.getSession().setAttribute("userid", user.getuserid());
 		
-		System.out.println("jsonobj      _"+jsonchstpost);
+		//System.out.println("jsonobj      _"+jsonchstpost);
 		System.out.println("username      _ "+user.getusername());
+		//req.logout();
 		req.setAttribute("chatposts", jsonchstpost);
 		req.setAttribute("chatlength", chatlength);
 		req.setAttribute("user", user);
@@ -172,48 +200,7 @@ public class IndexServlet extends HttpServlet {
 		//errorMessage = null;
 		//result = null;
 	
-	//START CHAT
-		/*
-		try {
-			String text = req.getParameter("chatinputtext");
-			
-		//checks if there was any data entered
-			if (text == null) {
-				errorMessage = "Please enter a valid submission.";
-			}
-			
-			// must create the controller each time, since it doesn't persist between POSTs
-			// the view does not alter data, only controller methods should be used for that
-			// thus, always call a controller method to operate on the data
-			else {
-				//Need to create a controller and then store the data somewhere
-			
-			
-			//IndexController controller = new IndexController();
-			//controller.postChat(text);
-
-			}
-		} catch (NumberFormatException e) {
-			errorMessage = "Invalid Submission";
-		}
-		
-		//Add parameter as request attribute
-		req.setAttribute("chatinputtext", req.getParameter("chatinputtext"));
-		
-		//Add result object as attribute
-		req.setAttribute("result", result);
-		req.setAttribute("errorMessage", errorMessage); //this needs to be added to the jsp
-		
-		//Forward to view to render the result HTML document
-		req.getRequestDispatcher("/_view/addNumbers.jsp").forward(req, resp);
-		
-		
-		
-		//Comment made for testing
-		
-		
-		*/
-		
+	
 	}//End of doPost//
 	
 	

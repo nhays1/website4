@@ -296,10 +296,31 @@
 			}
 		}
 		function logout(){
-			
+			console.log("logout");
 			// <!-- %= session.setAttribute( "userid",null ) %> -->
 			
+			 var urlEncodedData = "";
+			var urlEncodedDataPairs = [];
+			var logout = true;
 			
+			
+			urlEncodedDataPairs.push(encodeURIComponent("logout") + '=' + encodeURIComponent(logout));
+			
+			
+			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+			
+			
+			var xmlreq = new XMLHttpRequest();
+			xmlreq.open("post", "index");
+			xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xmlreq.send(urlEncodedData);
+			
+			xmlreq.onload=function(){
+				if (this.status==200){
+					
+					
+				}
+			}
 		}
 		
 		
@@ -321,11 +342,40 @@
 				
 				 if(isguest){
 					 document.getElementById("login").innerHTML = "logout";
-					 document.getElementById("login").onclick="logout()"
+					 document.getElementById("login").onclick=function(){
+						 
+						 console.log("logout");
+							// <!-- %= session.setAttribute( "userid",null ) %> -->
+							
+							 var urlEncodedData = "";
+							var urlEncodedDataPairs = [];
+							var logout = true;
+							
+							
+							urlEncodedDataPairs.push(encodeURIComponent("logout") + '=' + encodeURIComponent(logout));
+							
+							
+							 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+							
+							
+							var xmlreq = new XMLHttpRequest();
+							xmlreq.open("post", "index");
+							xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+							xmlreq.send(urlEncodedData);
+							
+							xmlreq.onload=function(){
+								if (this.status==200){
+									
+									
+								}
+							}
+						 
+						 
+					 }
 				 }
 				 else{
 					 document.getElementById("login").innerHTML = "login";
-					 document.getElementById("login").onclick="logclick()"
+					 document.getElementById("login").onclick="logclick()";
 					 
 				 }
 				
@@ -345,7 +395,7 @@
 			var text = document.getElementById("chattextarea").value;
 			document.getElementById("chattextarea").value='';
 			
-			urlEncodedDataPairs.push(encodeURIComponent("usreing") + '=' + encodeURIComponent(ussing));
+			
 			urlEncodedDataPairs.push(encodeURIComponent("chatinputtext") + '=' + encodeURIComponent(text));
 			
 			
@@ -402,11 +452,11 @@
 			 
 			
 		}
-		
+		//body onLoad="refreshchat()"
 	</script>
 	</head>
 
-	<body body onLoad="refreshchat()">
+	<body>
 	
 	
 	
@@ -471,24 +521,39 @@
 			
 			
 			
-			
+		    var	count;
 			
 			function refreshchat(){
 				
 				
+				
+				var previousheight=document.getElementById('chattext').scrollHeight;
 				numposts=${ chatlength };
 				chat=${chatposts};
 				
-			//	console.log(chat);
+				console.log(chat);
 			//	console.log("${ user.username    }");
 			//	console.log(numposts);
-				  var count = Object.keys(chat).length;
+				  count = Object.keys(chat).length;
 				  console.log(count);
 				
-				 document.getElementById("chattext").innerHTML = "";
 				
-			
+				
+				var previousposts = document.getElementById('chattext').innerHTML;
+				document.getElementById("chattext").innerHTML = "";
 				var toAdd = document.createDocumentFragment();
+				
+				var neHr = document.createElement('hr');
+				var newbutt = document.createElement('button');
+				newbutt.innerHTML="show more posts";
+				newbutt.id="morepostsbutt";
+				//newbutt.onclick=  logout();
+				 toAdd.appendChild(newbutt);
+				 toAdd.appendChild(neHr);
+				
+				
+				
+				
 				for(var i=0; i < numposts; i++){
 				   var newDiv = document.createElement('div');
 				   var newHr = document.createElement('hr');
@@ -542,13 +607,41 @@
 				   toAdd.appendChild(newDiv);
 				   toAdd.appendChild(newHr);
 				}
-				
+				//toAdd.appendChild(previousposts);
 				document.getElementById("chattext").appendChild(toAdd);
+				//document.getElementById("chattext").appendChild(previousposts);
 				
 				
 				var element = document.getElementById("chattext");
-				element.scrollTo(0, element.scrollHeight);
+				element.scrollTo(0, previousheight);
 				//element.scrollTop = element.scrollHeight;
+				document.getElementById("morepostsbutt").onclick = function(){
+					console.log("sup");
+					
+					var urlEncodedData = "";
+					var urlEncodedDataPairs = [];
+					
+					
+					
+					urlEncodedDataPairs.push(encodeURIComponent("numberofpost") + '=' + encodeURIComponent(count));
+					
+					
+					 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+					
+					
+					var xmlreq = new XMLHttpRequest();
+					xmlreq.open("post", "index");
+					xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+					xmlreq.send(urlEncodedData);
+						
+					xmlreq.onload=function(){
+						if (this.status==200){
+								
+							refreshchat();
+						}
+					}
+					
+				};
 			}
 			
 			setInterval(refreshchat(),1);
@@ -591,7 +684,10 @@
 					<input name="newuser" type="submit" value="game 2!!!!!!!!" />
 				</form>
 			</li>
-			<li>game3</li>
+			<li><form action="${pageContext.servletContext.contextPath}/Game3window" method="get">
+					<input name="newuser" type="submit" value="game 3¡¡¡¡¡iIi¡¡¡¡¡¡" />
+				</form>
+			</li>
 		</ul>	
 		<%= session.getAttribute( "userid" ) %>
 		

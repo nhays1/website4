@@ -104,16 +104,6 @@ public class DerbyDatabase implements IDatabase {
 		
 	}
 	
-	
-	
-	//private void loadBook(usser book, ResultSet resultSet, int index) throws SQLException {
-	//	book.setBookId(resultSet.getInt(index++));
-	//	book.setAuthorId(resultSet.getInt(index++));
-	//	book.setTitle(resultSet.getString(index++));
-	//	book.setIsbn(resultSet.getString(index++));
-	//	book.setPublished(resultSet.getInt(index++));		
-	//}
-	
 	public void createTables() {
 		executeTransaction(new Transaction<Boolean>() {
 			public Boolean execute(Connection conn) throws SQLException {
@@ -128,13 +118,12 @@ public class DerbyDatabase implements IDatabase {
 									"	password varchar(64)," +
 									"	coins integer ," +
 									"   email varchar(64)" +
+									//"   isguset integer "+
 									")"
 					);	
 					stmt1.executeUpdate();
 					
 					stmt2 = conn.prepareStatement(
-						
-							
 							
 							"create table posts (" +
 							"	postid integer primary key " +
@@ -144,8 +133,6 @@ public class DerbyDatabase implements IDatabase {
 							"	timeposted bigint," +
 							"	posttext varchar(512)" +
 							")"
-					
-					
 
 					);
 					stmt2.executeUpdate(); 
@@ -178,28 +165,23 @@ public class DerbyDatabase implements IDatabase {
 				try {
 					
 					
+					//insertuser = conn.prepareStatement("insert into users (userid, username, password, coins, email,isguset) values (?, ?, ?, ?, ?,?)");
 					insertuser = conn.prepareStatement("insert into users (userid, username, password, coins, email) values (?, ?, ?, ?, ?)");
 					for (usser user : userlist) {
-//						insertBook.setInt(1, book.getBookId());		// auto-generated primary key, don't insert this
+				
 						
 						insertuser.setInt(1, user.getuserid());
 						insertuser.setString(2, user.getusername());
 						insertuser.setString(3, user.getpassword());
 						insertuser.setInt(4, user.getcoins());
 						insertuser.setString(5, user.getemail());
-						
+						//insertuser.setBoolean(6, user.getisguest());
 						
 					
 						insertuser.addBatch();
 					}
 					insertuser.executeBatch();
-					
-					
-					
-					
-					
-					
-					
+
 					// populate authors table (do authors first, since author_id is foreign key in books table)
 					insertpost = conn.prepareStatement("insert into posts (userid, username ,  timeposted , posttext) values (?, ?,?, ?)");
 					
@@ -242,8 +224,11 @@ public class DerbyDatabase implements IDatabase {
 		System.out.println("Success!");
 	}
 
-
-	public List<post> getposts_no_blacklist(int chatindex,int numposts) {
+	/**
+	 * this method retrives    (# numposts)  posts starting   (# chatindex) up from the last post currently without any blacklist
+	 * 
+	 */
+	public List<post> getposts_no_blacklist(final int chatindex,final int numposts) {
 		// TODO Auto-generated method stub
 		
 	
@@ -253,27 +238,31 @@ public class DerbyDatabase implements IDatabase {
 				ResultSet resultSet = null;
 				
 				try {
+					stmt = conn.prepareStatement(
+							"SELECT MAX(postid) " +
+							"FROM posts"
+							
+					);//gets the largest(newest) post id
 					
+					resultSet = stmt.executeQuery();
+
+						int totalposts=0 ;
+						if (resultSet.next()) 
+							totalposts =   (Integer) resultSet.getObject(1);//asumes the largest post index is also the number of posts
+
+						int bottomindexindb = totalposts-chatindex;   // bottom index is the newest post that is requested
+						int topindexindb = bottomindexindb - numposts;  //top index is the oldest post requested 
 					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+
 					stmt = conn.prepareStatement(
 							"select * from posts " 
-							
-					);
-					
-					
+							+"where postid >= ? " + 
+							" and postid <= ? "
+					);//selects everything between top and bottom
+					stmt.setInt(1, topindexindb);
+					stmt.setInt(2, bottomindexindb);
 					
 					
 					ArrayList<post> result=new ArrayList<post>();
@@ -285,9 +274,6 @@ public class DerbyDatabase implements IDatabase {
 					
 					while (resultSet.next()) {
 						found = true;
-						
-						// create new Author object
-						// retrieve attributes from resultSet starting with index 1
 						post post = new post();
 						loadpost(post, resultSet, 1);
 						
@@ -296,7 +282,7 @@ public class DerbyDatabase implements IDatabase {
 						
 					}
 					
-					// check if the title was found
+					// check if any posts were found
 					if (!found) {
 						System.out.println("no posts found");
 					}
@@ -318,18 +304,13 @@ public class DerbyDatabase implements IDatabase {
 					ResultSet resultSet = null;
 					
 					try {
-						// retreive all attributes from both Books and Authors tables
+						
 						stmt = conn.prepareStatement(
 								"select username   "
 								+"  from users  "
 								+"  where 	users.userid =  ?  "
-								
-								
-								
-							
 						);
 
-						// substitute the title entered by the user for the placeholder in the query
 						stmt.setInt(1, userid);
 						
 						
@@ -347,24 +328,13 @@ public class DerbyDatabase implements IDatabase {
 							
 							return null;
 						}
-						
-						
-						
-						
-						
+
 					stmt = conn.prepareStatement(
-							
-							
+	
 							"insert into posts (userid, username, timeposted, posttext)"
 							+" values( ? , ?, ?, ?)"
-							
-							
-						
 					);
-					
-					
-					
-					
+
 					stmt.setInt(1, userid);
 					stmt.setString(2, username);
 					stmt.setLong(3, mils_time);
@@ -372,20 +342,7 @@ public class DerbyDatabase implements IDatabase {
 					// execute the query
 					
 					stmt.executeUpdate();
-					
-				
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-					
-						
+
 					} finally {
 						DBUtil.closeQuietly(resultSet);
 						DBUtil.closeQuietly(stmt);
@@ -393,93 +350,47 @@ public class DerbyDatabase implements IDatabase {
 					return null;
 				}
 			});
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 	}
 
 	public usser getuser_by_id(final int id) {
 		// TODO Auto-generated method stub
 		
 		 return executeTransaction(new Transaction<usser>() {
-			 usser user = new usser();
+			 usser user = new usser(null, null );
+			 
 				public usser execute(Connection conn) throws SQLException {
 					
 					PreparedStatement stmt = null;
 					ResultSet resultSet = null;
 					
 					try {
-						// retreive all attributes from both Books and Authors tables
 						stmt = conn.prepareStatement(
 								"select *   "
 								+"  from users  "
 								+"  where 	users.userid =  ?  "
-								
-								
-								
-							
 						);
 
-						// substitute the title entered by the user for the placeholder in the query
 						stmt.setInt(1, id);
-						
-						
+
 						resultSet = stmt.executeQuery();
-						
-						
-						
-						
+
 						Boolean found = false;
 						
 						if (resultSet.next()) {
 							found = true;
-							
-							
-							
 							loaduser(user, resultSet, 1);
-							
-							
-							
-							
+	
 						}
-						
 						
 						if (!found) {
 							System.out.println("no posts found");
 							return null;
 						}
 						
-						
-						
-					
-						
 						DBUtil.closeQuietly(resultSet);
 						DBUtil.closeQuietly(stmt);
 						
-					
-						
-						
-						
-						
-						
-				
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-					
 						
 					} finally {
 						DBUtil.closeQuietly(resultSet);
@@ -489,36 +400,130 @@ public class DerbyDatabase implements IDatabase {
 				}
 			});
 		
+
+	}
+
+	public void addusertodb(final int userid, final String username,final String password,final String email,final int coins) {
+		// TODO Auto-generated method stubfinal
 		
-		 
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		executeTransaction(new Transaction<post>() {
+			public post execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+
+						stmt = conn.prepareStatement(
+
+								"insert into users (userid, username, password, coins, email) values (?, ?, ?, ?, ?)"
+
+						);
+				
+						stmt.setInt(1, userid);
+						stmt.setString(2, username);
+						stmt.setString(3, password);
+						stmt.setInt(4, coins);
+						stmt.setString(5, email);
+						
+						// execute the query
+				
+						stmt.executeUpdate();
+				
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+				return null;
+			}
+		});
 		
 	}
 
-	
+	public boolean checkdbcontainsuserid(final int id) {
+		// TODO Auto-generated method stub
+		
+		return executeTransaction(new Transaction<Boolean >() {
+			Boolean found = false;
+				public Boolean execute(Connection conn) throws SQLException {
+					
+					PreparedStatement stmt = null;
+					ResultSet resultSet = null;
+					
+					try {
+						stmt = conn.prepareStatement(
+								"select *   "
+								+"  from users  "
+								+"  where 	users.userid =  ?  "		
+							
+						);
+						stmt.setInt(1, id);
+						
+						
+						resultSet = stmt.executeQuery();
 
+						if (resultSet.next()) {
+							found = true;
+							
+							
+						}
+						
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+						
+						return found;
+				
+						
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
 
-		
-		
-		
-		
-		
-		
-		
-		
-		
 	}
-	
-	
-	
-	
 
+	public boolean checkdbcontainsusername(final String username) {
+		// TODO Auto-generated method stub
+		
+		return executeTransaction(new Transaction<Boolean >() {
+			Boolean found = false;
+				public Boolean execute(Connection conn) throws SQLException {
+					
+					PreparedStatement stmt = null;
+					ResultSet resultSet = null;
+					
+					try {
+						stmt = conn.prepareStatement(
+								"select *   "
+								+"  from users  "
+								+"  where 	users.username =  ?  "
+
+						);
+
+						stmt.setString(1, username);
+						
+						resultSet = stmt.executeQuery();
+						
+						if (resultSet.next()) {
+							found = true;
+						}
+
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+
+						
+						return found;
+
+						
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
+
+	}
+
+	}

@@ -30,6 +30,21 @@ public class FakeDatabase implements IDatabase {
 		return null;
 	}
 
+	public void addusertodb(int userid, String username, String password, String email, int coins) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean checkdbcontainsuserid(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean checkdbcontainsusername(String username) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	
 	
 	
