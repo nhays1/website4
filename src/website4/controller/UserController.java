@@ -12,7 +12,9 @@ import java.util.NoSuchElementException;
 
 import website4.database.DatabaseProvider;
 import website4.database.IDatabase;
+///import website4.database.DerbyDatabase.Transaction;
 import website4.databsecontroler.InitDatabase;
+import website4.model.post;
 import website4.model.usser;
 
 public class UserController {
@@ -139,9 +141,9 @@ public class UserController {
 
 	//Changes the user's password 
 	public void modifyPassword(String password){
-		//if(password != null && checkPasswordLength(password) == true) {
+		if(password != null && checkPasswordLength(password) == true) {
 			userModel.setpassword(password);
-		//}
+		}
 	}
 	
 	//Changes the user's user name
@@ -203,6 +205,9 @@ public class UserController {
 //			ResultSet resultSet = null;
 				
 /**			
+			executeTransaction(new Transaction<boolean>() {
+				public boolean execute(Connection conn) throws SQLException {
+			
 			try {
 
 				stmt = conn.prepareStatement("select username, email from userInfo where userName = ? and email = ?");
@@ -263,25 +268,5 @@ public class UserController {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
