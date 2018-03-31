@@ -6,8 +6,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import website4.model.per_game_scores;
 import website4.model.per_user_scores;
@@ -619,6 +623,60 @@ public class DerbyDatabase implements IDatabase {
 				}
 			});
 
+	}
+
+	public List<Map.Entry<Integer, Integer>> getper_game_scores(final String nameofthegame) {
+		// TODO Auto-generated method stub
+		return executeTransaction(new Transaction<List<Map.Entry<Integer, Integer>>>() {
+			public List<Map.Entry<Integer, Integer>> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							
+							"SELECT per_game_hs.hs , per_game_hs.userid"+
+							"FROM per_game_hs"+
+							"where per_game_hs.nameofthegame = ?"
+
+					);//gets the 
+					stmt.setString(1, nameofthegame);
+					
+					resultSet = stmt.executeQuery();
+
+					
+					List<Map.Entry<Integer, Integer>> result=new ArrayList<Map.Entry<Integer, Integer>>();
+
+					
+					// for testing that a result was returned
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						
+						// Entry<Integer, Integer> skore = null;
+						found = true;
+						int index=1;
+						index++;
+						int score=resultSet.getInt(index++);
+						int usid=resultSet.getInt(index++);		
+						
+						Map.Entry<Integer,Integer> skore =new AbstractMap.SimpleEntry<Integer, Integer>(usid, score);
+						System.out.println( "map score        "+skore);
+						result.add(skore);
+					}
+					
+					// check if any posts were found
+					if (!found) {
+						System.out.println("no posts found");
+					}
+					
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	}
