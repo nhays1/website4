@@ -15,15 +15,15 @@ import website4.database.IDatabase;
 import website4.databsecontroler.InitDatabase;
 import website4.model.usser;
 
-public class CoinGameController{
+public class CoinGame{
 	
 	private Random random;
 	private int flip;
 	private boolean isWin = false;
 	private int reward = 0;
-	private double betMultiplier = 2;
+	private final double betMultiplier = 2;  //the bet multiplier is specific to this game, no other game (because some may be harder or easier) should have this multiplier, otherwise users are essentially playing the same game
 	private int betAmnt = 0;
-	private int headsOrTails; //users selection
+	private int headsOrTails = 0; //users selection
 	
 	/*
 	 * Get form data from submitted HTML/JS for 
@@ -31,9 +31,12 @@ public class CoinGameController{
 	 * - Heads or Tails selection
 	 */
 	
+	public void flip() {
+		random = new Random();
+		flip = random.nextInt(2);
+	}
+	
 	public boolean getIsWin() {
-		random = new Random();		//creates new random obj
-		flip = random.nextInt(2);	//gives either a 1 or 2
 		if(headsOrTails == flip) {	//if headsOrTails (user submitted selection) == flip, they won
 			return true;
 		}	
