@@ -102,11 +102,7 @@ public class IndexServlet extends HttpServlet {
 		
 		
 		try {
-			
-			
-			
-			
-			
+
 			String chatinput =  req.getParameter("chatinputtext");
 			String username =  req.getParameter("username");
 			String password =  req.getParameter("password");

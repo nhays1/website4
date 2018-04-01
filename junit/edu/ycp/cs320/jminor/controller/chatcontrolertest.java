@@ -30,7 +30,7 @@ public class chatcontrolertest {
 	public void testaddtochat() {
 		chat.makenewpost(15210791386L, 1, "this si a psot");
 		
-		posts=(ArrayList<post>) chat.Getchat();
+		posts=(ArrayList<post>) chat.Getchat(10);
 		
 		assertEquals(incomingpost.Getusername() ,posts.get(posts.size()-1).Getusername());
 		

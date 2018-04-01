@@ -1,5 +1,6 @@
 package website4.database;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,4 +25,5 @@ public interface IDatabase {
 	 */
 	public List<Map.Entry<String, Integer>> getper_game_scores(String nameofthegame);//List<Map.Entry<Integer, Integer>>
 	public List<Map.Entry<String, Integer>> addscoretogmaedb(String nameofthegame,int userid,int score,String username );
+	public int[] getperuserscores(String nameofthegame,int userid);
 }

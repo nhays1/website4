@@ -692,7 +692,7 @@
 		<div id="featuredgames"> 
 		
 			<div class= "gamedisplay">
-				<img src="img/giphy.gif" />
+				<img src="img/giph.gif" />
 	
 				<div class="gametitle">
 					game1
@@ -701,7 +701,7 @@
 			</div>
 			
 			<div class= "gamedisplay">
-				<img src="img/giphy.gif" />
+				<img src="img/giph.gif" />
 	
 				<div class="gametitle">
 					game2
@@ -710,7 +710,7 @@
 			</div>
 			
 			<div class= "gamedisplay">
-				<img src="img/giphy.gif"  />
+				<img src="img/giph.gif"  />
 					
 				<div class="gametitle">
 					game3
@@ -720,7 +720,7 @@
 			
 			
 			<div class= "gamedisplay">
-				<img src="img/giphy.gif"  />
+				<img src="img/giph.gif"  />
 					
 				<div class="gametitle">
 					game4

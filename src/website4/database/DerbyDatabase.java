@@ -708,4 +708,9 @@ public class DerbyDatabase implements IDatabase {
 		return getper_game_scores(nameofthegame);
 	}
 
+	public int[] getperuserscores(String nameofthegame, int userid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
