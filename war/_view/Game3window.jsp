@@ -292,7 +292,7 @@
 			    		 console.log("block");
 			    		 mybulets.splice(i, 1);
 			    		 atacks.splice(v, 1);
-			    		 score++; 
+			    		 score++; //incrament the score when an atacking bulet is destroied
 			    		 
 			    	 }
 			    }
@@ -340,9 +340,9 @@
 			    	return;
 			    }
 			    
-			    myGameArea.clear();
-			    myGameArea.frameNo += 1;
-			    if (myGameArea.frameNo == 1 || everyinterval(50)) {
+			    myGameArea.clear();//clears exsisting stuf from the canvas
+			    myGameArea.frameNo += 1; // incraments frame number
+			    if (myGameArea.frameNo == 1 || everyinterval(50)) {//spawns a new atacking bullet every 50 frames
 			        
 			        innerspawnlimt = 200;
 			        outerspawnlimt = 500;
@@ -350,42 +350,40 @@
 			        //gwidth   ghight
 			        
 			        
-			        xspawn = Math.floor((Math.random()*((outerspawnlimt*2)+gwidth))-outerspawnlimt);
-			        yspawn = Math.floor((Math.random()*((outerspawnlimt*2)+ghight))-outerspawnlimt);
+			        xspawn = Math.floor((Math.random()*((outerspawnlimt*2)+gwidth))-outerspawnlimt);//randomly determins a spawn point between 200 and 500
+			        yspawn = Math.floor((Math.random()*((outerspawnlimt*2)+ghight))-outerspawnlimt); // from the origon
 			        var from=new Point(xspawn,yspawn);
 			        var to=new Point(origon.x,origon.y);
 			        var vected = new vector2d(0,0);
-			        vected.makefrompoints(from,to);
-			        vected.normalize();
-			        if(to.distance(from)>200)
+			        vected.makefrompoints(from,to);// makes a vector to represent the veloicity of the bullet
+			        vected.normalize();		// normalizes the vector
+			        if(to.distance(from)>innerspawnlimt)// if spawn is at least innerspawnlimt from origon add to atack bullet arry
 			        	atacks.push(new bulet(vected,from,"blue",false) );
 			        
-			        
-			    
 			    }
-			    for (i = 0; i < atacks.length; i += 1) {
+			    for (i = 0; i < atacks.length; i += 1) {//runs through and updates atack array
 			    	atacks[i].newPos(i,false);
 			    	atacks[i].update();
 			    }
-			   if(createbullet){
-				   mybulets.push(new bulet(pointing,origon,"black",true) );
+			   if(createbullet==true){ // if createbullet is true create a new bullit moving along the pointing vector  
+				   mybulets.push(new bulet(pointing,origon,"black",true) ); // 
 				   
 				   createbullet=false;
 			   }
-			   for(i=0;i<mybulets.length;i+=1){
+			   for(i=0;i<mybulets.length;i+=1){ // runs thtough and updates the my bullets array
 				   mybulets[i].newPos(i,true);
 				   mybulets[i].update();
-				   for(v=0;v<atacks.length; v++){
+				   for(v=0;v<atacks.length; v++){ //also check if any of my bulets have colided with atacking bullets
 					   mybulets[i].crashWith(atacks[v],i,v);
 					   
 				   }
 				   
 			   }
-			    myScore.text="SCORE: " + score;
+			    myScore.text="SCORE: " + score; //outbuts the score
 			    myScore.update();
 			    piece.update();
-			    myGamePiece.newPos();
-			    myGamePiece.update();
+			    myGamePiece.newPos(); 
+			    myGamePiece.update(); 
 			}
 
 			function everyinterval(n) {
