@@ -19,7 +19,7 @@ public class Game2windowservlet extends HttpServlet {
 		System.out.println("Gamewindow Servlet: doGet");	
 		
 		// call JSP to generate empty form
-		req.getRequestDispatcher("/_view/Gamewindow.jsp").forward(req, resp);
+		req.getRequestDispatcher("/_view/Game2window.jsp").forward(req, resp);
 	}
 	
 	@Override
@@ -35,7 +35,7 @@ public class Game2windowservlet extends HttpServlet {
 	
 		
 		// Forward to view to render the result HTML document
-		req.getRequestDispatcher("/_view/Gamewindow.jsp").forward(req, resp);
+		req.getRequestDispatcher("/_view/Game2window.jsp").forward(req, resp);
 	}
 
 	
