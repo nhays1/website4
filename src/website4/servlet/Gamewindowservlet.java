@@ -30,6 +30,7 @@ public class Gamewindowservlet extends HttpServlet {
 		
 		
 		
+		
 		// holds the error message text, if there is any
 		
 	

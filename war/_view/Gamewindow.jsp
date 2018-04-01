@@ -97,24 +97,27 @@
 		 </div>
 	
 		<div id=gamecontent>
-			
 		
 		
+		<form action="${pageContext.servletContext.contextPath}/Gamewindow" method="post">
+			<table>
+				<tr>
+					<td class="label">What will the coin be?</td>
+					<td><input type="Submit" name="heads" value="Heads""${heads}" /></td>
+					<td><input type="Submit" name="tails" value="Tails""${tails}" /></td>
+				</tr>
+				<tr>
+					<td class="label">Result:</td>
+					<td>${result}</td>
+				</tr>
+			</table>
+		</form>
 		
-		
+
 		</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
 		 <form action="${pageContext.servletContext.contextPath}/index" method="get">
 	 	<input type="Submit" name="chatsubmit" value="home">
 	 </form>
