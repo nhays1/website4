@@ -43,6 +43,11 @@
 		padding: 5px;
 		border: solid red;
 		}
+		.highscorecontainer{
+		
+		width:300px;
+		
+		}
 		#banner{
 		
 		margin-right:200px;
@@ -75,9 +80,12 @@
 		}
 		
 		#gamescores{
-		width:300px;
+		margin-left:10px;
+		float: left;
+		}
+		#userscores{
+		margin-left:500px;
 		
-		margin-left:160px;
 		
 		}
 		</style>
@@ -173,7 +181,7 @@
 			var gamescore=${gemescores};
 			
 			console.log(gamescore);
-			
+			var gravity=.05;
 			var score=0;
 			var myGamePiece;//this is the black spining ball
 			var piece;//larger stationary circle
@@ -259,9 +267,10 @@
 			function bulet(veloictyvector,origionpoint,color,mine){//serves as constructor for bullet class
 				this.x=origionpoint.x;
 				this.y=origionpoint.y;
-				this.vx=veloictyvector.x;
-				this.vy=veloictyvector.y;
+				this.vx=veloictyvector.x*1.4;
+				this.vy=veloictyvector.y*1.4;
 				this.ismine=mine;   //mine was a bool, is no longer used
+				this.gravitySpeed=0;
 				
 				this.update = function() {  // another method example
 					ctx = myGameArea.context; //not sure what this dose but its necicary for this to work
@@ -276,13 +285,16 @@
 												// mybullets is a boolean that signifies wheater or not this bulet was fired by or, at my tank thing
 						this.x+=this.vx;
 				    	this.y+=this.vy;
-				       // this.gravitySpeed += this.gravity;
+				        this.gravitySpeed +=.02;
 				       // this.y += this.vy + this.gravitySpeed;
 				     if(mybullets==true){//weather or not this bullet was fired by my tank
+				    	 this.y+= this.gravitySpeed+this.vy;
+				    	 this.x+=this.vx;
 				    	 if (this.x<0||this.y<0||this.y>ghight||this.x>gwidth){//if this was fired by my tank and then goes outside the border 
 					    		//mybulets.shift();								//remve it from the array
 			    				mybulets.splice(i, 1);	//js syntax for removing a single element from an array
-						    	//console.log(mybulets.length)
+						    	score-=.5;
+			    				//console.log(mybulets.length)
 					    	}
 				    	 
 				     }
@@ -381,7 +393,7 @@
 			   if(createbullet==true){ // if createbullet is true create a new bullit moving along the pointing vector  
 				   mybulets.push(new bulet(pointing,origon,"black",true) ); // 
 				   
-				   createbullet=false;
+				  createbullet=false;
 			   }
 			   for(i=0;i<mybulets.length;i+=1){ // runs thtough and updates the my bullets array
 				   mybulets[i].newPos(i,true);
@@ -450,23 +462,33 @@
 		 <form action="${pageContext.servletContext.contextPath}/index" method="get">
 	 	<input type="Submit" name="chatsubmit" value="home">
 	 </form>
-	<div id="gamescores">
+	<div id="gamescores" class="highscorecontainer">
 	
 	
 	
 	</div>
+	
+	<div id="userscores" class="highscorecontainer">
+	
+	
+	
+	</div>
+	
 		<script>
 		var gamescore=${gemescores};
+		var userscores=${userscores};
 		
 		var toAdd = document.createDocumentFragment();
+		 var newDiv = document.createElement('div');
+		 var newHr = document.createElement('hr');
+		 newDiv.className = 'gamescoreentry';
+		 newDiv.innerHTML ="overall high scores";
+		 toAdd.appendChild(newDiv);
+		 toAdd.appendChild(newHr);
 		
 		for(var i=0; i < gamescore.length; i++){
-			   var newDiv = document.createElement('div');
-			   var newHr = document.createElement('hr');
-			 
-			   var time= new Date();
-			   var now = time.getTime();
-
+				newDiv = document.createElement('div');
+			  	newHr = document.createElement('hr');
 			   
 			   var score=gamescore[i].value;
 			   var username=gamescore[i].key;
@@ -483,6 +505,38 @@
 			}
 			//toAdd.appendChild(previousposts);
 			document.getElementById("gamescores").appendChild(toAdd);
+			
+			// start user score
+			
+			var toAdd = document.createDocumentFragment();
+			var toAdd = document.createDocumentFragment();
+			 var newDiv = document.createElement('div');
+			 var newHr = document.createElement('hr');
+			 newDiv.className = 'gamescoreentry';
+			 newDiv.innerHTML ="your high scores";
+			 toAdd.appendChild(newDiv);
+			 toAdd.appendChild(newHr);
+			for(var i=1; i < userscores.length+1; i++){
+			   var newDiv = document.createElement('div');
+			   var newHr = document.createElement('hr');
+			 
+			   var score=""+i+" |-| "
+			   
+			   score+=userscores[i-1];
+			 
+			 
+			  
+			   //newDiv.id = 'r'+i;
+			   newDiv.className = 'gamescoreentry';
+			  
+			   newDiv.innerHTML = score;
+			  
+			   toAdd.appendChild(newDiv);
+			   toAdd.appendChild(newHr);
+			}
+			//toAdd.appendChild(previousposts);
+			document.getElementById("userscores").appendChild(toAdd);
+			
 			
 		
 		

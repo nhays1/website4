@@ -254,7 +254,7 @@
 		var loginvisable = false;
 		var ussing  = "${ user.username    }";
 		var isguest="${user.isguest}";
-		var usserid=${user.userid};
+		var usserid="${user.userid}";
 		var chat;
 		
 		

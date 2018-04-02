@@ -26,24 +26,23 @@ public class highscorecontroller {
 		
 		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();
-		//List<Map.Entry<String, Integer>> scores=db.getper_game_scores(gamename);
-		
-		
-		
-		//new LinkedList(map.entrySet()) and 
-		//Collections.sort(scores);
-		//return scores;
 		return db.getper_game_scores(gamename);
-		
 		
 	}
 	
+	public List<Integer> getuserscores(String gamename, int userid){
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		return db.getperuserscores(gamename, userid);
+
+	}
+	
+
 	public static void main(String[] args) throws IOException {
 		//String name="towerdef1";
 		//Gson gson = new GsonBuilder().create();
-		//String jsonchstpost = gson.toJson(getgamehighscores(name));
+		//String jsonchstpost = gson.toJson(addtouserscores(name,4,50));
 		//System.out.println(jsonchstpost);
-		
 		
 	}
 	
@@ -54,7 +53,12 @@ public class highscorecontroller {
 		return db.addscoretogmaedb(nameofthegame, userid, score, username);
 	}
 	
-	
+	public List<Integer> addtouserscores(String nameofthegame,int userid,int score){
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		db.addtouserscores(nameofthegame, userid, score);
+		return db.getperuserscores(nameofthegame, userid);
+	}
 	
 	
 	

@@ -61,10 +61,16 @@ public class FakeDatabase implements IDatabase {
 		return null;
 	}
 
-	public int[] getperuserscores(String nameofthegame, int userid) {
+	public List<Integer> getperuserscores(String nameofthegame, int userid) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public void addtouserscores(String nameofthegame, int userid, int score) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	
 	
