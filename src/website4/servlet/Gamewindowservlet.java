@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import website4.controller.CoinGame;
+
 
 
 public class Gamewindowservlet extends HttpServlet {
@@ -28,7 +30,7 @@ public class Gamewindowservlet extends HttpServlet {
 		
 		System.out.println("Gamewindow Servlet: doPost");
 		
-		
+		CoinGame cg = new CoinGame();
 		
 		
 		// holds the error message text, if there is any
