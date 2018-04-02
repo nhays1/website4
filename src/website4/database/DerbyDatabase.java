@@ -1,6 +1,7 @@
 package website4.database;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,11 +9,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
+
+//import com.google.gson.Gson;
+//import com.google.gson.GsonBuilder;
 
 import website4.model.per_game_scores;
 import website4.model.per_user_scores;
@@ -681,8 +684,6 @@ public class DerbyDatabase implements IDatabase {
 					ResultSet resultSet = null;
 					
 					try {
-						
-						
 
 					stmt = conn.prepareStatement(
 	
@@ -697,7 +698,48 @@ public class DerbyDatabase implements IDatabase {
 					// execute the query
 					
 					stmt.executeUpdate();
+					
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					
+					stmt = conn.prepareStatement(
+							
+							"SELECT per_game_hs.hs "+
+							"FROM per_game_hs "+
+							"where per_game_hs.nameofthegame = ? "+
+							"ORDER BY per_game_hs.hs DESC"
 
+					);//gets the 
+					stmt.setString(1, nameofthegame);
+					
+					resultSet = stmt.executeQuery();
+					ArrayList<Integer> scored=new ArrayList<Integer>();
+					while (resultSet.next()) {
+						int index=1;	
+						scored.add(resultSet.getInt(index++));
+					}
+					ArrayList<Integer> remove=new ArrayList<Integer>();
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					if(scored.size()>10) {
+						remove.addAll(scored.subList(10, scored.size()-1));
+						for(int i=0;i<remove.size();i++) {
+							stmt = conn.prepareStatement(
+								
+								"DELETE "+
+								"FROM per_game_hs "+
+								"where per_game_hs.nameofthegame = ? and per_game_hs.hs= ? "
+							);
+							stmt.setString(1, nameofthegame);
+							stmt.setInt(2, remove.get(i));
+						
+							stmt.executeUpdate();
+							
+							DBUtil.closeQuietly(stmt);
+						}
+					}
+					
+					
 					} finally {
 						DBUtil.closeQuietly(resultSet);
 						DBUtil.closeQuietly(stmt);
@@ -708,9 +750,154 @@ public class DerbyDatabase implements IDatabase {
 		return getper_game_scores(nameofthegame);
 	}
 
-	public int[] getperuserscores(String nameofthegame, int userid) {
+	public List<Integer> getperuserscores(String nameofthegame, final int userid) {
 		// TODO Auto-generated method stub
-		return null;
+
+		//final usser user=getuser_by_id(userid);
+		
+		return executeTransaction(new Transaction<List<Integer>>() {
+			public List<Integer> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"SELECT hs0 , hs1, hs2, hs3, hs4, hs5, hs6, hs7, hs8, hs9 " +
+							"FROM per_user_hs  "+
+							"where  per_user_hs.userid= ?"
+					);
+					stmt.setInt(1,userid);
+					
+					
+					resultSet = stmt.executeQuery();
+					List<Integer> result= new ArrayList<Integer>();
+					Boolean found = false;
+						if (resultSet.next()) {
+							found=true;
+							for(int i=1;i<11;i++) {
+								int score=resultSet.getInt(i);
+								result.add(score);
+							}
+							
+						}
+							
+
+					
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+
+					
+					
+					// check if any posts were found
+					if (!found) {
+						System.out.println("no user score found");
+					}
+					
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	public void addtouserscores(final String nameofthegame, final int userid, final int score) {
+		// TODO Auto-generated method stub
+		
+		 executeTransaction(new Transaction<post>() {
+				public post execute(Connection conn) throws SQLException {
+					
+					
+					
+					List<Integer> existingscores= getperuserscores(nameofthegame,userid);
+					//Gson gson = new GsonBuilder().create();
+					//System.out.println(gson.toJson(existingscores));
+					existingscores.add(score);
+					Collections.sort(existingscores);
+					//System.out.println(gson.toJson(existingscores));
+					Collections.reverse(existingscores);
+					//System.out.println(gson.toJson(existingscores));
+					
+					PreparedStatement stmt = null;
+					ResultSet resultSet = null;
+					if(existingscores.size()<=10) {
+						for(int i=0;i<(25-existingscores.size());i++ ) {
+							existingscores.add(0);
+						}
+						//System.out.println(gson.toJson(existingscores));
+					}
+					try {
+						
+						stmt = conn.prepareStatement(
+								"select hs0   "
+								+"FROM per_user_hs  "+
+								" where  per_user_hs.userid= ?"
+						);
+
+						stmt.setInt(1, userid);
+						
+						
+						resultSet = stmt.executeQuery();
+						
+						Integer test = null;
+						if (resultSet.next()) 
+							test =  resultSet.getInt(1);
+						
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+						
+						if (test==null) {
+							stmt = conn.prepareStatement(
+									
+									"insert into per_user_hs (userid, nameofthegame,  "
+											+ "hs0 , hs1, hs2, hs3, hs4, hs5, hs6, hs7, hs8, hs9) values (?, ?,    ?,?,?,?,?,?,?,?,?,?)"
+											
+							);
+							stmt.setInt(1, userid);
+							stmt.setString(2, nameofthegame);
+							for(int v=0;v<10;v++) {
+								stmt.setInt(3+v,existingscores.get(v) );
+								
+							}
+							stmt.executeUpdate();
+						}
+						else {
+					
+						stmt = conn.prepareStatement(
+									
+							"UPDATE per_user_hs "+
+							" set hs0= ? , hs1= ? , hs2= ? , hs3= ? , hs4= ? , hs5= ? , hs6= ? , hs7= ? , hs8= ? , hs9= ?  "
+							+ "where userid = ? and nameofthegame = ?  "
+									
+									
+						);
+						for(int v=1;v<=10;v++) {
+							stmt.setInt(v,existingscores.get(v-1) );
+							
+						}
+						stmt.setInt(11, userid);
+						stmt.setString(12, nameofthegame);
+						
+						stmt.executeUpdate();
+						}
+						
+						
+						// execute the query
+					
+						stmt.executeUpdate();
+
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+					}
+					return null;
+				}
+			});
+		
+		
+		
+		
 	}
 
 }

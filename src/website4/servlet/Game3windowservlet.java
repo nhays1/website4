@@ -43,6 +43,7 @@ public class Game3windowservlet extends HttpServlet {
 		
 		Gson gson = new GsonBuilder().create();
 		String jsongamescore = gson.toJson(scorectrl.getgamehighscores(gamename));
+		
 		System.out.println(jsongamescore);
 		
 		
@@ -63,6 +64,7 @@ public class Game3windowservlet extends HttpServlet {
 			user=usecontrol.createguestuser();
 			
 		}
+		String jsonuserscore=gson.toJson(scorectrl.getuserscores(gamename, user.getuserid()));
 		req.getSession().setAttribute("userid", user.getuserid());
 		//
 		chatlength=chatposts.size();
@@ -72,6 +74,7 @@ public class Game3windowservlet extends HttpServlet {
 		
 		req.setAttribute("chatposts", jsonchstpost);
 		req.setAttribute("gemescores", jsongamescore);
+		req.setAttribute("userscores", jsonuserscore);
 		req.setAttribute("chatlength", chatlength);
 		
 		
@@ -96,7 +99,7 @@ public class Game3windowservlet extends HttpServlet {
 		highscorecontroller scorectrl= new highscorecontroller();
 		Gson gson = new GsonBuilder().create();
 		String jsongamescore = "";
-		
+		String jsonuserscore="";
 		//
 		usser user = null;
 		Integer userid = (Integer) req.getSession().getAttribute("userid");
@@ -118,10 +121,12 @@ public class Game3windowservlet extends HttpServlet {
 			
 			
 			String skore= req.getParameter("score");
+			
 			if(skore!=null) {
-				score =Integer.parseInt(skore);
+				score =(int) (Math.round( Double.valueOf(skore)));
 				
 				jsongamescore = gson.toJson(scorectrl.addscoretodb(gamename, user.getuserid(), score, user.getusername()));
+				jsonuserscore=gson.toJson(scorectrl.addtouserscores(gamename, user.getuserid(), score));
 				System.out.println("score json      _"+jsongamescore);
 			}
 			System.out.println("score      _"+score);
@@ -214,6 +219,7 @@ public class Game3windowservlet extends HttpServlet {
 		
 		req.setAttribute("chatposts", jsonchstpost);
 		req.setAttribute("chatlength", chatlength);
+		req.setAttribute("userscores", jsonuserscore);
 		req.setAttribute("user", user);
 		req.setAttribute("gemescores", jsongamescore);
 		

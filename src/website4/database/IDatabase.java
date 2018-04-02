@@ -25,5 +25,6 @@ public interface IDatabase {
 	 */
 	public List<Map.Entry<String, Integer>> getper_game_scores(String nameofthegame);//List<Map.Entry<Integer, Integer>>
 	public List<Map.Entry<String, Integer>> addscoretogmaedb(String nameofthegame,int userid,int score,String username );
-	public int[] getperuserscores(String nameofthegame,int userid);
+	public List<Integer> getperuserscores(String nameofthegame,int userid);
+	public void addtouserscores(String nameofthegame,int userid,int score);
 }
