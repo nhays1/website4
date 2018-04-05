@@ -130,6 +130,7 @@
 				  constructor(x, y) {//constructor  js classes/functions store variables as this.variablename
 				    this.x = x;
 				    this.y = y;
+				    this.veloicity=new vector2d(0,0);
 				  }
 
 				   distance( p2) {//example method retuns distance between this and input point
@@ -197,6 +198,12 @@
 			var gwidth=document.getElementById("gamecontent").clientWidth;
 			var ghight=document.getElementById("gamecontent").clientHeight;
 			//  gwidth   ghight
+			var right = false;
+			var left = false;
+			var up = false;
+			var down = false;
+			
+			
 			function startGame() {
 			  
 			    myGamePiece = new circle(10,200,200,"black");   //inicalizes the game piece oblects
@@ -243,6 +250,32 @@
 				        pointing.normalize()
 				        //console.log(pointing);
 				      });
+				      
+				 	document.addEventListener("keydown", function(e) {
+					 		
+				 		
+				 		switch ( event.keyCode ) {
+				 		
+							case 87: /*W*/ up =true ; break;
+							case 83: /*S*/ down =true ; break;
+
+							case 65: /*A*/ left=true; break;
+							case 68: /*D*/ right=true; break;
+						}
+					 });
+					document.addEventListener("keyup", function(e) {
+					 		
+				 		
+				 		switch ( event.keyCode ) {
+				 		
+							case 87: /*W*/ up =false ; break;
+							case 83: /*S*/ down =false ; break;
+
+							case 65: /*A*/ left=false; break;
+							case 68: /*D*/ right=false; break;
+						}
+					 });
+				      
 				 	this.canvas.addEventListener("mousedown", function(e) {
 				 		
 				 		createbullet=true;//on mouse click alerts another method to create a bulet see   updateGameArea()
@@ -335,9 +368,16 @@
 				  	ctx.arc(this.x, this.y, this.radius, 0, Math.PI* 2, 0);
 				  	ctx.fill();
 				}
-				this.newPos = function() {///  this is only used for the moving turrett it moves the nnormalized pointin vector at a 
-			    	this.x=origon.x+pointing.x*20;	// radius of 20
-			    	this.y=origon.y+pointing.y*20;
+				this.newPos = function(isgun) {///  this is only used for the moving turrett it moves the nnormalized pointin vector at a 
+					if(isgun==true){
+						this.x=origon.x+pointing.x*20;	// radius of 20
+				    	this.y=origon.y+pointing.y*20;
+					}
+					else{
+						this.x=origon.x;	// radius of 20
+				    	this.y=origon.y;
+					}
+			    	
 			     
 			    }
 			}
@@ -406,11 +446,40 @@
 			   }
 			    myScore.text="SCORE: " + score; //outbuts the score
 			    myScore.update();
+			    piece.newPos(false); 
 			    piece.update();
-			    myGamePiece.newPos(); 
+			    myGamePiece.newPos(true); 
 			    myGamePiece.update(); 
+			    updateorigion();
 			}
-
+			
+			function updateorigion(){
+				origon.veloicity.y+=.02;
+				if(up){
+					//console.log("up");.02
+					origon.veloicity.y-=.1;
+				}
+				if(down){
+					//console.log("down");
+					origon.veloicity.y+=.1;
+				}
+				if(left){
+					origon.veloicity.x-=.1;
+				}
+				if(right){
+					origon.veloicity.x+=.1;
+				}
+				if(origon.x>0.5&&origon.x<gwidth-.5){
+					
+					origon.x+=origon.veloicity.x;
+				}
+				
+				//origon.x+=origon.veloicity.x;
+				origon.y+=origon.veloicity.y;
+				//this.x<0||this.y<0||this.y>ghight||this.x>gwidth
+			}
+			
+			
 			function everyinterval(n) {
 			    if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
 			    return false;
@@ -437,14 +506,6 @@
 				
 			}
 				
-			
-			
-			
-			
-			
-			
-			
-			
 				
 			</script>
 		</div>
