@@ -5,11 +5,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import website4.controller.UserController;
 import website4.model.post;
 import website4.model.usser;
 import website4.sqldemo.DBUtil;
@@ -253,21 +254,7 @@ public class DerbyDatabase implements IDatabase {
 				ResultSet resultSet = null;
 				
 				try {
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
+
 					stmt = conn.prepareStatement(
 							"select * from posts " 
 							
@@ -309,7 +296,75 @@ public class DerbyDatabase implements IDatabase {
 			}
 		});
 	}
+	
+	public void createUser(String username, String password, String email) {
+		
+	}
+	
+	
+	
+	public boolean isValid(final String username, String password, final String email) {
+		return executeTransaction(new Transaction<Boolean>() {
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
 
+				
+					stmt = conn.prepareStatement("select username, email from userInfo where userName = ? and email = ?");
+					stmt.setString(1, username);
+					stmt.setString(2, email);
+					//////////////////////////////////////////////////////
+					resultSet = stmt.executeQuery();
+					ResultSetMetaData resultSchema = stmt.getMetaData();
+					int rowsReturned = 0;
+
+					while (resultSet.next()) {
+							// startBlock: this block will probably be removed later
+						for (int i = 1; i <= resultSchema.getColumnCount(); i++) {
+							Object obj = resultSet.getObject(i);
+							if (i > 1) {
+								System.out.print(",");
+							}
+							System.out.print(obj.toString());
+							// endBlock
+						}
+						// System.out.println();
+						// count # of rows returned
+						rowsReturned++;
+					}
+					// indicate if the query returned nothing
+					if (rowsReturned == 0) {
+						return true;
+					}
+				} // end of try block
+	
+				 finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+				return false;
+			}
+		});
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public void addpost(final long mils_time, final int userid, final String posttext) {
 		 executeTransaction(new Transaction<post>() {
 				public post execute(Connection conn) throws SQLException {
@@ -323,10 +378,7 @@ public class DerbyDatabase implements IDatabase {
 								"select username   "
 								+"  from users  "
 								+"  where 	users.userid =  ?  "
-								
-								
-								
-							
+						
 						);
 
 						// substitute the title entered by the user for the placeholder in the query
@@ -347,23 +399,15 @@ public class DerbyDatabase implements IDatabase {
 							
 							return null;
 						}
-						
-						
-						
-						
+
 						
 					stmt = conn.prepareStatement(
 							
 							
 							"insert into posts (userid, username, timeposted, posttext)"
 							+" values( ? , ?, ?, ?)"
-							
-							
-						
+	
 					);
-					
-					
-					
 					
 					stmt.setInt(1, userid);
 					stmt.setString(2, username);
@@ -372,20 +416,7 @@ public class DerbyDatabase implements IDatabase {
 					// execute the query
 					
 					stmt.executeUpdate();
-					
-				
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-					
-						
+
 					} finally {
 						DBUtil.closeQuietly(resultSet);
 						DBUtil.closeQuietly(stmt);
@@ -394,14 +425,7 @@ public class DerbyDatabase implements IDatabase {
 				}
 			});
 		
-		
-		
-		
-		
-		
-		
-		
-		
+
 	}
 
 	public usser getuser_by_id(final int id) {
@@ -420,10 +444,7 @@ public class DerbyDatabase implements IDatabase {
 								"select *   "
 								+"  from users  "
 								+"  where 	users.userid =  ?  "
-								
-								
-								
-							
+						
 						);
 
 						// substitute the title entered by the user for the placeholder in the query
@@ -431,8 +452,6 @@ public class DerbyDatabase implements IDatabase {
 						
 						
 						resultSet = stmt.executeQuery();
-						
-						
 						
 						
 						Boolean found = false;
@@ -445,8 +464,6 @@ public class DerbyDatabase implements IDatabase {
 							loaduser(user, resultSet, 1);
 							
 							
-							
-							
 						}
 						
 						
@@ -456,30 +473,12 @@ public class DerbyDatabase implements IDatabase {
 						}
 						
 						
-						
-					
-						
 						DBUtil.closeQuietly(resultSet);
 						DBUtil.closeQuietly(stmt);
 						
 					
 						
-						
-						
-						
-						
 				
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-					
 						
 					} finally {
 						DBUtil.closeQuietly(resultSet);
@@ -488,37 +487,9 @@ public class DerbyDatabase implements IDatabase {
 					return user;
 				}
 			});
-		
-		
-		 
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	}
-
 	
-
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
 	}
 	
-	
-	
+	}
 	
 
