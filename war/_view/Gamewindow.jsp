@@ -115,12 +115,19 @@
 				</tr>
 				</tr>
 				<tr>
-					<td class="label" name="flip" value="">FLIP!</td>
-					<td><input type="submit" name="flip" size="12" value="${flip}" /></td>
+					<td><input type="submit" name="flip" size="12" value="FLIP" /></td>
+				</tr>
+				<tr>
+					<td class="label">User Chose:</td>
+					<td>${choice}</td>
 				</tr>
 				<tr>
 					<td class="label">Result:</td>
 					<td>${result}</td>
+				</tr>
+				<tr>
+					<td class="label">User:</td>
+					<td>${transaction}</td>
 				</tr>
 			</table>
 		</form>

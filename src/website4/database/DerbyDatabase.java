@@ -254,20 +254,6 @@ public class DerbyDatabase implements IDatabase {
 				
 				try {
 					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
 					stmt = conn.prepareStatement(
 							"select * from posts " 
 							
@@ -348,10 +334,6 @@ public class DerbyDatabase implements IDatabase {
 							return null;
 						}
 						
-						
-						
-						
-						
 					stmt = conn.prepareStatement(
 							
 							
@@ -359,11 +341,7 @@ public class DerbyDatabase implements IDatabase {
 							+" values( ? , ?, ?, ?)"
 							
 							
-						
 					);
-					
-					
-					
 					
 					stmt.setInt(1, userid);
 					stmt.setString(2, username);
@@ -373,19 +351,6 @@ public class DerbyDatabase implements IDatabase {
 					
 					stmt.executeUpdate();
 					
-				
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-					
-						
 					} finally {
 						DBUtil.closeQuietly(resultSet);
 						DBUtil.closeQuietly(stmt);
@@ -393,14 +358,6 @@ public class DerbyDatabase implements IDatabase {
 					return null;
 				}
 			});
-		
-		
-		
-		
-		
-		
-		
-		
 		
 	}
 
@@ -421,9 +378,6 @@ public class DerbyDatabase implements IDatabase {
 								+"  from users  "
 								+"  where 	users.userid =  ?  "
 								
-								
-								
-							
 						);
 
 						// substitute the title entered by the user for the placeholder in the query
@@ -440,12 +394,7 @@ public class DerbyDatabase implements IDatabase {
 						if (resultSet.next()) {
 							found = true;
 							
-							
-							
 							loaduser(user, resultSet, 1);
-							
-							
-							
 							
 						}
 						
@@ -456,30 +405,9 @@ public class DerbyDatabase implements IDatabase {
 						}
 						
 						
-						
-					
-						
 						DBUtil.closeQuietly(resultSet);
 						DBUtil.closeQuietly(stmt);
 						
-					
-						
-						
-						
-						
-						
-				
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-					
 						
 					} finally {
 						DBUtil.closeQuietly(resultSet);
@@ -490,31 +418,9 @@ public class DerbyDatabase implements IDatabase {
 			});
 		
 		
-		 
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 	}
 
-	
-
-
-		
-		
-		
-		
-		
-		
-		
-		
 		
 	}
 	

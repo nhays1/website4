@@ -10,7 +10,7 @@ import org.junit.Test;
 import website4.controller.CoinGame;
 
 
-public class CoinGameControllerTest {
+public class CoinGameTest {
 	
 	private CoinGame cg;
 	int bet1;
