@@ -19,6 +19,7 @@ public class Triplet <T, U, V> {
 	    public T getFirst() { return first; }
 	    public U getSecond() { return second; }
 	    public V getThird() { return third; }
+	    
 	}
 
 //This code was taken from stackoverflow by username Osguima3

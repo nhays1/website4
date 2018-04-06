@@ -29,6 +29,7 @@ public class DerbyDatabase implements IDatabase {
 	}
 
 	private static final int MAX_ATTEMPTS = 10;
+	private Connection conn;
 
 
 	
@@ -297,9 +298,47 @@ public class DerbyDatabase implements IDatabase {
 		});
 	}
 	
-	public void createUser(String username, String password, String email) {
+	public void createUser(final String userName, final String password, final String email) throws SQLException {
+		executeTransaction(new Transaction<post>() {
+			private Connection conn2;
+
+			public post execute(Connection conn) throws SQLException {
 		
+		if (userName != null && password != null && email != null) {
+			boolean validInfo = isValid(userName, password, email);
+			PreparedStatement insertNewID = null;
+			conn = null;
+			if (validInfo == true) {
+				// Add information to database
+				//user.add(new usser(userName, password, email));
+				//Finish this implementation after we have a database		
+
+				String newID = "insert into users(username, password) values (?, ?)";
+				conn2 = conn;
+				insertNewID = conn2.prepareStatement(newID);
+				insertNewID.setString(1, userName);
+				insertNewID.setString(2, password);
+				insertNewID.execute();
+
+			}
+			
+			else {
+				//send error to user that account already exists with user or email
+				
+			}
+			
+		}
+		else {
+			//send error to user that information entered was not valid
+		}
+		return null;
+		
+			}
+			});
 	}
+	
+	
+	
 	
 	
 	
@@ -312,35 +351,26 @@ public class DerbyDatabase implements IDatabase {
 				try {
 
 				
-					stmt = conn.prepareStatement("select username, email from userInfo where userName = ? and email = ?");
+					stmt = conn.prepareStatement("select username, email from users where username = ? and email = ?");
 					stmt.setString(1, username);
 					stmt.setString(2, email);
-					//////////////////////////////////////////////////////
+				
 					resultSet = stmt.executeQuery();
-					ResultSetMetaData resultSchema = stmt.getMetaData();
+				
 					int rowsReturned = 0;
 
 					while (resultSet.next()) {
-							// startBlock: this block will probably be removed later
-						for (int i = 1; i <= resultSchema.getColumnCount(); i++) {
-							Object obj = resultSet.getObject(i);
-							if (i > 1) {
-								System.out.print(",");
-							}
-							System.out.print(obj.toString());
-							// endBlock
-						}
-						// System.out.println();
-						// count # of rows returned
 						rowsReturned++;
 					}
+					
 					// indicate if the query returned nothing
 					if (rowsReturned == 0) {
 						return true;
 					}
-				} // end of try block
+					
+				// end of try block
 	
-				 finally {
+			} finally {
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
 				}
@@ -348,22 +378,6 @@ public class DerbyDatabase implements IDatabase {
 			}
 		});
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	public void addpost(final long mils_time, final int userid, final String posttext) {
 		 executeTransaction(new Transaction<post>() {
