@@ -7,6 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import website4.controller.CoinGame;
+import website4.controller.UserController;
+import website4.model.usser;
+
 
 
 public class Gamewindowservlet extends HttpServlet {
@@ -26,18 +30,109 @@ public class Gamewindowservlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
+		usser currentUser = null;
+		UserController uc = new UserController();
+		
+        Integer userid = (Integer) req.getSession().getAttribute("userid");
+        if(userid!=null) {
+            UserController control=new UserController();
+            currentUser=control.getuserbyid(userid);
+
+        }
+
+        if(currentUser==null) {//if user id was not found creates a new guest 
+            currentUser= new usser();
+        }
+		
+		uc.getuserbyid(currentUser.getuserid());
+		
 		System.out.println("Gamewindow Servlet: doPost");
-		
-		
+		CoinGame cg = new CoinGame();
+		String choice = " ";
+		int userBet = 0;
+		int reward = 0;
+		boolean isWin = false;
+		String result = " ";
+		int userSelection = 0;
+		String transactMsg = "";
 		
 		// holds the error message text, if there is any
+		String errorMessage = null;
 		
-	
+		try {
+			
+			userBet = getInteger(req, "userBet");
+			
+			choice = getChoice(req, "choice");
+			try {
+				choice = getChoice(req, "choice");
+				if (choice == null) {
+					
+				}
+			}catch(NullPointerException e) {
+				errorMessage = "Please select an option";
+			}
+			
+			errorMessage = "choice is null";
+			
+			if(choice.equals("heads")) {
+				userSelection = 1;
+			}
+			else {
+				userSelection = 0;
+			}
+			
+			
+			
+			// check for errors in the form data before using is in a calculation
+			if (userBet <= 0) {
+				errorMessage = "Please enter a valid Bet Amount";
+			}
+			// otherwise, data is good, do the calculation
+			// must create the controller each time, since it doesn't persist between POSTs
+			// the view does not alter data, only controller methods should be used for that
+			// thus, always call a controller method to operate on the data
+			else {
+				cg.setSelection(userSelection);
+				cg.setBet(userBet);
+				cg.flip();
+				isWin = cg.getIsWin();
+				reward = cg.getReward();
+				
+			}
+		} catch (NumberFormatException e) {
+			errorMessage = "Invalid Input";
+		}
 		
-		// Forward to view to render the result HTML document
+		req.setAttribute("userBet", req.getParameter("userBet"));
+		
+		if(isWin) {
+			result = "You have won the coin toss vs. CPU!";
+			currentUser.setcoins(currentUser.getcoins() + reward);
+			transactMsg = transactMsg.concat("User " + currentUser.getusername() + " has won " + reward + " Coins!");
+			
+			//add user updates here
+		}
+		else {
+			result = "You have lost the coin toss vs. CPU...";
+			reward = 0 - userBet;
+			currentUser.setcoins(currentUser.getcoins() + reward);
+			transactMsg = transactMsg.concat("User " + currentUser.getusername() + " has lost " + userBet + " Coins!");
+			//add user updates here
+		}
+		
+        req.getSession().setAttribute("userid", currentUser.getuserid());
+        req.setAttribute("choice", choice);
+		req.setAttribute("transaction", transactMsg);
+		req.setAttribute("result", result);
 		req.getRequestDispatcher("/_view/Gamewindow.jsp").forward(req, resp);
 	}
 
-	
+	private int getInteger(HttpServletRequest req, String name) {
+		return Integer.parseInt(req.getParameter(name));
+	}
+	private String getChoice(HttpServletRequest req, String choice) {
+		return req.getParameter(choice);
+	}
 	
 }

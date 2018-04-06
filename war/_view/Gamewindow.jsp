@@ -65,6 +65,9 @@
 		}
 		
 		</style>
+		
+		
+		
 	</head>
 
 	<body>
@@ -98,23 +101,41 @@
 	
 		<div id=gamecontent>
 		
-		
-		
-		
-		
+		<form action="${pageContext.servletContext.contextPath}/Gamewindow" method="post">
+			<table>
+				<tr>
+					<td class="label">Bet Amount:</td>
+					<td><input type="text" name="userBet" size="12" value="${userBet}" /></td>
+				</tr>
+				<tr>
+					<form action="choice">
+  					<input type="radio" name="choice" value="heads"> Heads<br>
+  					<input type="radio" name="choice" value="tails"> Tails<br>
+  					</form>
+				</tr>
+				</tr>
+				<tr>
+					<td><input type="submit" name="flip" size="12" value="FLIP" /></td>
+				</tr>
+				<tr>
+					<td class="label">User Chose:</td>
+					<td>${choice}</td>
+				</tr>
+				<tr>
+					<td class="label">Result:</td>
+					<td>${result}</td>
+				</tr>
+				<tr>
+					<td class="label">User:</td>
+					<td>${transaction}</td>
+				</tr>
+			</table>
+		</form>
+
 		</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
 		 <form action="${pageContext.servletContext.contextPath}/index" method="get">
 	 	<input type="Submit" name="chatsubmit" value="home">
 	 </form>
