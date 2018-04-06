@@ -2,6 +2,7 @@ package website4.database;
 
 <<<<<<< HEAD
 import java.lang.reflect.Array;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,4 +30,6 @@ public interface IDatabase {
 	public List<Map.Entry<String, Integer>> addscoretogmaedb(String nameofthegame,int userid,int score,String username );
 	public List<Integer> getperuserscores(String nameofthegame,int userid);
 	public void addtouserscores(String nameofthegame,int userid,int score);
+	public void createUser(String userName, String password, String email)throws SQLException;
+	public boolean isValid(final String userName, String password,final String email) throws SQLException;
 }
