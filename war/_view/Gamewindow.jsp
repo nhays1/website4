@@ -65,6 +65,9 @@
 		}
 		
 		</style>
+		
+		
+		
 	</head>
 
 	<body>
@@ -98,13 +101,22 @@
 	
 		<div id=gamecontent>
 		
-		
 		<form action="${pageContext.servletContext.contextPath}/Gamewindow" method="post">
 			<table>
 				<tr>
-					<td class="label">What will the coin be?</td>
-					<td><input type="Submit" name="heads" value="Heads""${heads}" /></td>
-					<td><input type="Submit" name="tails" value="Tails""${tails}" /></td>
+					<td class="label">Bet Amount:</td>
+					<td><input type="text" name="userBet" size="12" value="${userBet}" /></td>
+				</tr>
+				<tr>
+					<form action="choice">
+  					<input type="radio" name="choice" value="heads"> Heads<br>
+  					<input type="radio" name="choice" value="tails"> Tails<br>
+  					</form>
+				</tr>
+				</tr>
+				<tr>
+					<td class="label" name="flip" value="">FLIP!</td>
+					<td><input type="submit" name="flip" size="12" value="${flip}" /></td>
 				</tr>
 				<tr>
 					<td class="label">Result:</td>
@@ -112,7 +124,6 @@
 				</tr>
 			</table>
 		</form>
-		
 
 		</div>
 
