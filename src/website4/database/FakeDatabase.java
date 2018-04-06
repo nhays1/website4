@@ -1,6 +1,7 @@
 package website4.database;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -79,6 +80,16 @@ public class FakeDatabase implements IDatabase {
 	public void addtouserscores(String nameofthegame, int userid, int score) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void createUser(String userName, String password, String email) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean isValid(String userName, String password, String email) throws SQLException {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 
