@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+<<<<<<< HEAD
 //import com.google.gson.Gson;
 //import com.google.gson.GsonBuilder;
 
@@ -404,6 +406,7 @@ public class DerbyDatabase implements IDatabase {
 								"select username   "
 								+"  from users  "
 								+"  where 	users.userid =  ?  "
+<<<<<<< HEAD
 						);
 
 						stmt.setInt(1, userid);
@@ -424,10 +427,12 @@ public class DerbyDatabase implements IDatabase {
 							return null;
 						}
 
+<<<<<<< HEAD
 					stmt = conn.prepareStatement(
 	
 							"insert into posts (userid, username, timeposted, posttext)"
 							+" values( ? , ?, ?, ?)"
+<<<<<<< HEAD
 					);
 
 					stmt.setInt(1, userid);
@@ -445,6 +450,7 @@ public class DerbyDatabase implements IDatabase {
 					return null;
 				}
 			});
+<<<<<<< HEAD
 
 	}
 
@@ -464,17 +470,20 @@ public class DerbyDatabase implements IDatabase {
 								"select *   "
 								+"  from users  "
 								+"  where 	users.userid =  ?  "
+<<<<<<< HEAD
 						);
 
 						stmt.setInt(1, id);
 
 						resultSet = stmt.executeQuery();
+<<<<<<< HEAD
 
 						Boolean found = false;
 						
 						if (resultSet.next()) {
 							found = true;
 							loaduser(user, resultSet, 1);
+<<<<<<< HEAD
 	
 						}
 						
@@ -486,6 +495,7 @@ public class DerbyDatabase implements IDatabase {
 						DBUtil.closeQuietly(resultSet);
 						DBUtil.closeQuietly(stmt);
 						
+<<<<<<< HEAD
 						
 					} finally {
 						DBUtil.closeQuietly(resultSet);
@@ -555,6 +565,7 @@ public class DerbyDatabase implements IDatabase {
 						);
 						stmt.setInt(1, id);
 						
+<<<<<<< HEAD
 						
 						resultSet = stmt.executeQuery();
 
@@ -747,6 +758,7 @@ public class DerbyDatabase implements IDatabase {
 					return null;
 				}
 			});
+<<<<<<< HEAD
 		return getper_game_scores(nameofthegame);
 	}
 

@@ -9,17 +9,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+
 import website4.database.DatabaseProvider;
 import website4.database.IDatabase;
+///import website4.database.DerbyDatabase.Transaction;
 import website4.databsecontroler.InitDatabase;
+import website4.model.post;
 import website4.model.usser;
 
 public class UserController {
 	
 	private Connection conn;
 	private ArrayList<usser> user =new ArrayList<usser>();
+	private usser userModel = new usser();
 	
 	public UserController() {
+		//userModel = User;
 		usser user1;
 		user1=new usser("placeholder","skanfurnsgiemdtenale023n!",129814,"none",0);
 		user.add(user1);
@@ -36,14 +41,16 @@ public class UserController {
 		
 	}
 	
-	
+	public void setModel(usser userModel) {
+		this.userModel = userModel;
+	}
 	
 	/**
-	 * this mithod will take in a user name and password and search the data base(for now an array)
-	 * and return the the user id  ascocated with that user if the user exists, if no user with that name or 
-	 * password is found it will throw no such element excetion.
+	 * this method will take in a user name and password and search the data base(for now an array)
+	 * and return the the user id  associated with that user if the user exists, if no user with that name or 
+	 * password is found it will throw no such element exception.
 	 * 
-	 * the user id will later be used by other methods to search the data base to find relavent information
+	 * the user id will later be used by other methods to search the data base to find relevant information
 	 * 
 	 * 
 	 * 
@@ -67,7 +74,7 @@ public class UserController {
 		
 	}
 	/**
-	 * intended to be used for sesion verivication
+	 * intended to be used for session verification
 	 * 
 	 * 
 	 * 
@@ -153,18 +160,57 @@ public class UserController {
 		}
 	}
 
-	
-	public void modifyUser() {
-		
+	//Changes the user's password 
+	public void modifyPassword(String password){
+		if(password != null && checkPasswordLength(password) == true) {
+			userModel.setpassword(password);
+		}
 	}
 	
+	//Changes the user's user name
+	public void modifyUsername(String username) {
+		if(username != null && checkUsernameLength(username) == true) {
+			userModel.setusername(username);
+		}
+	}
 	
-	//testingtesting
+	//Checks if length of password is between 6 and 20 characters
+	//TODO:Display error message if too short or too long
+	public boolean checkPasswordLength(String password) {
+		if(password.length() < 6) {
+			//password is too short
+			return false;
+		}
+		else if(password.length() >= 6 && password.length() <= 20) {
+			return true;
+		}
+		else {
+			//password is too long
+			return false;
+		}	
+	}
+	//Checks if length of user name is between 6 and 20 characters
+	//TODO:Display error message if too short or too long
+	public boolean checkUsernameLength(String username) {
+		if(username.length() < 6) {
+			//user name is too short
+			return false;
+		}
+		else if(username.length() >= 6 && username.length() <= 20) {
+			return true;
+		}
+		else {
+			//user name is too long
+			return false;
+		}	
+	}
+	
+
 	
 	// Checks that the user name and email do not already exist
 		public boolean isValid(String userName, String password, String email) throws SQLException {
 			
-			if(userName != null && password != null && email != null) {
+			if(userName != null && password != null && email != null && checkUsernameLength(userName) == true && checkPasswordLength(password) == true) {
 				return true;
 			}
 			else {
@@ -180,6 +226,9 @@ public class UserController {
 //			ResultSet resultSet = null;
 				
 /**			
+			executeTransaction(new Transaction<boolean>() {
+				public boolean execute(Connection conn) throws SQLException {
+			
 			try {
 
 				stmt = conn.prepareStatement("select username, email from userInfo where userName = ? and email = ?");
@@ -240,25 +289,5 @@ public class UserController {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

@@ -186,8 +186,8 @@ public class usser {
 	 * 
 	 * @param usuername
 	 */
-	public void setusername(String usuername) {
-		this.username=usuername;
+	public void setusername(String username) {
+		this.username=username;
 	}
 	
 	public String getemail(){

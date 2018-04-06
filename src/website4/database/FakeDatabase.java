@@ -10,12 +10,15 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
+import javafx.util.Pair;
 import website4.model.post;
 import website4.model.usser;
 
 
 
 public class FakeDatabase implements IDatabase {
+	
+	//This code was from https://stackoverflow.com/questions/6010843/java-how-to-store-data-triple-in-a-list?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
 
 
@@ -26,7 +29,14 @@ public class FakeDatabase implements IDatabase {
 
 	public void addpost(long mils_time, int userid, String posttext) {
 		// TODO Auto-generated method stub
+		//Create of list of Triplets
+		List<Triplet<Long, Integer, String>> postsList = new ArrayList<Triplet<Long, Integer, String>>();
 		
+		//Create a Triplet that uses the method's arguements
+		Triplet<Long, Integer, String> posts = new Triplet<Long, Integer, String>(mils_time, userid, posttext);
+		
+		//Add post to postsList
+		postsList.add(posts);
 	}
 
 	public usser getuser_by_id(int id) {
