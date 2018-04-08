@@ -3,6 +3,7 @@ package website4.servlet;
 import java.io.IOException;
 //import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -100,6 +101,7 @@ public class Game3windowservlet extends HttpServlet {
 		Gson gson = new GsonBuilder().create();
 		String jsongamescore = "";
 		String jsonuserscore="";
+		List<Integer> userscore = null;
 		//
 		usser user = null;
 		Integer userid = (Integer) req.getSession().getAttribute("userid");
@@ -124,7 +126,7 @@ public class Game3windowservlet extends HttpServlet {
 			
 			if(skore!=null) {
 				score =(int) (Math.round( Double.valueOf(skore)));
-				
+				userscore= scorectrl.getuserscores(gamename, user.getuserid());
 				jsongamescore = gson.toJson(scorectrl.addscoretodb(gamename, user.getuserid(), score, user.getusername()));
 				jsonuserscore=gson.toJson(scorectrl.addtouserscores(gamename, user.getuserid(), score));
 				System.out.println("score json      _"+jsongamescore);
@@ -219,7 +221,9 @@ public class Game3windowservlet extends HttpServlet {
 		
 		req.setAttribute("chatposts", jsonchstpost);
 		req.setAttribute("chatlength", chatlength);
-		req.setAttribute("userscores", jsonuserscore);
+		//userscore
+		req.setAttribute("userscores", userscore);
+		//req.setAttribute("userscores", jsonuserscore);
 		req.setAttribute("user", user);
 		req.setAttribute("gemescores", jsongamescore);
 		

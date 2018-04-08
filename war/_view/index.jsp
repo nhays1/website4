@@ -692,16 +692,17 @@
 		<div id="featuredgames"> 
 		
 			<div class= "gamedisplay">
-				<img src="img/giph.gif" />
-	
+			<form action="${pageContext.servletContext.contextPath}/Gamewindow" method="get">
+				
+				<input type="image" src="img/giphy.gif" alt="Submit" > 
 				<div class="gametitle">
-					game1
+					<input name="newuser" type="submit" value="game 1?!?!?!?!?" />
 				</div>
-	
+			</form>
 			</div>
 			
 			<div class= "gamedisplay">
-				<img src="img/giph.gif" />
+				<img src="img/giphy.gif" />
 	
 				<div class="gametitle">
 					game2
@@ -710,17 +711,18 @@
 			</div>
 			
 			<div class= "gamedisplay">
-				<img src="img/giph.gif"  />
-					
+			<form action="${pageContext.servletContext.contextPath}/Game3window" method="get">
+				
+					<input type="image" src="img/game3snap.PNG" alt="Submit" onmouseover="this.src='img/giphy.gif'" onmouseout="this.src='img/game3snap.PNG'"style="width:256px;height:256px;"  > 
 				<div class="gametitle">
-					game3
+					<input name="newuser" type="submit" value="game 3¡¡¡¡¡iIi¡¡¡¡¡¡" />
 				</div>
-
+			</form>
 			</div>
 			
 			
 			<div class= "gamedisplay">
-				<img src="img/giph.gif"  />
+				<img src="img/giphy.gif"  />
 					
 				<div class="gametitle">
 					game4

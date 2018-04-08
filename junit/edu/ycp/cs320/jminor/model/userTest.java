@@ -60,8 +60,8 @@ public class userTest {
 		user1.setemail("theDude@gmail.gov");
 		user1.setpassword("doggy");
 		user1.setusername("itsYaBoi69");
-		user1.addtoblacklist(userGuest.getuserid());
-		assertTrue(user1.getblacklist().get(0) == bList.get(0).getuserid());
+		//user1.addtoblacklist(userGuest.getuserid());
+		//assertTrue(user1.getblacklist().get(0) == bList.get(0).getuserid());
 		assertTrue(user1.getcoins() == 100);
 		assertTrue(user1.getemail() == "theDude@gmail.gov");
 		assertTrue(user1.getpassword() == "doggy");

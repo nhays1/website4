@@ -35,13 +35,13 @@ public class Gamewindowservlet extends HttpServlet {
 		
         Integer userid = (Integer) req.getSession().getAttribute("userid");
         if(userid!=null) {
-            UserController control=new UserController();
-            currentUser=control.getuserbyid(userid);
+           
+            currentUser=uc.getuserbyid(userid);
 
         }
 
         if(currentUser==null) {//if user id was not found creates a new guest 
-            currentUser= new usser();
+            currentUser= uc.createguestuser() ;
         }
 		
 		uc.getuserbyid(currentUser.getuserid());
@@ -63,10 +63,16 @@ public class Gamewindowservlet extends HttpServlet {
 			
 			userBet = getInteger(req, "userBet");
 			
-			choice = getChoice(req, "choice");
+			
 			try {
-				choice = getChoice(req, "choice");
-				if (choice == null) {
+				
+				if (req.getParameter(choice) != null) {
+					
+					
+					choice = getChoice(req, "choice");
+					
+					
+					
 					
 				}
 			}catch(NullPointerException e) {

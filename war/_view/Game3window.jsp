@@ -469,12 +469,27 @@
 				if(right){
 					origon.veloicity.x+=.1;
 				}
-				if(origon.x>0.5&&origon.x<gwidth-.5){
-					
-					origon.x+=origon.veloicity.x;
-				}
 				
-				//origon.x+=origon.veloicity.x;
+				
+				
+				if(origon.x>gwidth-22){
+					origon.veloicity.x=0;
+					origon.x-=.1;
+				}
+				if(origon.x<22){
+					origon.veloicity.x=0;
+					origon.x+=.1;
+				}
+				if(origon.y>ghight-22){
+					origon.veloicity.y=0;
+					origon.y-=.1;
+				}
+				if(origon.y<22){
+					origon.veloicity.y=0;
+					origon.y+=.1;
+				}
+				origon.x+=origon.veloicity.x;
+				
 				origon.y+=origon.veloicity.y;
 				//this.x<0||this.y<0||this.y>ghight||this.x>gwidth
 			}
@@ -577,23 +592,28 @@
 			 newDiv.innerHTML ="your high scores";
 			 toAdd.appendChild(newDiv);
 			 toAdd.appendChild(newHr);
+			 var x=1;
 			for(var i=1; i < userscores.length+1; i++){
-			   var newDiv = document.createElement('div');
-			   var newHr = document.createElement('hr');
-			 
-			   var score=""+i+" |-| "
-			   
-			   score+=userscores[i-1];
-			 
-			 
+				if (userscores[i-1]!=0){
+					var newDiv = document.createElement('div');
+					   var newHr = document.createElement('hr');
+					 
+					   var score=""+x+" |-| "
+					   
+					   score+=userscores[i-1];
+					 
+					 
+					  
+					   //newDiv.id = 'r'+i;
+					   newDiv.className = 'gamescoreentry';
+					  
+					   newDiv.innerHTML = score;
+					  
+					   toAdd.appendChild(newDiv);
+					   toAdd.appendChild(newHr);
+					   x++;
+				}
 			  
-			   //newDiv.id = 'r'+i;
-			   newDiv.className = 'gamescoreentry';
-			  
-			   newDiv.innerHTML = score;
-			  
-			   toAdd.appendChild(newDiv);
-			   toAdd.appendChild(newHr);
 			}
 			//toAdd.appendChild(previousposts);
 			document.getElementById("userscores").appendChild(toAdd);

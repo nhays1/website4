@@ -1,11 +1,13 @@
 package website4.controller;
 
 import java.awt.List;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
@@ -97,6 +99,21 @@ public class UserController {
 		
 	}
 	
+	
+	public static void main(String[] args) throws IOException {
+		//String name="towerdef1";
+		//Gson gson = new GsonBuilder().create();
+		//String jsonchstpost = gson.toJson(addtouserscores(name,4,50));
+		//System.out.println(jsonchstpost);
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		long now=Instant.now().toEpochMilli();
+		now+=86400000;
+		db.updateguestlist(now);
+	}
+	
+	
+	
 	/**
 	 * method cerates guest user and checks that their not in the database and then adds 
 	 * the new guest to the database
@@ -125,8 +142,9 @@ public class UserController {
 			System.out.println("create guest user atempt #   "+i);
 			i++;
 		}
-		db.addusertodb(user.getuserid(), user.getusername(), user.getpassword(), user.getemail(), user.getcoins());;
-		
+		db.addusertodb(user.getuserid(), user.getusername(), user.getpassword(), user.getemail(), user.getcoins());
+		long now=Instant.now().toEpochMilli();
+		db.addtoguestlist(user.getuserid(), now);
 		
 		return user;
 	}

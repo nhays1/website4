@@ -18,6 +18,9 @@ public interface IDatabase {
 	public usser getuser_by_id(int id);
 
 	public void addusertodb(int userid,String username,String password,String email,int coins);
+	public void addtoguestlist(int userid,long timelogedin);
+	public List<Map.Entry<Integer, Long>> getguestlist();
+	public void updateguestlist(long now);
 	public boolean checkdbcontainsuserid(int id);
 	public boolean checkdbcontainsusername(String username);
 	/**

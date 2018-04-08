@@ -183,7 +183,7 @@ public class IndexServlet extends HttpServlet {
 		
 		req.getSession().setAttribute("userid", user.getuserid());
 		
-		//System.out.println("jsonobj      _"+jsonchstpost);
+		System.out.println("jsonobj      _"+jsonchstpost);
 		System.out.println("username      _ "+user.getusername());
 		//req.logout();
 		req.setAttribute("chatposts", jsonchstpost);

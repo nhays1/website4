@@ -92,6 +92,21 @@ public class FakeDatabase implements IDatabase {
 		return false;
 	}
 
+	public void addtoguestlist(int userid, long timelogedin) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updateguestlist(long now) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public List<Entry<Integer, Long>> getguestlist() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	
 	

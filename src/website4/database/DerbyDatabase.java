@@ -100,10 +100,11 @@ public class DerbyDatabase implements IDatabase {
 	private void loadpost(post post, ResultSet resultSet, int index) throws SQLException {
 		index++;
 		post.setuserid(resultSet.getInt(index++));
-		post.setusername(resultSet.getString(index++));
+		//post.setusername(resultSet.getString(index++));
 		post.setmils_time(resultSet.getLong(index++));
 		post.setpost(resultSet.getString(index++));
-		
+		post.setusername(resultSet.getString(index++));
+		System.out.println(post.getuserid());
 		
 	}
 	
@@ -124,6 +125,7 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement stmt2 = null;
 				PreparedStatement stmt3 = null;
 				PreparedStatement stmt4 = null;
+				PreparedStatement stmt5 = null;
 				try {
 					stmt1 = conn.prepareStatement(
 							"create table users (" +
@@ -142,8 +144,8 @@ public class DerbyDatabase implements IDatabase {
 							"create table posts (" +
 							"	postid integer primary key " +
 							"	generated always as identity (start with 1, increment by 1), " +
-							"	userid integer constraint userid references users, " +		
-							"  	username  varchar(32),  "+
+							"	userid integer , " +		
+							//"  	username  varchar(32),  "+
 							"	timeposted bigint," +
 							"	posttext varchar(512)" +
 							")"
@@ -193,12 +195,22 @@ public class DerbyDatabase implements IDatabase {
 					);
 					stmt4.executeUpdate(); 
 					
+					stmt5 = conn.prepareStatement(
+							"create table guests (" +
+									"	userid integer primary key, " +
+									"	logedin bigint" +
+									")"
+					);	
+					stmt5.executeUpdate();
 					
 					
 					return true;
 				} finally {
 					DBUtil.closeQuietly(stmt1);
 					DBUtil.closeQuietly(stmt2);
+					DBUtil.closeQuietly(stmt3);
+					DBUtil.closeQuietly(stmt4);
+					DBUtil.closeQuietly(stmt5);
 				}
 			}
 		});
@@ -245,16 +257,16 @@ public class DerbyDatabase implements IDatabase {
 					insertuser.executeBatch();
 
 					
-					insertpost = conn.prepareStatement("insert into posts (userid, username ,  timeposted , posttext) values (?, ?,?, ?)");
-					
+					//insertpost = conn.prepareStatement("insert into posts (userid, username ,  timeposted , posttext) values (?, ?,?, ?)");
+					insertpost = conn.prepareStatement("insert into posts (userid, timeposted , posttext) values (?, ?, ?)");
 					
 					for (post post : postlist) {
 //						insertAuthor.setInt(1, author.getAuthorId());	// auto-generated primary key, don't insert this
 
 						insertpost.setInt(1, post.getuserid());
-						insertpost.setString(2, post.Getusername());
-						insertpost.setLong(3, post.Getmils_time());
-						insertpost.setString(4, post.Getpost());
+						//insertpost.setString(2, post.Getusername());
+						insertpost.setLong(2, post.Getmils_time());
+						insertpost.setString(3, post.Getpost());
 						
 						insertpost.addBatch();
 					}
@@ -356,9 +368,10 @@ public class DerbyDatabase implements IDatabase {
 					DBUtil.closeQuietly(stmt);
 
 					stmt = conn.prepareStatement(
-							"select * from posts " 
+							"select posts.*, users.username  from users, posts " 
 							+"where postid >= ? " + 
 							" and postid <= ? "
+							+ "and posts.userid = users.userid"
 					);//selects everything between top and bottom
 					stmt.setInt(1, topindexindb);
 					stmt.setInt(2, bottomindexindb);
@@ -513,15 +526,15 @@ public class DerbyDatabase implements IDatabase {
 
 					stmt = conn.prepareStatement(
 	
-							"insert into posts (userid, username, timeposted, posttext)"
-							+" values( ? , ?, ?, ?)"
+							"insert into posts (userid,  timeposted, posttext)"
+							+" values( ? ,  ?, ?)"
 
 					);
 
 					stmt.setInt(1, userid);
-					stmt.setString(2, username);
-					stmt.setLong(3, mils_time);
-					stmt.setString(4, posttext);
+					//stmt.setString(2, username);
+					stmt.setLong(2, mils_time);
+					stmt.setString(3, posttext);
 					// execute the query
 					
 					stmt.executeUpdate();
@@ -994,10 +1007,150 @@ public class DerbyDatabase implements IDatabase {
 		
 		
 	}
-	
-	
-	
+
+	public void addtoguestlist(final int userid, final long timelogedin) {
+		// TODO Auto-generated method stub
+		
+		executeTransaction(new Transaction<post>() {
+			public post execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try { 
+
+						stmt = conn.prepareStatement(
+
+								"insert into guests (userid, logedin) values (?, ?)"
+
+						);
+				
+						stmt.setInt(1, userid);
+						stmt.setLong(2, timelogedin);
+						
+						
+						// execute the query
+				
+						stmt.executeUpdate();
+				
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+				return null;
+			}
+		});
+
 	}
+
+	public void updateguestlist(final long now) {
+		// TODO Auto-generated method stub
+		
+		
+		executeTransaction(new Transaction<post>() {
+			public post execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try { 
+					ArrayList<Map.Entry<Integer, Long>> guestlist=(ArrayList<Entry<Integer, Long>>) getguestlist();
+					ArrayList<Integer> remove=new ArrayList<Integer>();
+					Long cutoff=now-86400000;
+					for(int i=0; i<guestlist.size();i++) {
+						if (guestlist.get(i).getValue()<cutoff) {
+							remove.add(guestlist.get(i).getKey());
+						}
+					}
+					
+					for(int i=0;i<remove.size();i++) {
+						stmt = conn.prepareStatement(
+							
+							"DELETE "+
+							"FROM users "+
+							"where users.userid = ?  "
+						);
+						
+						stmt.setInt(1, remove.get(i));
+						stmt.executeUpdate();
+						DBUtil.closeQuietly(stmt);
+					}
+					for(int i=0;i<remove.size();i++) {
+						stmt = conn.prepareStatement(
+							
+							"DELETE "+
+							"FROM guests "+
+							"where guests.userid = ?  "
+						);
+						
+						stmt.setInt(1, remove.get(i));
+						stmt.executeUpdate();
+						DBUtil.closeQuietly(stmt);
+					}
+					
+
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+				return null;
+			}
+		});
+		
+	}
+
+	public List<Entry<Integer, Long>> getguestlist() {
+		
+		return executeTransaction(new Transaction<List<Map.Entry<Integer, Long>>>() {
+			public List<Map.Entry<Integer, Long>> execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try { 
+
+						stmt = conn.prepareStatement(
+
+								"select * from guests "
+
+						);
+				
+						resultSet = stmt.executeQuery();
+
+						
+						List<Map.Entry<Integer, Long>> result=new ArrayList<Map.Entry<Integer, Long>>();
+						
+						
+						while (resultSet.next()) {
+							
+						
+							
+							int index=1;
+							
+							int score=resultSet.getInt(index++);
+							Long usid=resultSet.getLong(index++);	
+							
+							Map.Entry<Integer,Long> skore =new AbstractMap.SimpleEntry<Integer, Long>(score, usid);
+							//System.out.println( "map score        "+skore);
+							result.add(skore);
+						}
+						
+						
+						return  result;
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			
+			}
+		});
+	}
+	
+	
+	
+}
 	
 
 

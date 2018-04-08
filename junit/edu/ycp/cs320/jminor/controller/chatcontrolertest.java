@@ -2,6 +2,7 @@ package edu.ycp.cs320.jminor.controller;
 
 import static org.junit.Assert.*;
 
+import java.time.Instant;
 import java.util.ArrayList;
 
 import org.junit.Before;
@@ -22,13 +23,16 @@ public class chatcontrolertest {
 	@Before
 	public void setUp() {
 		chat = new chatcontroler();
-		incomingpost=new post(15210791386L,"jminip","this si a psot");
+		incomingpost=new post(15210791386L,"jake","this si a psot");
 		
 	}
 	
 	@Test
 	public void testaddtochat() {
-		chat.makenewpost(15210791386L, 1, "this si a psot");
+		String chatinput="ienvrnveve";
+		long now=Instant.now().toEpochMilli();
+		//chat.makenewpost(now,2 , chatinput);
+		chat.makenewpost(incomingpost.Getmils_time(), 2, incomingpost.Getpost());
 		
 		posts=(ArrayList<post>) chat.Getchat(10);
 		
@@ -39,7 +43,7 @@ public class chatcontrolertest {
 		
 		
 		
-		assertNotEquals(incomingpost.Getusername() ,posts.get(posts.size()-2).Getusername());
+		//assertNotEquals(incomingpost.Getusername() ,posts.get(posts.size()-2).Getusername());
 		
 		assertNotEquals(incomingpost.Getmils_time() ,posts.get(posts.size()-2).Getmils_time());
 		assertNotEquals(incomingpost.Getpost() ,posts.get(posts.size()-2).Getpost());
