@@ -1,12 +1,12 @@
 package website4.database;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
+
 import java.sql.SQLException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -21,7 +21,6 @@ import java.util.Map.Entry;
 
 import website4.model.per_game_scores;
 import website4.model.per_user_scores;
-import website4.controller.UserController;
 import website4.model.post;
 import website4.model.usser;
 import website4.sqldemo.DBUtil;
@@ -104,7 +103,7 @@ public class DerbyDatabase implements IDatabase {
 		post.setmils_time(resultSet.getLong(index++));
 		post.setpost(resultSet.getString(index++));
 		post.setusername(resultSet.getString(index++));
-		System.out.println(post.getuserid());
+		//System.out.println(post.getuserid());
 		
 	}
 	
@@ -126,11 +125,12 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement stmt3 = null;
 				PreparedStatement stmt4 = null;
 				PreparedStatement stmt5 = null;
+				PreparedStatement stmt6 = null;
 				try {
 					stmt1 = conn.prepareStatement(
 							"create table users (" +
 									"	userid integer primary key, " +
-									"	username varchar(32) , " +
+									"	username varchar(64) , " +
 									"	password varchar(64)," +
 									"	coins integer ," +
 									"   email varchar(64)" +
@@ -145,7 +145,7 @@ public class DerbyDatabase implements IDatabase {
 							"	postid integer primary key " +
 							"	generated always as identity (start with 1, increment by 1), " +
 							"	userid integer , " +		
-							//"  	username  varchar(32),  "+
+							//"  	username  varchar(64),  "+
 							"	timeposted bigint," +
 							"	posttext varchar(512)" +
 							")"
@@ -203,6 +203,14 @@ public class DerbyDatabase implements IDatabase {
 					);	
 					stmt5.executeUpdate();
 					
+					stmt6 = conn.prepareStatement(
+							"create table wasguest (" +
+									"	userid integer primary key, " +
+									"	username varchar(64)" +
+									")"
+					);	
+					stmt6.executeUpdate();
+					
 					
 					return true;
 				} finally {
@@ -211,6 +219,7 @@ public class DerbyDatabase implements IDatabase {
 					DBUtil.closeQuietly(stmt3);
 					DBUtil.closeQuietly(stmt4);
 					DBUtil.closeQuietly(stmt5);
+					DBUtil.closeQuietly(stmt6);
 				}
 			}
 		});
@@ -368,10 +377,10 @@ public class DerbyDatabase implements IDatabase {
 					DBUtil.closeQuietly(stmt);
 
 					stmt = conn.prepareStatement(
-							"select posts.*, users.username  from users, posts " 
+							"select posts.*, users.username  from users , posts " 
 							+"where postid >= ? " + 
 							" and postid <= ? "
-							+ "and posts.userid = users.userid"
+							+ "and posts.userid = users.userid "
 					);//selects everything between top and bottom
 					stmt.setInt(1, topindexindb);
 					stmt.setInt(2, bottomindexindb);
@@ -382,10 +391,38 @@ public class DerbyDatabase implements IDatabase {
 					resultSet = stmt.executeQuery();
 					
 					// for testing that a result was returned
-					Boolean found = false;
+				
+					while (resultSet.next()) {
+						
+						post post = new post();
+						loadpost(post, resultSet, 1);
+						
+						
+						result.add(post);
+						
+					}
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					
+					stmt = conn.prepareStatement(
+							"select posts.*,  wasguest.username  from wasguest , posts " 
+							+"where postid >= ? " + 
+							" and postid <= ? "
+							+ "and posts.userid = wasguest.userid"
+					);//selects everything between top and bottom
+					stmt.setInt(1, topindexindb);
+					stmt.setInt(2, bottomindexindb);
+					
+					
+					
+					
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned
+					
 					
 					while (resultSet.next()) {
-						found = true;
+						
 						post post = new post();
 						loadpost(post, resultSet, 1);
 						
@@ -394,10 +431,7 @@ public class DerbyDatabase implements IDatabase {
 						
 					}
 					
-					// check if any posts were found
-					if (!found) {
-						System.out.println("no posts found");
-					}
+					Collections.sort(result);
 					
 					return result;
 				} finally {
@@ -1061,6 +1095,19 @@ public class DerbyDatabase implements IDatabase {
 					for(int i=0; i<guestlist.size();i++) {
 						if (guestlist.get(i).getValue()<cutoff) {
 							remove.add(guestlist.get(i).getKey());
+							usser tmpp=getuser_by_id(guestlist.get(i).getKey());
+							stmt = conn.prepareStatement(
+
+									"insert into wasguest (userid, username) values (?, ?)"
+
+							);
+					
+							stmt.setInt(1, tmpp.getuserid());
+							stmt.setString(2, tmpp.getusername());
+							
+							stmt.executeUpdate();
+							DBUtil.closeQuietly(stmt);
+							
 						}
 					}
 					

@@ -76,8 +76,8 @@ public class IndexServlet extends HttpServlet {
 		System.out.println("index Servlet: doPost");
 		int chatlength;
 		Integer numpost = 0 ;
-		boolean logout=false;
-		
+		boolean logout=false,morepots=false;
+		boolean sync=true;
 		chatcontroler chat =new chatcontroler();
 		UserController usecontrol=new UserController();
 		
@@ -107,11 +107,25 @@ public class IndexServlet extends HttpServlet {
 			String username =  req.getParameter("username");
 			String password =  req.getParameter("password");
 			String numberofposts = req.getParameter("numberofpost");
+			String moreposts = req.getParameter("getmoreposts");
+			String async =req.getParameter("isasync");
+			
+			if(async!=null)
+				sync=!Boolean.parseBoolean(async);
+			if(moreposts!=null)
+				morepots=!Boolean.parseBoolean(moreposts);
+			//req.par;
 			if(req.getParameter("logout")!=null)
 				logout= Boolean.parseBoolean( req.getParameter("logout"));
 			
-			if(numberofposts!=null&&Integer.parseInt(numberofposts)!=0)
-				 numpost =Integer.parseInt(numberofposts);
+			if(numberofposts!=null&&morepots) {
+				 numpost =Integer.parseInt(numberofposts)-11;
+				 
+			}
+			else if(numberofposts!=null) {
+				numpost =Integer.parseInt(numberofposts);
+			}
+				
 			
 			System.out.println("wants logout   "+logout);
 			
@@ -147,7 +161,7 @@ public class IndexServlet extends HttpServlet {
 					//if()
 					chat.makenewpost(now,user.getuserid() , chatinput);
 					
-					
+					sync=false;
 					
 					System.out.println("chatpassed      _ "+chatinput);
 					System.out.println("chatpasseduser  _ "+user.getusername());
@@ -189,7 +203,16 @@ public class IndexServlet extends HttpServlet {
 		req.setAttribute("chatposts", jsonchstpost);
 		req.setAttribute("chatlength", chatlength);
 		req.setAttribute("user", user);
-		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
+	
+		resp.setContentType("text/plain");
+		resp.getWriter().println("");
+		resp.getWriter().println(jsonchstpost);
+		//resp.getWriter().close();
+		//resp.getWriter().println(x);
+		if (sync||logout) {
+			req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
+		}
+		//req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
 		
 		//errorMessage = null;
 		//result = null;

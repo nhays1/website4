@@ -1,6 +1,6 @@
 package website4.model;
 
-public class post {
+public class post implements Comparable<post>{
 	
 	private int usid;
 	private long mit;
@@ -56,6 +56,12 @@ public class post {
 	public int getuserid() {
 		return usid;
 		
+	}
+
+	public int compareTo(post other) {
+		// TODO Auto-generated method stub
+
+		return (int) (this.mit- other.Getmils_time());
 	}
 	
 	
