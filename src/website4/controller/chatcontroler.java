@@ -51,7 +51,7 @@ public class chatcontroler {
 			
 			InitDatabase.init(1);
 			IDatabase db = DatabaseProvider.getInstance();
-			db.addpost(mils_time, userid, posttext);
+			db.addpost(mils_time, userid, posttext,"general");
 			
 		}	
 	}
@@ -62,12 +62,17 @@ public class chatcontroler {
 		
 		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();
-		return db.getposts_no_blacklist(0 ,chatindex+10);
+		return db.getposts_no_blacklist(0 ,chatindex+10,"general");
 	
 		//return posts;
 	}
 	
-	
+	public int cahtnametoindex(String Chatnmae) {
+		if(Chatnmae.equals("general"))
+			return 0;
+		else return -1;
+		
+	}
 	
 	
 	

@@ -538,7 +538,7 @@
 			
 			var element = document.getElementById("chattext");
 			var currentscroleheight=document.getElementById('chattext').scrollHeight;
-			if(currentscroleheight!=previousheight)
+			if(currentscroleheight-previousheight>100)
 				element.scrollTo(0, currentscroleheight-previousheight);
 			else{
 				element.scrollTo(0, currentscroleheight-scroleposition);

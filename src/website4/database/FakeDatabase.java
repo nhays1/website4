@@ -23,12 +23,12 @@ public class FakeDatabase implements IDatabase {
 
 
 
-	public List<post> getposts_no_blacklist(int chatindex,int numposts) {
+	public List<post> getposts_no_blacklist(int chatindex,int numposts , String Chatname) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void addpost(long mils_time, int userid, String posttext) {
+	public void addpost(long mils_time, int userid, String posttext , String Chatname) {
 		// TODO Auto-generated method stub
 		//Create of list of Triplets
 		List<Triplet<Long, Integer, String>> postsList = new ArrayList<Triplet<Long, Integer, String>>();

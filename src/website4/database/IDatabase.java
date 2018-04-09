@@ -13,8 +13,8 @@ import website4.model.usser;
 
 public interface IDatabase {
 	
-	public List<post> getposts_no_blacklist(int chatindex,int numposts);
-	public void addpost(long mils_time ,int userid,String posttext);
+	public List<post> getposts_no_blacklist(int chatindex,int numposts, String Chatname);
+	public void addpost(long mils_time ,int userid,String posttext, String Chatname);
 	public usser getuser_by_id(int id);
 
 	public void addusertodb(int userid,String username,String password,String email,int coins);

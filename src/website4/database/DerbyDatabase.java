@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import website4.controller.chatcontroler;
 
 //import com.google.gson.Gson;
 //import com.google.gson.GsonBuilder;
@@ -114,7 +115,7 @@ public class DerbyDatabase implements IDatabase {
 		user.setcoins(resultSet.getInt(index++));
 		user.setemail(resultSet.getString(index++));
 		
-		
+		 
 	}
 	
 	public void createTables() {
@@ -147,7 +148,8 @@ public class DerbyDatabase implements IDatabase {
 							"	userid integer , " +		
 							//"  	username  varchar(64),  "+
 							"	timeposted bigint," +
-							"	posttext varchar(512)" +
+							"	posttext varchar(512), "
+							+ " chatname  integer" +
 							")"
 
 					);
@@ -267,7 +269,7 @@ public class DerbyDatabase implements IDatabase {
 
 					
 					//insertpost = conn.prepareStatement("insert into posts (userid, username ,  timeposted , posttext) values (?, ?,?, ?)");
-					insertpost = conn.prepareStatement("insert into posts (userid, timeposted , posttext) values (?, ?, ?)");
+					insertpost = conn.prepareStatement("insert into posts (userid, timeposted , posttext,chatname) values (?, ?, ?,?)");
 					
 					for (post post : postlist) {
 //						insertAuthor.setInt(1, author.getAuthorId());	// auto-generated primary key, don't insert this
@@ -276,6 +278,7 @@ public class DerbyDatabase implements IDatabase {
 						//insertpost.setString(2, post.Getusername());
 						insertpost.setLong(2, post.Getmils_time());
 						insertpost.setString(3, post.Getpost());
+						insertpost.setInt(4, 0);
 						
 						insertpost.addBatch();
 					}
@@ -348,8 +351,8 @@ public class DerbyDatabase implements IDatabase {
 	 * this method retrives    (# numposts)  posts starting   (# chatindex) up from the last post currently without any blacklist
 	 * 
 	 */
-	public List<post> getposts_no_blacklist(final int chatindex,final int numposts) {
-		// TODO Auto-generated method stub
+	public List<post> getposts_no_blacklist(final int chatindex,final int numposts , final String Chatname) {
+		// TODO Auto-generated method stub  general
 		
 	
 		return executeTransaction(new Transaction<List<post>>() {
@@ -358,6 +361,11 @@ public class DerbyDatabase implements IDatabase {
 				ResultSet resultSet = null;
 				
 				try {
+					int chatindex=0;
+					
+					chatindex=new chatcontroler().cahtnametoindex(Chatname);
+					
+					
 					stmt = conn.prepareStatement(
 							"SELECT MAX(postid) " +
 							"FROM posts"
@@ -375,16 +383,30 @@ public class DerbyDatabase implements IDatabase {
 					
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
-
+					/*
+					 * 
+					 * 
+					 * 
+					 * postid integer primary key " +
+							"	generated always as identity (start with 1, increment by 1), " +
+							"	userid integer , " +		
+							//"  	username  varchar(64),  "+
+							"	timeposted bigint," +
+							"	posttext varchar(512), "
+							+ " chatname  integer" +
+					 */
+					
+					
 					stmt = conn.prepareStatement(
-							"select posts.*, users.username  from users , posts " 
+							"select posts.postid , posts.userid , posts.timeposted, posts.posttext, users.username  from users , posts " 
 							+"where postid >= ? " + 
 							" and postid <= ? "
 							+ "and posts.userid = users.userid "
+							+ " and chatname= ?"
 					);//selects everything between top and bottom
 					stmt.setInt(1, topindexindb);
 					stmt.setInt(2, bottomindexindb);
-					
+					stmt.setInt(3, chatindex);
 					
 					ArrayList<post> result=new ArrayList<post>();
 					
@@ -409,9 +431,11 @@ public class DerbyDatabase implements IDatabase {
 							+"where postid >= ? " + 
 							" and postid <= ? "
 							+ "and posts.userid = wasguest.userid"
+							+ " and chatname= ?"
 					);//selects everything between top and bottom
 					stmt.setInt(1, topindexindb);
 					stmt.setInt(2, bottomindexindb);
+					stmt.setInt(3, chatindex);
 					
 					
 					
@@ -430,7 +454,25 @@ public class DerbyDatabase implements IDatabase {
 						result.add(post);
 						
 					}
-					
+					/*
+					if(result.size()>100) {
+						System.out.println("-------hh  ");
+						if(result.size()>121) {
+							result.remove(120);
+						}
+						for(int i=90;i<result.size()-1;i++) {
+							//System.out.print(i+"__"+result.get(i).Getmils_time());
+							if(result.get(i).Getmils_time()>0L) {
+								
+							}
+							else {
+								result.remove(i);
+								i--;
+							}
+							System.out.print("__i s"+i+"__"+result.get(i).Getmils_time());
+						}
+					}
+					*/
 					Collections.sort(result);
 					
 					return result;
@@ -523,7 +565,7 @@ public class DerbyDatabase implements IDatabase {
 		});
 	}
 	
-	public void addpost(final long mils_time, final int userid, final String posttext) {
+	public void addpost(final long mils_time, final int userid, final String posttext , String Chatname) {
 		 executeTransaction(new Transaction<post>() {
 				public post execute(Connection conn) throws SQLException {
 					
@@ -787,12 +829,10 @@ public class DerbyDatabase implements IDatabase {
 					//List<Map.Entry<String, Integer>> result=new LinkedList(Map.entrySet());
 					
 					// for testing that a result was returned
-					Boolean found = false;
-					
+				
 					while (resultSet.next()) {
 						
 						// Entry<Integer, Integer> skore = null;
-						found = true;
 						int index=1;
 						
 						int score=resultSet.getInt(index++);
@@ -801,11 +841,6 @@ public class DerbyDatabase implements IDatabase {
 						Map.Entry<String,Integer> skore =new AbstractMap.SimpleEntry<String, Integer>(usid, score);
 						//System.out.println( "map score        "+skore);
 						result.add(skore);
-					}
-					
-					// check if any posts were found
-					if (!found) {
-						System.out.println("no posts found");
 					}
 					
 					return result;
@@ -913,9 +948,7 @@ public class DerbyDatabase implements IDatabase {
 					
 					resultSet = stmt.executeQuery();
 					List<Integer> result= new ArrayList<Integer>();
-					Boolean found = false;
 						if (resultSet.next()) {
-							found=true;
 							for(int i=1;i<11;i++) {
 								int score=resultSet.getInt(i);
 								result.add(score);
@@ -930,10 +963,7 @@ public class DerbyDatabase implements IDatabase {
 
 					
 					
-					// check if any posts were found
-					if (!found) {
-						System.out.println("no user score found");
-					}
+					
 					
 					return result;
 				} finally {

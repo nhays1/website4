@@ -60,7 +60,9 @@ public class post implements Comparable<post>{
 
 	public int compareTo(post other) {
 		// TODO Auto-generated method stub
-
+		
+		if(other.equals(null))
+			return 0;
 		return (int) (this.mit- other.Getmils_time());
 	}
 	
