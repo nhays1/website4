@@ -253,7 +253,7 @@
 		var acountoptionsvisible = false;
 		var loginvisable = false;
 		//var ussing  = "${ user.username    }";
-		var isguest="${user.isguest}";
+		var isguest='${user.isguest}';
 		
 		var chat;
 		var chatedc;
