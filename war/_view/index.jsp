@@ -252,20 +252,126 @@
 		var chakvisable= true;
 		var acountoptionsvisible = false;
 		var loginvisable = false;
-		var ussing  = "${ user.username    }";
+		//var ussing  = "${ user.username    }";
 		var isguest="${user.isguest}";
-		var usserid="${user.userid}";
+		
 		var chat;
 		var chatedc;
 		
-	    var	count =10;
+	    var	count =11;
 		var previousheight;
 		var scroleposition;
 		
+		function home(){
+		}
+
+		function logclick(){
+			if(loginvisable){
+				document.getElementById("uzer").value="";
+				document.getElementById("pass").value="";
+				document.getElementById("loginwindow").style.visibility ="hidden";
+				document.getElementById("loginoverlay").style.visibility ="hidden";
+				loginvisable= false;
+			}
+			else{
+			document.getElementById("loginwindow").style.visibility ="visible";
+			document.getElementById("loginoverlay").style.visibility ="visible";
+			
+			
+			loginvisable=true;
+			}
+		}
+
+	
+		function toggleacountoptions(){
+			console.log(isguest);
+			 if(isguest=='false'){
+				 console.log("dsaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+				 document.getElementById("login").innerHTML = "logout";
+				 document.getElementById("login").onclick=function(){
+					 
+					 console.log("logout");
+						// <!-- %= session.setAttribute( "userid",null ) %> -->
+						
+						 var urlEncodedData = "";
+						var urlEncodedDataPairs = [];
+						var logout = true;
+						
+						
+						urlEncodedDataPairs.push(encodeURIComponent("logout") + '=' + encodeURIComponent(logout));
+						urlEncodedDataPairs.push(encodeURIComponent("isasync") + '=' + encodeURIComponent(true));
+						
+						 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+						
+						
+						var xmlreq = new XMLHttpRequest();
+						xmlreq.open("post", "index");
+						xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+						xmlreq.send(urlEncodedData);
+						
+						xmlreq.onload=function(){
+							if (this.status==200){
+								//isguest= JSON.parse(this.responseText);
+								isguest=this.response;
+								console.log("isguest");
+								console.log(isguest);
+								
+							}
+						}
+					 
+						toggleacountoptions();
+				 }
+				 
+			 }
+			 else{
+				 document.getElementById("login").innerHTML = "login";
+				 document.getElementById("login").onclick=function(){
+						if(loginvisable){
+							document.getElementById("uzer").value="";
+							document.getElementById("pass").value="";
+							document.getElementById("loginwindow").style.visibility ="hidden";
+							document.getElementById("loginoverlay").style.visibility ="hidden";
+							loginvisable= false;
+						}
+						else{
+						document.getElementById("loginwindow").style.visibility ="visible";
+						document.getElementById("loginoverlay").style.visibility ="visible";
+						
+						
+						loginvisable=true;
+						}
+					}
+				 
+			 }
+			 
+			if(acountoptionsvisible){
+				document.getElementById("acountopt").style.visibility="visible";
+				document.getElementById("acountoptions").style.top="-200px";
+				//document.getElementById("cancleacountopt").style.visibility="hidden";
+				acountoptionsvisible=false;
+				document.getElementById("loginpost").method="get";
+
+			}
+			else{
+				document.getElementById("acountopt").style.visibility="hidden";
+				document.getElementById("acountoptions").style.top="0px";
+				//document.getElementById("cancleacountopt").style.visibility="visible";
+				acountoptionsvisible=true;
+			}
+			document.getElementById("loginpost").method = "post";
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		///////////start chat
+		
 		document.onload = function(){
-			
-			
-			
+
 			post();
 		}
 		
@@ -285,116 +391,6 @@
 			}
 			
 			
-		}
-	
-		function logclick(){
-			if(loginvisable){
-				document.getElementById("uzer").value="";
-				document.getElementById("pass").value="";
-				document.getElementById("loginwindow").style.visibility ="hidden";
-				document.getElementById("loginoverlay").style.visibility ="hidden";
-				loginvisable= false;
-			}
-			else{
-			document.getElementById("loginwindow").style.visibility ="visible";
-			document.getElementById("loginoverlay").style.visibility ="visible";
-			
-			
-			loginvisable=true;
-			}
-		}
-		function logout(){
-			console.log("logout");
-			// <!-- %= session.setAttribute( "userid",null ) %> -->
-			
-			 var urlEncodedData = "";
-			var urlEncodedDataPairs = [];
-			var logout = true;
-			
-			
-			urlEncodedDataPairs.push(encodeURIComponent("logout") + '=' + encodeURIComponent(logout));
-			
-			
-			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
-			
-			
-			var xmlreq = new XMLHttpRequest();
-			xmlreq.open("post", "index");
-			xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-			xmlreq.send(urlEncodedData);
-			
-			xmlreq.onload=function(){
-				if (this.status==200){
-					
-					
-				}
-			}
-		}
-		
-		
-		
-		
-		
-		
-		function toggleacountoptions(){
-			
-			if(acountoptionsvisible){
-				document.getElementById("acountopt").style.visibility="visible";
-				document.getElementById("acountoptions").style.top="-200px";
-				//document.getElementById("cancleacountopt").style.visibility="hidden";
-				acountoptionsvisible=false;
-				document.getElementById("loginpost").method="get";
-				
-				
-				
-				
-				 if(isguest){
-					 document.getElementById("login").innerHTML = "logout";
-					 document.getElementById("login").onclick=function(){
-						 
-						 console.log("logout");
-							// <!-- %= session.setAttribute( "userid",null ) %> -->
-							
-							 var urlEncodedData = "";
-							var urlEncodedDataPairs = [];
-							var logout = true;
-							
-							
-							urlEncodedDataPairs.push(encodeURIComponent("logout") + '=' + encodeURIComponent(logout));
-							
-							
-							 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
-							
-							
-							var xmlreq = new XMLHttpRequest();
-							xmlreq.open("post", "index");
-							xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-							xmlreq.send(urlEncodedData);
-							
-							xmlreq.onload=function(){
-								if (this.status==200){
-									
-									
-								}
-							}
-						 
-						 
-					 }
-				 }
-				 else{
-					 document.getElementById("login").innerHTML = "login";
-					 document.getElementById("login").onclick="logclick()";
-					 
-				 }
-				
-			}
-			else{
-			document.getElementById("acountopt").style.visibility="hidden";
-			document.getElementById("acountoptions").style.top="0px";
-			//document.getElementById("cancleacountopt").style.visibility="visible";
-			acountoptionsvisible=true;
-			}
-			document.getElementById("loginpost").method = "post";
 		}
 		
 		
@@ -434,7 +430,7 @@
 		
 		function get(){
 			var xmlreq = new XMLHttpRequest(); 
-			xmlreq.open('get','index'+ encodeURIComponent(ussing),true);
+			//xmlreq.open('get','index'+ encodeURIComponent(ussing),true);
 			xmlreq.send();
 			
 			xmlreq.onload=function(){
@@ -448,15 +444,7 @@
 			
 		}
 		
-		
-		
-		
-		
-
-		
 		function refreshchat(chats){
-			
-			
 			
 			previousheight=document.getElementById('chattext').scrollHeight;
 			scroleposition =document.getElementById('chattext').getScrollingPosition;
@@ -594,7 +582,7 @@
 		
 		//body onLoad="refreshchat()"
 		
-		
+		///////////end chat  
 		
 		
 	</script>
@@ -616,15 +604,12 @@
 			</a>
 		</div>
 		
-		
-		
-		
-			
-			
-			
+
 			<div class="smallroundcorners" id= "acountoptions">
 			<img id="userphoto" onclick="toggleacountoptions()" src="img/largeloginicon.png"  />
+			
 				<button id="login"  onclick="logclick()" >login</button>
+				
 				<form action="${pageContext.servletContext.contextPath}/userinfo" method="get">
 					<input type="Submit" name="submit" value="userinfo">
 				</form>
@@ -661,10 +646,7 @@
 			<div id="chattext">
 			
 		
-			<script>
-			
-			</script>
-			
+		
 			</div>
 			
 			
@@ -758,17 +740,7 @@
 			</div>
 			
 		</div>
-	
-	
-		
-		
-		
 
-        
-        
-        
-      
-        
         <div id="loginoverlay"  onclick="logclick()" >
         
         

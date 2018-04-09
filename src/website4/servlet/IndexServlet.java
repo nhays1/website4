@@ -28,7 +28,7 @@ public class IndexServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		System.out.println("__________________________________________________________");
+		System.out.println("__________________________________________________________"); 
 		System.out.println("index Servlet: DOGET");
 		System.out.println("__________________________________________________________");
 		int chatlength;
@@ -203,13 +203,20 @@ public class IndexServlet extends HttpServlet {
 		req.setAttribute("chatposts", jsonchstpost);
 		req.setAttribute("chatlength", chatlength);
 		req.setAttribute("user", user);
-	
-		resp.setContentType("text/plain");
-		resp.getWriter().println("");
-		resp.getWriter().println(jsonchstpost);
+		if (!logout) {
+			resp.setContentType("text/plain");
+			resp.getWriter().println("");
+			resp.getWriter().println(jsonchstpost);
+		}
+		else {
+			resp.setContentType("text/plain");
+			resp.getWriter().println("");
+			resp.getWriter().println(true);
+			System.out.println("----------------------------------------  _");
+		}
 		//resp.getWriter().close();
 		//resp.getWriter().println(x);
-		if (sync||logout) {
+		if (sync) {
 			req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
 		}
 		//req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
