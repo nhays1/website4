@@ -20,6 +20,9 @@
 		canvas {
    		border:1px solid #d3d3d3;
     	background-color: #f1f1f1;
+    	position: absolute;
+			left:0px;
+			top:270;
 		}
 		
 		#allgames{
@@ -58,6 +61,14 @@
 		 font-size: 400%;
 		background-color: #e60000;
 		}
+		#restart{
+		position: absolute;
+		height: 40px;
+		width: 170px;
+		top:50%;
+		left:50%;
+		 z-index: -1;
+		}
 		
 		#bannerholder{
 		
@@ -70,8 +81,10 @@
 		background-color: #e60000;
 		}
 		#gamecontent{
-			
-		margin-left:160px;
+			position: relative;
+			left:160px;
+			top:270;
+		
 		margin-right:300px;
 	
 		height: 600px;
@@ -89,9 +102,141 @@
 		
 		}
 		</style>
+		<script type="text/javascript">
+		var score=0;
+		var gamescore;
+		var userscores;
+		
+		
+		
+		function updatescores(){
+			document.getElementById("gamescores").innerHTML = "";
+			document.getElementById("userscores").innerHTML = "";
+			
+			var toAdd = document.createDocumentFragment();
+			 var newDiv = document.createElement('div');
+			 var newHr = document.createElement('hr');
+			 newDiv.className = 'gamescoreentry';
+			 newDiv.innerHTML ="overall high scores";
+			 toAdd.appendChild(newDiv);
+			 toAdd.appendChild(newHr);
+			
+			for(var i=0; i < gamescore.length; i++){
+					newDiv = document.createElement('div');
+				  	newHr = document.createElement('hr');
+				   
+				   var score=gamescore[i].value;
+				   var username=gamescore[i].key;
+				   username+=" |-| ";
+				   username+=score;
+				  
+				   //newDiv.id = 'r'+i;
+				   newDiv.className = 'gamescoreentry';
+				  
+				   newDiv.innerHTML = username;
+				  
+				   toAdd.appendChild(newDiv);
+				   toAdd.appendChild(newHr);
+				}
+				//toAdd.appendChild(previousposts);
+				document.getElementById("gamescores").appendChild(toAdd);
+				
+				// start user score
+				
+				var toAdd = document.createDocumentFragment();
+				var toAdd = document.createDocumentFragment();
+				 var newDiv = document.createElement('div');
+				 var newHr = document.createElement('hr');
+				 newDiv.className = 'gamescoreentry';
+				 newDiv.innerHTML ="your high scores";
+				 toAdd.appendChild(newDiv);
+				 toAdd.appendChild(newHr);
+				 var x=1;
+				for(var i=1; i < userscores.length+1; i++){
+					if (userscores[i-1]!=0){
+						var newDiv = document.createElement('div');
+						   var newHr = document.createElement('hr');
+						 
+						   var score=""+x+" |-| "
+						   
+						   score+=userscores[i-1];
+						 
+						 
+						  
+						   //newDiv.id = 'r'+i;
+						   newDiv.className = 'gamescoreentry';
+						  
+						   newDiv.innerHTML = score;
+						  
+						   toAdd.appendChild(newDiv);
+						   toAdd.appendChild(newHr);
+						   x++;
+					}
+				  
+				}
+				//toAdd.appendChild(previousposts);
+				document.getElementById("userscores").appendChild(toAdd);
+		}
+		
+		
+		
+		function post(postscores){
+			
+			 var urlEncodedData = "";
+			var urlEncodedDataPairs = [];
+			//var text = document.getElementById("chattextarea").value;
+			var chatedc;
+			//document.getElementById("chattextarea").value='';
+			
+			//urlEncodedDataPairs.push(encodeURIComponent("chatinputtext") + '=' + encodeURIComponent(text));
+			//urlEncodedDataPairs.push(encodeURIComponent("numberofpost") + '=' + encodeURIComponent(count));
+			urlEncodedDataPairs.push(encodeURIComponent("score") + '=' + encodeURIComponent(score));
+			urlEncodedDataPairs.push(encodeURIComponent("forscores") + '=' + encodeURIComponent(postscores));
+			urlEncodedDataPairs.push(encodeURIComponent("getmoreposts") + '=' + encodeURIComponent(false));
+			urlEncodedDataPairs.push(encodeURIComponent("isasync") + '=' + encodeURIComponent(true));
+			
+			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+			 
+			 
+			 
+			 var xmlreq = new XMLHttpRequest();
+			 xmlreq.open("post", "Game3window");
+				xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				xmlreq.send(urlEncodedData);
+			 
+			 
+				xmlreq.onreadystatechange = function() {
+			        if (this.readyState == 4 && this.status == 200) {
+			        //	console.log(this.responseText);
+			        	var resp=this.responseText;
+			        	var objstr1,objstr2;
+			        	for(var i=0;i<resp.length;i++){
+			        		if(resp.charAt(i)==']'){
+			        			objstr1=resp.substring(0, i+1);
+			        			objstr2=resp.substring(i+2,resp.length-1 );
+			        			//console.log(objstr1);
+			        			//console.log(objstr2);
+			        			break;
+			        		}
+			        			
+			        	}
+			        	gamescore=JSON.parse(objstr1);
+			    		userscores= JSON.parse(objstr2);
+			    		updatescores();
+			        	
+			       }
+			    };
+
+		}
+		
+		
+		
+		</script>
 	</head>
 
 	<body onload="startGame()">
+	
+	
 	
 	<!-- once the chat is flushed out it will go here -->
 	
@@ -119,8 +264,9 @@
 		 </div>
 	
 		<div id=gamecontent>
-	
+		
 			<script>
+			//game sceliton comes from w3 schools
 			//javascrit variables do not have any type they are defined only by what you put in them
 			
 			//therefor the x in the next class can be a int, float, double, boolean, or whatever you pass into the constructor
@@ -181,9 +327,9 @@
 			//console.log(vect.x);
 			var gamescore=${gemescores};
 			
-			console.log(gamescore);
+			//console.log(gamescore);
 			var gravity=.05;
-			var score=0;
+			score=0;
 			var myGamePiece;//this is the black spining ball
 			var piece;//larger stationary circle
 			var mybulets = [];//arrays for the outgoing and incomeing bulets
@@ -205,6 +351,29 @@
 			
 			
 			function startGame() {
+			
+				document.getElementById("restart").style.zIndex="-1";
+				
+				gravity=.05;
+				score=0;
+				myGamePiece=null;//this is the black spining ball
+				piece=null;//larger stationary circle
+				mybulets = [];//arrays for the outgoing and incomeing bulets
+				atacks=[];
+				myScore=null;
+				createbullet = false; 
+				mous = new Point(0,0); //location of mouse pointer
+				pointing=new vector2d(0,0); // direction vector from center of canvas towards mouse pointer
+				origon=new Point(0,0);  // cordinats of the center of the canvas
+				ofset=new Point(0,0) ;  //if i could get it to work this would be the ofset between the boddy and the gamewindow div
+				gameover=false;
+				gwidth=document.getElementById("gamecontent").clientWidth;
+				ghight=document.getElementById("gamecontent").clientHeight;
+				//  gwidth   ghight
+				right = false;
+				left = false;
+				up = false;
+				down = false;
 			  
 			    myGamePiece = new circle(10,200,200,"black");   //inicalizes the game piece oblects
 			    piece = new circle(20,gwidth/2, ghight/2,"red");
@@ -227,12 +396,12 @@
 			        var dx = this.canvas.offsetLeft;  //if i could get thhis block to work it would determine the 
 				    var dy = this.canvas.offsetTop; // x and y distance between the edge of the body and the game div
 				    var canvs=this.canvas;  		// but it dosnt work so at the moment it has been replaced by constant values
-				    while (this.canvas.offsetParent) {
-				    	canvs = canvs.offsetParent;
-				    	dx += canvs.offsetLeft;
-				    	dy += canvs.offsetTop;
-				  	}  
-				 	ofset = new Point(dx,dy) 
+				   // while (this.canvas.offsetParent) {
+				    //	canvs = canvs.offsetParent;
+				  //  	dx += canvs.offsetLeft;
+				  //  	dy += canvs.offsetTop;
+				  //	}  
+				 	//ofset = new Point(dx,dy) 
 				 	
 				 	
 			       
@@ -288,9 +457,21 @@
 			        document.getElementById("gamecontent").appendChild(this.canvas);  // places the canvas inside the game content div
 			        
 
-			        
+			        console.log(this.frameNo );
+			        console.log(this.interval );
 			        this.frameNo = 0; //sets number of frames to 0
-			        this.interval = setInterval(updateGameArea, 20); // stes how often to update the view
+			        //this.interval = 0;
+			        if(this.interval==null||this.interval==0){
+			        	 console.log(this.interval);
+			        	this.interval = setInterval(updateGameArea, 20); // stes how often to update the view
+			        	
+			        }
+			        else{
+			        	this.interval = setInterval(updateGameArea,8000*this.interval*3);
+			        }
+			        // this.interval = 1;
+			        console.log(this.frameNo );
+			        console.log(this.interval );
 			        },
 			    clear : function() {  //clears everything in the canvas
 			        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -335,8 +516,9 @@
 				    	 var disttotarget=Math.sqrt((this.x - origon.x)*(this.x - origon.x)+(this.y - origon.y)*(this.y - origon.y));
 				    	 if(disttotarget<25){//if this was fired at my tank and moves withinn my tank, end the game
 				    		 console.log("kill");
+							document.getElementById("restart").style.zIndex="2";
 				    		 gameover=true;
-				    		 post();
+				    		 post(true );
 				    	 }
 				     }	
 			    }
@@ -401,7 +583,7 @@
 			    if(gameover==true){ // if the games over dont update
 			    	
 			    	
-
+			    	//myGameArea.stop();
 			    	return;
 			    }
 			    
@@ -495,34 +677,22 @@
 			}
 			
 			
+			function restart(){
+				gameover=false;
+				//myGameArea={};
+				startGame();
+			}
+			
+			
 			function everyinterval(n) {
 			    if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
 			    return false;
 			}
-			function post(){
-			 var urlEncodedData = "";
-				var urlEncodedDataPairs = [];
-				
-				urlEncodedDataPairs.push(encodeURIComponent("score") + '=' + encodeURIComponent(score));
-				
-				 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
-				 
-				 var xhttp = new XMLHttpRequest();
-				    xhttp.onreadystatechange = function() {
-				        if (this.readyState == 4 && this.status == 200) {
-				        	
-				        	console.log("check")
-				       }
-				    };
-				    xhttp.open("post", "Game3window", true);
-				    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-				    xhttp.send(urlEncodedData); 
-				
-				
-			}
+			
 				
 				
 			</script>
+			<button id="restart" onclick="restart()">restart</button>
 		</div>
 		
 	
@@ -538,6 +708,7 @@
 		 <form action="${pageContext.servletContext.contextPath}/index" method="get">
 	 	<input type="Submit" name="chatsubmit" value="home">
 	 </form>
+	
 	<div id="gamescores" class="highscorecontainer">
 	
 	
@@ -554,75 +725,8 @@
 		var gamescore=${gemescores};
 		var userscores=${userscores};
 		
-		var toAdd = document.createDocumentFragment();
-		 var newDiv = document.createElement('div');
-		 var newHr = document.createElement('hr');
-		 newDiv.className = 'gamescoreentry';
-		 newDiv.innerHTML ="overall high scores";
-		 toAdd.appendChild(newDiv);
-		 toAdd.appendChild(newHr);
-		
-		for(var i=0; i < gamescore.length; i++){
-				newDiv = document.createElement('div');
-			  	newHr = document.createElement('hr');
-			   
-			   var score=gamescore[i].value;
-			   var username=gamescore[i].key;
-			   username+=" |-| ";
-			   username+=score;
-			  
-			   //newDiv.id = 'r'+i;
-			   newDiv.className = 'gamescoreentry';
-			  
-			   newDiv.innerHTML = username;
-			  
-			   toAdd.appendChild(newDiv);
-			   toAdd.appendChild(newHr);
-			}
-			//toAdd.appendChild(previousposts);
-			document.getElementById("gamescores").appendChild(toAdd);
-			
-			// start user score
-			
-			var toAdd = document.createDocumentFragment();
-			var toAdd = document.createDocumentFragment();
-			 var newDiv = document.createElement('div');
-			 var newHr = document.createElement('hr');
-			 newDiv.className = 'gamescoreentry';
-			 newDiv.innerHTML ="your high scores";
-			 toAdd.appendChild(newDiv);
-			 toAdd.appendChild(newHr);
-			 var x=1;
-			for(var i=1; i < userscores.length+1; i++){
-				if (userscores[i-1]!=0){
-					var newDiv = document.createElement('div');
-					   var newHr = document.createElement('hr');
-					 
-					   var score=""+x+" |-| "
-					   
-					   score+=userscores[i-1];
-					 
-					 
-					  
-					   //newDiv.id = 'r'+i;
-					   newDiv.className = 'gamescoreentry';
-					  
-					   newDiv.innerHTML = score;
-					  
-					   toAdd.appendChild(newDiv);
-					   toAdd.appendChild(newHr);
-					   x++;
-				}
-			  
-			}
-			//toAdd.appendChild(previousposts);
-			document.getElementById("userscores").appendChild(toAdd);
-			
-			
-		
-		
-		
-		
+		updatescores();
+	
 		</script>
 	
 	

@@ -29,10 +29,10 @@ public class Game3windowservlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		System.out.println("Gamewindow Servlet: doGet");	
+		
 		
 		System.out.println("__________________________________________________________");
-		System.out.println("index Servlet: DOGET");
+		System.out.println("game3 Servlet: DOGET");
 		System.out.println("__________________________________________________________");
 		int chatlength;
 		chatcontroler chat =new chatcontroler();
@@ -94,6 +94,7 @@ public class Game3windowservlet extends HttpServlet {
 		//boolean logout=false;
 		
 		int score = 0;
+		boolean sync=true;
 		
 		chatcontroler chat =new chatcontroler();
 		UserController usecontrol=new UserController();
@@ -101,7 +102,7 @@ public class Game3windowservlet extends HttpServlet {
 		Gson gson = new GsonBuilder().create();
 		String jsongamescore = "";
 		String jsonuserscore="";
-		List<Integer> userscore = null;
+		
 		//
 		usser user = null;
 		Integer userid = (Integer) req.getSession().getAttribute("userid");
@@ -123,13 +124,18 @@ public class Game3windowservlet extends HttpServlet {
 			
 			
 			String skore= req.getParameter("score");
+			String async =req.getParameter("isasync");
+			
+			if(async!=null)
+				sync=!Boolean.parseBoolean(async);
+			
 			
 			if(skore!=null) {
 				score =(int) (Math.round( Double.valueOf(skore)));
-				userscore= scorectrl.getuserscores(gamename, user.getuserid());
+				//userscore= scorectrl.getuserscores(gamename, user.getuserid());
 				jsongamescore = gson.toJson(scorectrl.addscoretodb(gamename, user.getuserid(), score, user.getusername()));
 				jsonuserscore=gson.toJson(scorectrl.addtouserscores(gamename, user.getuserid(), score));
-				System.out.println("score json      _"+jsongamescore);
+				System.out.println("score json      _"+jsonuserscore);
 			}
 			System.out.println("score      _"+score);
 			
@@ -222,17 +228,23 @@ public class Game3windowservlet extends HttpServlet {
 		req.setAttribute("chatposts", jsonchstpost);
 		req.setAttribute("chatlength", chatlength);
 		//userscore
-		req.setAttribute("userscores", userscore);
+		req.setAttribute("userscores", jsonuserscore);
 		//req.setAttribute("userscores", jsonuserscore);
 		req.setAttribute("user", user);
 		req.setAttribute("gemescores", jsongamescore);
 		
-
-		
+		resp.setContentType("text/plain");
+		resp.getWriter().println("");
+		resp.getWriter().println(jsongamescore);
+		//resp.getWriter().print(" ");
+		resp.getWriter().println( jsonuserscore);
 	
 		
 		// Forward to view to render the result HTML document
-		req.getRequestDispatcher("/_view/Game3window.jsp").forward(req, resp);
+		if (sync) {
+			req.getRequestDispatcher("/_view/Game3window.jsp").forward(req, resp);
+		}
+		
 	}
 
 	
