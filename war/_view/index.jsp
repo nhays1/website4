@@ -703,7 +703,7 @@
 			<div class= "gamedisplay">
 			<form action="${pageContext.servletContext.contextPath}/Gamewindow" method="get">
 				
-				<input type="image" src="img/giphy.gif" alt="Submit" > 
+				<input type="image" src="img/giph.gif" alt="Submit" > 
 				<div class="gametitle">
 					<input name="newuser" type="submit" value="game 1?!?!?!?!?" />
 				</div>
@@ -711,7 +711,7 @@
 			</div>
 			
 			<div class= "gamedisplay">
-				<img src="img/giphy.gif" />
+				<img src="img/giph.gif" />
 	
 				<div class="gametitle">
 					game2
@@ -731,7 +731,7 @@
 			
 			
 			<div class= "gamedisplay">
-				<img src="img/giphy.gif"  />
+				<img src="img/giph.gif"  />
 					
 				<div class="gametitle">
 					game4

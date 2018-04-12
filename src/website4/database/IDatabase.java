@@ -13,10 +13,11 @@ import website4.model.usser;
 
 public interface IDatabase {
 	
-	public List<post> getposts_no_blacklist(int chatindex,int numposts, String Chatname);
+	public List<post> getposts_no_blacklist(int chatindex,int numposts, String Chatname,int gettinguserid);
+	
 	public void addpost(long mils_time ,int userid,String posttext, String Chatname);
+	public int chatnametoid (String chatname);
 	public usser getuser_by_id(int id);
-
 	public void addusertodb(int userid,String username,String password,String email,int coins);
 	public void addtoguestlist(int userid,long timelogedin);
 	public List<Map.Entry<Integer, Long>> getguestlist();
@@ -35,4 +36,6 @@ public interface IDatabase {
 	public void addtouserscores(String nameofthegame,int userid,int score);
 	public void createUser(String userName, String password, String email)throws SQLException;
 	public boolean isValid(final String userName, String password,final String email) throws SQLException;
+	public boolean isguest(int userid);
+	public usser loguserin(String username,String password);
 }

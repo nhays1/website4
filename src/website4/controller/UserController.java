@@ -21,25 +21,10 @@ import website4.model.usser;
 
 public class UserController {
 	
-	private Connection conn;
-	private ArrayList<usser> user =new ArrayList<usser>();
 	private usser userModel = new usser();
 	
 	public UserController() {
-		//userModel = User;
-		usser user1;
-		user1=new usser("placeholder","skanfurnsgiemdtenale023n!",129814,"none",0);
-		user.add(user1);
-		user1=new usser("jake","123",2,"notMyEmail@hotmail.gov",9999999); 
-		user.add(user1);
-		user1=new usser("jake1","1234",222,"none",0);
-		user.add(user1);
-		user1=new usser("jake2","12345",333,"none",0);
-		user.add(user1);
-		user1=new usser("jake3","123456",444,"none",0);
-		user.add(user1);
-		user1=new usser("jason","1111",99999,"jasonp@json.net",-554);
-		user.add(user1);
+	
 		
 	}
 	
@@ -65,11 +50,9 @@ public class UserController {
 		//retur.setusername(null);
 		//retur.setpassword(null);
 		
-		for(int i=0;i<user.size();i++) {
-			if(user.get(i).getusername().equals(username)&&user.get(i).getpassword().equals(password)) {
-				retur=user.get(i);
-				break;			}
-		}
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		retur=db.loguserin(username, password);
 		
 			return retur;
 		
@@ -105,11 +88,11 @@ public class UserController {
 		//Gson gson = new GsonBuilder().create();
 		//String jsonchstpost = gson.toJson(addtouserscores(name,4,50));
 		//System.out.println(jsonchstpost);
-		InitDatabase.init(1);
-		IDatabase db = DatabaseProvider.getInstance();
-		long now=Instant.now().toEpochMilli();
-		now+=86400000;
-		db.updateguestlist(now);
+		//InitDatabase.init(1);
+		//IDatabase db = DatabaseProvider.getInstance();
+		//long now=Instant.now().toEpochMilli();
+		//now+=86400000;
+		//db.updateguestlist(now);
 	}
 	
 	
@@ -151,18 +134,31 @@ public class UserController {
 	
 	
 	
-	public void createUser(String userName, String password, String email) throws SQLException {
+	public usser createUser(String userName, String password, String email) throws SQLException {
+		usser uzer = null;
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
 		if (userName != null && password != null && email != null) {
 			boolean validInfo = isValid(userName, password, email);
 			//PreparedStatement insertNewID = null;
-
-			if (validInfo == true) {
-				// Add information to database
-				
-				//After information is tested to be valid, add a new user to the array list
-				user.add(new usser(userName, password, email));
-				
-			
+			if (!db.checkdbcontainsusername(userName)) {
+				if (validInfo == true) {
+					int i=0;
+					
+					while(i<100) {
+						uzer=new usser(userName,password,email);
+						if (!db.checkdbcontainsuserid(uzer.getuserid())) {
+								break;
+						}
+						System.out.println("create user atempt #   "+i);
+						i++;
+					}
+					db.addusertodb(uzer.getuserid(), uzer.getusername(), uzer.getpassword(), uzer.getemail(), uzer.getcoins());
+					
+					return uzer;
+					
+					
+				}
 				
 				
 			}
@@ -175,7 +171,9 @@ public class UserController {
 		}
 		else {
 			//send error to user that information entered was not valid
+			
 		}
+		return uzer;
 	}
 
 	//Changes the user's password 
@@ -234,73 +232,71 @@ public class UserController {
 			else {
 				return false;
 			}
-			
-			
-			
-			
-			
-//			conn = null;
-//			PreparedStatement stmt = null;
-//			ResultSet resultSet = null;
-				
-/**			
-			executeTransaction(new Transaction<boolean>() {
-				public boolean execute(Connection conn) throws SQLException {
-			
-			try {
 
-				stmt = conn.prepareStatement("select username, email from userInfo where userName = ? and email = ?");
-				stmt.setString(1, userName);
-				stmt.setString(2, email);
-				//////////////////////////////////////////////////////
-				resultSet = stmt.executeQuery();
-				ResultSetMetaData resultSchema = stmt.getMetaData();
-				int rowsReturned = 0;
-
-				while (resultSet.next()) {
-						// startBlock: this block will probably be removed later
-					for (int i = 1; i <= resultSchema.getColumnCount(); i++) {
-						Object obj = resultSet.getObject(i);
-						if (i > 1) {
-							System.out.print(",");
-						}
-						System.out.print(obj.toString());
-						// endBlock
+		}
+		
+		/**
+		 * use this method on any string input by the user
+		 * 
+		 * 
+		 * 
+		 * 
+		 * @param toescape
+		 * @return
+		 */
+		public String escapestring(String toescape){
+			if(toescape!=null)
+			for(int i=0;i<toescape.length();i++) {
+				String v=String.valueOf( toescape.charAt(i));
+				if(v.equals("&")) {
+					String x="";
+					if(i<toescape.length()-4) {
+						x=toescape.substring(i, i+4);
 					}
-					// System.out.println();
-					// count # of rows returned
-					rowsReturned++;
+					String y="";
+					if(i<toescape.length()-4) {
+						y=toescape.substring(i, i+3);
+					}
+					if(x.equals("&amp;")||y.equals("&lt;")||y.equals("&gt;")) {
+						
+					}
+					else {
+						String lower=toescape.substring(0, i);
+						String upper=toescape.substring(i+1, toescape.length());
+						lower+="&amp;";
+						toescape=lower+upper;
+						i+=4;
+					}
 				}
-				// indicate if the query returned nothing
-				if (rowsReturned == 0) {
-					return true;
+				else if(v.equals("<")) {
+					String lower=toescape.substring(0, i);
+					String upper=toescape.substring(i+1, toescape.length());
+					lower+="&lt;";
+					toescape=lower+upper;
+					i+=3;
 				}
-			} // end of try block
-			catch (Exception e) {
-				System.out.println(e.getMessage());
+				else if(v.equals(">")) {
+					String lower=toescape.substring(0, i);
+					String upper=toescape.substring(i+1, toescape.length());
+					lower+="&gt;";
+					toescape=lower+upper;
+					i+=3;
+				}
+				
 			}
-			return false;
+				
+			
+			return toescape;
 		}
-	
-	
-		public String logUserIn(String username,String password) {
-			String retur = null;
-			for(int i=0;i<user.size()-1;i++) {
-				if(user.get(i).getusername()==username||user.get(i).getpassword()==password) {
-					retur=user.get(i).getusername();
-					break;
-				}
-			}
-			if(retur!=null)
-				return retur;
-			else 
-				throw new NoSuchElementException();
+
+		public String un_escapestring(String tounescape){
+			tounescape.replaceAll("&amp;", "&");
+			tounescape.replaceAll("&lt;", "<");
+			tounescape.replaceAll("&gt;", ">");
+			
+			
+			return tounescape;
 		}
-**/
-}
-
-
-
 
 
 

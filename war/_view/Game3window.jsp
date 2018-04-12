@@ -407,17 +407,16 @@
 			       
 				      // Record the mouse position when it moves.
 				      this.canvas.addEventListener("mousemove", function(e) {
-				        mousex = e.clientX;//these get the absolute position of the mouse on the page
-				        mousey = e.clientY;
-				       // mousex-=ofset.x-window.pageXOffset;
-				      //  mousey-=ofset.y-window.pageYOffset;    // window.pageYOffset gets the position of the scrol bar
-				      mousex+=window.pageXOffset-170;   // the static value is the distance between the edge of the body and the game div
-				      mousey+=window.pageYOffset-270;
-				      
-				        mous= new Point(mousex,mousey);  //final position of mouse on the canvas __ top left 0,0
-				        pointing.makefrompoints(origon,mous);
-				        pointing.normalize()
-				        //console.log(pointing);
+				    	  mousex = e.clientX;//these get the absolute position of the mouse on the page
+					        mousey = e.clientY;
+					       // mousex-=ofset.x-window.pageXOffset;
+					      //  mousey-=ofset.y-window.pageYOffset;    // window.pageYOffset gets the position of the scrol bar
+					      mousex+=window.pageXOffset-170;   // the static value is the distance between the edge of the body and the game div
+					      mousey+=window.pageYOffset-270;
+					      
+					        mous= new Point(mousex,mousey);  //final position of mouse on the canvas __ top left 0,0
+				    	  updatepointing(mous);
+				       
 				      });
 				      
 				 	document.addEventListener("keydown", function(e) {
@@ -476,6 +475,14 @@
 			    clear : function() {  //clears everything in the canvas
 			        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 			    }
+			}//end my game area
+			
+			
+			function updatepointing(pointtt){
+				
+			        pointing.makefrompoints(origon,pointtt);
+			        pointing.normalize()
+				
 			}
 
 			function bulet(veloictyvector,origionpoint,color,mine){//serves as constructor for bullet class
@@ -626,6 +633,7 @@
 				   }
 				   
 			   }
+			    updatepointing(mous);
 			    myScore.text="SCORE: " + score; //outbuts the score
 			    myScore.update();
 			    piece.newPos(false); 
@@ -706,7 +714,7 @@
 	
 	
 		 <form action="${pageContext.servletContext.contextPath}/index" method="get">
-	 	<input type="Submit" name="chatsubmit" value="home">
+	 	<input type="Submit"  name="chatsubmit" value="home">
 	 </form>
 	
 	<div id="gamescores" class="highscorecontainer">

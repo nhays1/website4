@@ -104,6 +104,7 @@ public class IndexServlet extends HttpServlet {
 		try {
 
 			String chatinput =  req.getParameter("chatinputtext");
+			chatinput= usecontrol.escapestring(chatinput);
 			String username =  req.getParameter("username");
 			String password =  req.getParameter("password");
 			String numberofposts = req.getParameter("numberofpost");

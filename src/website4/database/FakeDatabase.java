@@ -23,7 +23,7 @@ public class FakeDatabase implements IDatabase {
 
 
 
-	public List<post> getposts_no_blacklist(int chatindex,int numposts , String Chatname) {
+	public List<post> getposts_no_blacklist(int chatindex,int numposts , String Chatname,int gettinguserid) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -103,6 +103,21 @@ public class FakeDatabase implements IDatabase {
 	}
 
 	public List<Entry<Integer, Long>> getguestlist() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean isguest(int userid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public int chatnametoid(String chatname) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public usser loguserin(String username, String password) {
 		// TODO Auto-generated method stub
 		return null;
 	}
