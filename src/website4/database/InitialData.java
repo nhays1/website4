@@ -1,9 +1,11 @@
 package website4.database;
 
 import java.io.IOException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import website4.model.per_game_scores;
 import website4.model.per_user_scores;
@@ -15,7 +17,7 @@ public class InitialData {
 		List<post> postlist = new ArrayList<post>();
 		ReadCSV readposts = new ReadCSV("post.csv");
 		try {
-			// auto-generated primary key for authors table
+			
 			
 			while (true) {
 				List<String> tuple = readposts.next();
@@ -136,11 +138,32 @@ public class InitialData {
 			}
 			return gamescorelist;
 		} finally {
-			readper_game_scores.close();
-		}
+			readper_game_scores.close(); 
+		} 
 	}
 	
-	
+	public static List<Map.Entry<String, Integer>> getchatids() throws IOException {
+		List<Map.Entry<String, Integer>> chatlist = new ArrayList<Map.Entry<String, Integer>>();
+		ReadCSV readusers = new ReadCSV("chatnames.csv");
+		try {
+			// auto-generated primary key for books table
+			
+			while (true) {
+				List<String> tuple = readusers.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				
+				Map.Entry<String, Integer> map=new AbstractMap.SimpleEntry<String, Integer>(i.next(), Integer.parseInt(i.next()));;
+
+				chatlist.add(map);
+			}
+			return chatlist;
+		} finally {
+			readusers.close();
+		}
+	}
 	
 	
 	

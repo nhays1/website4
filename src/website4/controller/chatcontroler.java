@@ -62,7 +62,7 @@ public class chatcontroler {
 		
 		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();
-		return db.getposts_no_blacklist(0 ,chatindex+10,"general");
+		return db.getposts_no_blacklist(0 ,chatindex+10,"general",2);
 	
 		//return posts;
 	}
