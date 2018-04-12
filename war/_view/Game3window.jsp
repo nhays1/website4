@@ -283,6 +283,15 @@
 
 				    return Math.sqrt((this.x - p2.x)*(this.x - p2.x)+(this.y - p2.y)*(this.y - p2.y));
 				  }
+				   addvect(other){
+						this.x+=other.x;
+						this.y+=other.y;
+					}
+				   clone(){
+					   var next =new Point(this.x,this.y);
+					   next.veloicity=this.veloicity;
+					   return next;
+				   }
 				}
 
 				//var p1 = new Point(5, 5);
@@ -316,6 +325,13 @@
 					
 					return Math.sqrt( this.x * this.x + this.y * this.y );
 
+				}
+				addvect(other){
+					this.x+=other.x;
+					this.y+=other.y;
+				}
+				clone(){
+					return new vector2d(this.x,this.y);
 				}
 				
 			}
@@ -486,41 +502,63 @@
 			}
 
 			function bulet(veloictyvector,origionpoint,color,mine){//serves as constructor for bullet class
-				this.x=origionpoint.x;
-				this.y=origionpoint.y;
-				this.vx=veloictyvector.x*1.4;
-				this.vy=veloictyvector.y*1.4;
+				this.position=origionpoint.clone();
+				this.vel=veloictyvector.clone().multiplyScalar(1.4);
 				this.ismine=mine;   //mine was a bool, is no longer used
+				if(mine==true){
+					this.vel.multiplyScalar(4);
+					this.vel.addvect(origon.veloicity);
+				}
 				this.gravitySpeed=0;
 				
 				this.update = function() {  // another method example
 					ctx = myGameArea.context; //not sure what this dose but its necicary for this to work
-				  	ctx.fillStyle = color;  // sets the color to be painted
+					if(mine==true){
+						ctx.fillStyle = color; 
+					}
+					else {
+						 var disttotarget= this.position.distance( origon);
+						 var red;
+						 var blue;
+						 red=Math.floor(255*Math.sin(disttotarget/200));
+						 blue=Math.floor(255*Math.cos(disttotarget/200));
+						// disttotarget
+						ctx.fillStyle = 'rgb('+red+', 0, '+blue+')';
+					}
+				  	  // sets the color to be painted
 				  	 ctx.beginPath(); //most canvas elements are made by creating a path and then filling in the insied of that paht
 				  	//ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
-				  	ctx.arc(this.x, this.y,10, 0, Math.PI* 2, 0); //creates an arcing path (aka circle)
+				  	ctx.arc(this.position.x, this.position.y,10, 0, Math.PI* 2, 0); //creates an arcing path (aka circle)
 				  	ctx.fill(); // vills the path
 				}
 														//i is the array indix of this bulet
 				this.newPos = function(i,mybullets) {// called to calculate the next state position
 												// mybullets is a boolean that signifies wheater or not this bulet was fired by or, at my tank thing
-						this.x+=this.vx;
-				    	this.y+=this.vy;
-				        this.gravitySpeed +=.02;
 				       // this.y += this.vy + this.gravitySpeed;
 				     if(mybullets==true){//weather or not this bullet was fired by my tank
-				    	 this.y+= this.gravitySpeed+this.vy;
-				    	 this.x+=this.vx;
-				    	 if (this.x<0||this.y<0||this.y>ghight||this.x>gwidth){//if this was fired by my tank and then goes outside the border 
+				    	 this.gravitySpeed +=.02;
+				    	 this.position.addvect(this.vel);
+				    	 this.position.y+= this.gravitySpeed;
+				    	
+				    	 if (this.position.x<0||this.position.y<0||this.position.y>ghight||this.position.x>gwidth){//if this was fired by my tank and then goes outside the border 
 					    		//mybulets.shift();								//remve it from the array
 			    				mybulets.splice(i, 1);	//js syntax for removing a single element from an array
-						    	score-=.5;
+						    	score-=1.25;
 			    				//console.log(mybulets.length)
 					    	}
 				    	 
 				     }
 				     else{
-				    	 var disttotarget=Math.sqrt((this.x - origon.x)*(this.x - origon.x)+(this.y - origon.y)*(this.y - origon.y));
+				    	 
+					     this.position.addvect(this.vel);
+					     var  towards=new vector2d(0,0);
+					     towards.makefrompoints(this.position.clone(),origon.clone());
+					     towards.normalize().multiplyScalar(.02);
+					     this.vel.addvect(towards);
+					     this.vel.normalize().multiplyScalar(1.2);
+					     this.position.addvect(this.vel);
+					     
+					     var disttotarget= this.position.distance( origon);
 				    	 if(disttotarget<25){//if this was fired at my tank and moves withinn my tank, end the game
 				    		 console.log("kill");
 							document.getElementById("restart").style.zIndex="2";
@@ -531,12 +569,16 @@
 			    }
 				this.crashWith = function(otherobj,i,v) {//i and v are the array indices of these bulets
 				//	mybulets[i].crashWith(atacks[v],i,v);
-					 var disttotarget=Math.sqrt((this.x - otherobj.x)*(this.x - otherobj.x)+(this.y - otherobj.y)*(this.y - otherobj.y));
+					 //var disttotarget=Math.sqrt((this.position.x - otherobj.position.x)*(this.position.x - otherobj.position.x)+(this.position.y - otherobj.position.y)*(this.position.y - otherobj.position.y));
+					 var disttotarget= this.position.distance( otherobj.position);
 					 if(disttotarget<20){	//if these bullets colided remove them both from their respective arrays
 			    		 console.log("block");
 			    		 mybulets.splice(i, 1);
 			    		 atacks.splice(v, 1);
-			    		 score++; //incrament the score when an atacking bulet is destroied
+			    		 disttotarget= this.position.distance( origon);
+			    		 disttotarget/=150;
+			    		 disttotarget=Math.round(disttotarget*4)/4;
+			    		 score+=disttotarget; //incrament the score when an atacking bulet is destroied
 			    		 
 			    	 }
 			    }
@@ -596,7 +638,7 @@
 			    
 			    myGameArea.clear();//clears exsisting stuf from the canvas
 			    myGameArea.frameNo += 1; // incraments frame number
-			    if (myGameArea.frameNo == 1 || everyinterval(50)) {//spawns a new atacking bullet every 50 frames
+			    if (myGameArea.frameNo == 1 || everyinterval(25)) {//spawns a new atacking bullet every 50 frames
 			        
 			        innerspawnlimt = 200;
 			        outerspawnlimt = 500;
