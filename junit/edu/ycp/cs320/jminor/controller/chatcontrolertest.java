@@ -32,11 +32,11 @@ public class chatcontrolertest {
 		String chatinput="ienvrnveve";
 		long now=Instant.now().toEpochMilli();
 		//chat.makenewpost(now,2 , chatinput);
-		chat.makenewpost(incomingpost.Getmils_time(), 2, incomingpost.Getpost());
+		chat.makenewpost(incomingpost.Getmils_time(), 2, incomingpost.Getpost(),"general");
 		
-		posts=(ArrayList<post>) chat.Getchat(10);
+		posts=(ArrayList<post>) chat.Getchat(10,"general");
 		
-		assertEquals(incomingpost.Getusername() ,posts.get(posts.size()-1).Getusername());
+		assertEquals(incomingpost.Getusername() ,posts.get(posts.size()-1).Getusername()); 
 		
 		assertEquals(incomingpost.Getmils_time() ,posts.get(posts.size()-1).Getmils_time());
 		assertEquals(incomingpost.Getpost() ,posts.get(posts.size()-1).Getpost());

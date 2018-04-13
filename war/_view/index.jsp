@@ -646,8 +646,9 @@
 				xmlreq.onreadystatechange = function() {
 			        if (this.readyState == 4 && this.status == 200) {
 			        	chatedc= JSON.parse(this.responseText);
-						console.log(chatedc)
+						console.log(chatedc);
 			        	refreshchat(chatedc);
+			        	document.getElementById("chattext").scrollTo(0, document.getElementById('chattext').scrollHeight);
 			        	
 			       }
 			    };
