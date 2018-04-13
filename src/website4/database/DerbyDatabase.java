@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 
 import website4.controller.chatcontroler;
 
@@ -128,6 +129,7 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement stmt5 = null;
 				PreparedStatement stmt6 = null;
 				PreparedStatement stmt7 = null;
+				PreparedStatement stmt8 = null;
 				try {
 					stmt1 = conn.prepareStatement(
 							"create table users (" +
@@ -190,9 +192,8 @@ public class DerbyDatabase implements IDatabase {
 							"	generated always as identity (start with 1, increment by 1), " +	
 							"	hs integer," +
 							"	nameofthegame varchar(64)," +
-							
 							"	userid integer,  " +
-							"   username varchar(64)"+
+							"   username varchar(64)"+///remove this latter
 							")"
 
 					);
@@ -208,11 +209,21 @@ public class DerbyDatabase implements IDatabase {
 					
 					stmt6 = conn.prepareStatement(
 							"create table chatnames (" +
-									"	chatid integer primary key, " +
+									"	chatid integer primary key "
+									+ "	generated always as identity (start with 0, increment by 1), " +
 									"	chatname varchar(32)" +
 									")"
 					);	
 					stmt6.executeUpdate();
+					
+					stmt8 = conn.prepareStatement(
+							"create table usercreatedchats (" +
+									"	chats integer primary key, " +
+									"	userid integer, "
+									+ " chatid integer " +
+									")"
+					);	
+					stmt8.executeUpdate();
 					
 					
 					
@@ -234,6 +245,7 @@ public class DerbyDatabase implements IDatabase {
 					DBUtil.closeQuietly(stmt5);
 					DBUtil.closeQuietly(stmt6);
 					DBUtil.closeQuietly(stmt7);
+					DBUtil.closeQuietly(stmt8);
 				}
 			}
 		});
@@ -337,14 +349,14 @@ public class DerbyDatabase implements IDatabase {
 					insertgamescores.executeBatch();
 					///////
 					
-					insertchatnames = conn.prepareStatement("insert into chatnames (chatid, chatname  ) values (?, ?)");
+					insertchatnames = conn.prepareStatement("insert into chatnames ( chatname  ) values ( ?)");
 					
 					
 					for (Entry<String, Integer> name : chatid) {
 						//System.out.println(score.getscore());
 						
-						insertchatnames.setInt(1, name.getValue());
-						insertchatnames.setString(2, name.getKey());
+						
+						insertchatnames.setString(1, name.getKey());
 							
 						
 						
@@ -396,7 +408,7 @@ public class DerbyDatabase implements IDatabase {
 					int chatindex=0;
 					ArrayList<Integer> blacklist= new ArrayList<Integer>();
 					chatindex=chatnametoid(Chatname);
-					
+					System.out.println("in db chat index "+chatindex+"   _"+Chatname);
 					
 					
 					stmt = conn.prepareStatement(
@@ -422,19 +434,33 @@ public class DerbyDatabase implements IDatabase {
 					
 					
 					stmt = conn.prepareStatement(
-							"SELECT MAX(postid) " + 
-							"FROM posts"
+							"SELECT postid " + 
+							"FROM posts "
+							+ "where chatname= ?"
 							
 					);//gets the largest(newest) post id
+					stmt.setInt(1, chatindex);
 					
 					resultSet = stmt.executeQuery();
 
-						int totalposts=0 ;
-						if (resultSet.next()) 
-							totalposts =   (Integer) resultSet.getObject(1);//asumes the largest post index is also the number of posts
-
-						int bottomindexindb = totalposts-chatindex;   // bottom index is the newest post that is requested
-						int topindexindb = bottomindexindb - numposts;  //top index is the oldest post requested 
+						//int totalposts=0 ;
+						ArrayList<Integer> postids=new 	ArrayList<Integer>();
+						while (resultSet.next()) {
+							postids.add(resultSet.getInt(1));
+							
+						}
+							//totalposts =   (Integer) resultSet.getObject(1);//asumes the largest post index is also the number of posts
+						
+						//Collections.sort(postids);
+						
+						int bottomindexindb = 0;   // bottom index is the newest post that is requested
+						if(postids.size()>0) {
+							 bottomindexindb = postids.get(postids.size()-1); 
+						}
+						int topindexindb = 0;  //top index is the oldest post requested 
+						if(postids.size()>numposts+2) {
+							topindexindb = postids.get(postids.size()-(numposts+1));
+						}
 					
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
@@ -841,13 +867,24 @@ public class DerbyDatabase implements IDatabase {
 			public List<Map.Entry<String, Integer>> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
-				
+				/*
+				 * 
+				 * 	"select posts.postid , posts.userid , posts.timeposted, posts.posttext, users.username  from users , posts " 
+							+"where postid >= ? " + 
+							" and postid <= ? "
+							+ "and posts.userid = users.userid "
+							+ " and chatname= ?"
+				 * 
+				 * 
+				 * 
+				 */
 				try {
-					stmt = conn.prepareStatement(
+					stmt = conn.prepareStatement(  
 							
-							"SELECT per_game_hs.hs , per_game_hs.username "+
-							"FROM per_game_hs "+
-							"where per_game_hs.nameofthegame = ? "+
+							"SELECT per_game_hs.hs , users.username "+
+							"FROM users, per_game_hs "+
+							"where per_game_hs.nameofthegame = ? "
+							+ " and per_game_hs.userid = users.userid "+
 							"ORDER BY per_game_hs.hs DESC"
 
 					);//gets the 
@@ -1359,6 +1396,176 @@ public class DerbyDatabase implements IDatabase {
 		else {
 			return null;
 		}
+	}
+
+	public List<Integer> getuserchataxcess(final int userid) {
+		// TODO Auto-generated method stub
+		
+		return executeTransaction(new Transaction<List<Integer>>() {
+			public List<Integer> execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try { 
+						stmt = conn.prepareStatement(
+								"select chatid from usercreatedchats "
+								+ " where userid= ? "
+						);
+						stmt.setInt(1, userid);
+						resultSet = stmt.executeQuery();
+
+						ArrayList<Integer> result=new ArrayList<Integer>();
+						
+						while (resultSet.next()) {
+							result.add(resultSet.getInt(1));
+						}
+						return  result;
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			
+			}
+		});
+
+		
+	}
+
+	public List<String> getuserchatnames(int userid) {
+		// TODO Auto-generated method stub
+		List<Integer> ids= getuserchataxcess(userid);
+		ArrayList<String> result=new ArrayList<String>();
+		for (int id : ids) {
+			result.add(chatidtoname(id));
+		}
+		
+		
+		return null;
+	}
+
+	public String chatidtoname(final int chatid) {
+		return executeTransaction(new Transaction<String>() {
+			public String execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try { 
+						stmt = conn.prepareStatement(
+								"select chatname from chatnames "
+								+ " where chatid= ? "
+						);
+						stmt.setInt(1, chatid);
+						resultSet = stmt.executeQuery();
+
+						String chatid=null;
+						
+						if (resultSet.next()) {
+							chatid=resultSet.getString(1);
+						}
+						return  chatid;
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			
+			}
+		});
+	}
+
+	public void addusertochat(final String chatname, final int userid) {
+		// TODO Auto-generated method stub
+		executeTransaction(new Transaction<post>() {
+			public post execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try { 
+						Integer chatid=chatnametoid(chatname);
+						
+						if(chatid==null||chatid==-1) {
+							String eror="the chat ";
+							eror+=chatname+" does not exsits \n would you like to create it";
+							throw new NoSuchElementException(eror);
+						}
+						else {
+							stmt = conn.prepareStatement(
+
+									"insert into chatnames (chatname) values ( ?)"
+
+							);
+					
+							stmt.setString(1, chatname);
+							
+							stmt.executeUpdate();
+						}
+				
+						
+						
+						
+						
+						// execute the query
+				
+						
+				
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+				return null;
+			}
+		});
+		
+		
+		
+		
+	}
+
+	public void createchat(final String chatname, final int userid) {
+		// TODO Auto-generated method stub
+		executeTransaction(new Transaction<post>() {
+			public post execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try { 
+						Integer chatid=chatnametoid(chatname);
+						
+						if(chatid==null||chatid==-1) {
+							stmt = conn.prepareStatement(
+
+									"insert into usercreatedchats (chatid,userid) values ( ?,?)"
+
+							);
+					
+							stmt.setInt(1, chatid);
+							stmt.setInt(2, userid);
+							stmt.executeUpdate();
+						}
+						else {
+							String eror="the chat ";
+							eror+=chatname+" already exsits ";
+							throw new NoSuchElementException(eror);
+							
+						}
+						// execute the query
+				
+					
+				
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+				return null;
+			}
+		});
 	}
 	
 	

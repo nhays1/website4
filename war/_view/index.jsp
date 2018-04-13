@@ -197,15 +197,47 @@
 		
 		width: 300px;
 		height:24px;
+		background-color: lightgrey;
+		}
+		
+		#chattabs{
+		width: 300px;
+		height: 36px;
 		background-color: grey;
+		}
+		.swithchchat{
+		background-color: inherit;
+		
+		border: none;
+		outline: none;
+		cursor: pointer;
+		padding: 7px 8px;
+		transition: 0.3s;
+		font-size: 17px;
+		
+		}
+		.swithchchatactive {
+		
+		color:#c0c0c0;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		padding: 7px 8px;
+		transition: 0.3s;
+		font-size: 17px;
+		background-color: #303030;
+		}
+		
+		.swithchchat:hover {
+		background-color: #dddddd;
 		}
 		
 		#chattext{
 		position: absolute;
 		bottom: 140px;
 		width: 300px;
-		top:24px;
-		background-color: lightgrey;
+		top:60px;
+		background-color: #303030;
 		overflow: scroll;
 		}
 		
@@ -213,10 +245,10 @@
 		.chatentry{
 		margin-left:16px;
 		white-space:pre-wrap;
+		color: #c0c0c0;
 		}
 		.chatheader{
-		text-decoration-color: orange;
-		color: #cc5200;
+		color: #fc5200;
 		white-space:pre-wrap;
 		
 		}
@@ -249,6 +281,7 @@
 		}
 		</style>
 		<script type="text/javascript">
+		var currentchat="general";
 		var chakvisable= true;
 		var acountoptionsvisible = false;
 		var loginvisable = false;
@@ -406,6 +439,7 @@
 			urlEncodedDataPairs.push(encodeURIComponent("numberofpost") + '=' + encodeURIComponent(count));
 			urlEncodedDataPairs.push(encodeURIComponent("getmoreposts") + '=' + encodeURIComponent(false));
 			urlEncodedDataPairs.push(encodeURIComponent("isasync") + '=' + encodeURIComponent(true));
+			urlEncodedDataPairs.push(encodeURIComponent("chatname") + '=' + encodeURIComponent(currentchat));
 			
 			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
 			 
@@ -479,7 +513,7 @@
 			
 			
 			for(var i=0; i < chat.length; i++){
-			   var newDiv = document.createElement('div');
+			   var newDiv = document.createElement('p');
 			   var newHr = document.createElement('hr');
 			   var newP = document.createElement('p');
 			   var time= new Date();
@@ -556,6 +590,7 @@
 				urlEncodedDataPairs.push(encodeURIComponent("numberofpost") + '=' + encodeURIComponent(count));
 				urlEncodedDataPairs.push(encodeURIComponent("getmoreposts") + '=' + encodeURIComponent(true));
 				urlEncodedDataPairs.push(encodeURIComponent("isasync") + '=' + encodeURIComponent(true));
+				urlEncodedDataPairs.push(encodeURIComponent("chatname") + '=' + encodeURIComponent(currentchat));
 				
 				 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
 				
@@ -577,10 +612,60 @@
 			};
 		}
 		
+		function newchat(thisbut, chatname){
+			currentchat=chatname;
+			var chattabs = document.getElementsByClassName("swithchchatactive");
+		    for (i = 0; i < chattabs.length; i++) {
+		    	chattabs[i].className = chattabs[i].className="swithchchat";
+		    	console.log(i);
+		    }
+		    //document.getElementById(chatname).style.display = "block";
+		    thisbut.currentTarget.className += "active";
+		    
+		    var urlEncodedData = "";
+			var urlEncodedDataPairs = [];
+			var text = document.getElementById("chattextarea").value;
+			var chatedc;
+			document.getElementById("chattextarea").value='';
+			
+			//urlEncodedDataPairs.push(encodeURIComponent("numberofpost") + '=' + encodeURIComponent(count));
+			urlEncodedDataPairs.push(encodeURIComponent("getmoreposts") + '=' + encodeURIComponent(false));
+			urlEncodedDataPairs.push(encodeURIComponent("isasync") + '=' + encodeURIComponent(true));
+			urlEncodedDataPairs.push(encodeURIComponent("chatname") + '=' + encodeURIComponent(currentchat));
+			
+			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+			 
+			 
+			 
+			 var xmlreq = new XMLHttpRequest();
+			 xmlreq.open("post", "index");
+				xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				xmlreq.send(urlEncodedData);
+			 
+			 
+				xmlreq.onreadystatechange = function() {
+			        if (this.readyState == 4 && this.status == 200) {
+			        	chatedc= JSON.parse(this.responseText);
+						console.log(chatedc);
+			        	refreshchat(chatedc);
+			        	document.getElementById("chattext").scrollTo(0, document.getElementById('chattext').scrollHeight);
+			        	
+			       }
+			    };
+		    
+		    
+		    
+		    
+		    
+			console.log(chatname);
+		}
+		
+		
+		
+		
+		
+		
 		setInterval(refreshchat(null),1);
-		
-		
-		//body onLoad="refreshchat()"
 		
 		///////////end chat  
 		
@@ -641,6 +726,10 @@
 			
 			
 				
+			</div>
+			<div id="chattabs" >
+				<button class="swithchchatactive" onclick="newchat(event,'general')  ">general</button>
+				<button class="swithchchat" onclick="newchat(event,'towerdef1')  ">towerdef1</button>
 			</div>
 			
 			<div id="chattext">

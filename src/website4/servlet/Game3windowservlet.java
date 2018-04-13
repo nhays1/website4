@@ -50,7 +50,7 @@ public class Game3windowservlet extends HttpServlet {
 		
 		
 		ArrayList<post> chatposts;
-		chatposts= (ArrayList<post>) chat.Getchat(0);
+		chatposts= (ArrayList<post>) chat.Getchat(0,"general");
 		
 		//
 		usser user = null;
@@ -209,7 +209,7 @@ public class Game3windowservlet extends HttpServlet {
 		
 		ArrayList<post> chatposts;
 		System.out.println("numpostsssss      _ "+numpost);
-		chatposts= (ArrayList<post>) chat.Getchat(numpost);
+		chatposts= (ArrayList<post>) chat.Getchat(numpost,"general");
 		System.out.println("numpostdddddd      _ "+chatposts.size());
 		
 		

@@ -122,6 +122,31 @@ public class FakeDatabase implements IDatabase {
 		return null;
 	}
 
+	public String chatidtoname(int chatid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void addusertochat(String chatname, int userid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void createchat(String chatname, int userid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public List<Integer> getuserchataxcess(int userid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<String> getuserchatnames(int userid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	
 	

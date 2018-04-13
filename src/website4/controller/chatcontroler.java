@@ -41,37 +41,37 @@ public class chatcontroler {
 	 * @param username
 	 * @param post
 	 */
-	public void makenewpost(long mils_time ,int userid,String posttext) {
+	public void makenewpost(long mils_time ,int userid,String posttext,String chatname) {
 		if(posttext!=""&&posttext!=null) {
 			//other validations will go here
 			
-			
-			
-			
-			
 			InitDatabase.init(1);
 			IDatabase db = DatabaseProvider.getInstance();
-			db.addpost(mils_time, userid, posttext,"general");
+			db.addpost(mils_time, userid, posttext,chatname);
 			
 		}	
 	}
 	
 	
-	public List<post> Getchat(int chatindex){
+	public List<post> Getchat(int chatindex,String chatname){
 		
 		
 		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();
-		return db.getposts_no_blacklist(0 ,chatindex+10,"general",2);
+		return db.getposts_no_blacklist(0 ,chatindex+10,chatname,2);
 	
-		//return posts;
 	}
-	
+	/**the chat is specified outside the db by its name
+	 * in the database it is specified by an int this is used to relate the 2
+	 * 
+	 * @param Chatnmae
+	 * @return
+	 */
 	public int cahtnametoindex(String Chatnmae) {
-		if(Chatnmae.equals("general"))
-			return 0;
-		else return -1;
-		
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		return db.chatnametoid(Chatnmae);
+				
 	}
 	
 	
