@@ -37,7 +37,7 @@ public class IndexServlet extends HttpServlet {
 		
 		
 		ArrayList<post> chatposts;
-		chatposts= (ArrayList<post>) chat.Getchat(0);
+		chatposts= (ArrayList<post>) chat.Getchat(0,"general");
 		
 		//
 		usser user = null;
@@ -78,6 +78,7 @@ public class IndexServlet extends HttpServlet {
 		Integer numpost = 0 ;
 		boolean logout=false,morepots=false;
 		boolean sync=true;
+		String chatname;
 		chatcontroler chat =new chatcontroler();
 		UserController usecontrol=new UserController();
 		
@@ -110,6 +111,7 @@ public class IndexServlet extends HttpServlet {
 			String numberofposts = req.getParameter("numberofpost");
 			String moreposts = req.getParameter("getmoreposts");
 			String async =req.getParameter("isasync");
+			 chatname=req.getParameter("chatname");
 			
 			if(async!=null)
 				sync=!Boolean.parseBoolean(async);
@@ -119,13 +121,14 @@ public class IndexServlet extends HttpServlet {
 			if(req.getParameter("logout")!=null)
 				logout= Boolean.parseBoolean( req.getParameter("logout"));
 			
-			if(numberofposts!=null&&morepots) {
-				 numpost =Integer.parseInt(numberofposts)-11;
-				 
+			if(numberofposts!=null) {
+				 numpost =Integer.parseInt(numberofposts);
+				if(morepots) {
+					 numpost -=11;
+				}
 			}
-			else if(numberofposts!=null) {
-				numpost =Integer.parseInt(numberofposts);
-			}
+			
+			
 				
 			
 			System.out.println("wants logout   "+logout);
@@ -159,8 +162,10 @@ public class IndexServlet extends HttpServlet {
 			if(chatinput!=null) {
 				if(chatinput.trim().length()>0) {
 					long now=Instant.now().toEpochMilli();
-					//if()
-					chat.makenewpost(now,user.getuserid() , chatinput);
+					if(chatname==null) {
+						chatname="general";
+					}
+					chat.makenewpost(now,user.getuserid() , chatinput,chatname);
 					
 					sync=false;
 					
@@ -186,7 +191,10 @@ public class IndexServlet extends HttpServlet {
 		
 		ArrayList<post> chatposts;
 		System.out.println("numpostsssss      _ "+numpost);
-		chatposts= (ArrayList<post>) chat.Getchat(numpost);
+		if(chatname==null) {
+			chatname="general";
+		}
+		chatposts= (ArrayList<post>) chat.Getchat(numpost,chatname);
 		System.out.println("numpostdddddd      _ "+chatposts.size());
 		
 		
