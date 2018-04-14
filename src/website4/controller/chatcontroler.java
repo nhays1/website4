@@ -5,6 +5,7 @@ package website4.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import website4.database.DatabaseProvider;
@@ -73,7 +74,7 @@ public class chatcontroler {
 		return db.chatnametoid(Chatnmae);
 				
 	}
-	public List<String> getuserchatnames(int userid){
+	public List<String> getuserchatnames(int userid)throws NoSuchElementException{
 		
 		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();

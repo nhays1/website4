@@ -394,7 +394,8 @@
 								isguest=this.response;
 								console.log("isguest");
 								console.log(isguest);
-								
+								newchat(event,'general');
+								getusechats();
 							}
 						}
 					 
@@ -457,6 +458,7 @@
 		document.onload = function(){
 
 			post();
+			getusechats();
 		}
 		
 		function togglechat(){
@@ -736,7 +738,6 @@
 			
 		}
 		
-		getusechats()
 		function makeusechats(chatnames){
 		
 			document.getElementById("userchats").innerHTML = "";
@@ -765,7 +766,10 @@
 			   			newbutt.id='swithcuserchat';
 			   			newbutt.className = 'swithchchat';
 			   			var chatnammm=chatnames[i];
-			   			newbutt.onclick="newchat(event,'general') ";
+			   			//newbutt.onclick="newchat(event,'general') ";
+			   			newbutt.onclick = function() { 
+			   				newchat(event, this.innerHTML);
+			   	        };
 			   
 			   
 			   			newbutt.innerHTML=chatnammm;
@@ -777,7 +781,7 @@
 			document.getElementById("userchats").appendChild(toAdd);
 			
 		}
-		
+		getusechats();
 		function newwuserchat(make){
 			if(make==true){
 				document.getElementById("newchatoverlay").style.visibility ="visible";
@@ -790,8 +794,45 @@
 			}
 			
 		}
-		function createuserchat(){
+		function createuserchat(add){
+			var urlEncodedData = "";
+			var urlEncodedDataPairs = [];
+			var text = document.getElementById("inputchatname").value;
+			document.getElementById("inputchatname").value='';
+			if(add==true){
+				urlEncodedDataPairs.push(encodeURIComponent("addusertochat") + '=' + encodeURIComponent(true));
+			}
+		
+				urlEncodedDataPairs.push(encodeURIComponent("inputchatname") + '=' + encodeURIComponent(text));
+		
+			urlEncodedDataPairs.push(encodeURIComponent("isasync") + '=' + encodeURIComponent(true));
+			urlEncodedDataPairs.push(encodeURIComponent("getchatnames") + '=' + encodeURIComponent(true));
 			
+			
+			
+			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+			
+			
+			var xmlreq = new XMLHttpRequest();
+			xmlreq.open("post", "index");
+			xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xmlreq.send(urlEncodedData);
+				
+			xmlreq.onload=function(){
+				if (this.status==200){
+					var resp=this.responseText;
+					//console.log(this.response);
+					try {
+						chatedc= JSON.parse(resp);
+						console.log(chatedc)
+						makeusechats(chatedc);
+					}
+					catch(err) {
+						window.alert(resp);
+					}
+					
+				}
+			}
 			
 			
 			
@@ -849,7 +890,7 @@
 		
 		 </div>
 		 
-		 <!-- start chat html -->
+		 <!-- start chat html /////////////////////////-->
 		 
 		 
 		<div id="chatwindow">
@@ -884,12 +925,12 @@
 			
 			<div id="chatinput">
 				<p>add comment</p>
-				<form action="${pageContext.servletContext.contextPath}/index" method="post">
+				
 					<textarea class="smallroundcorners" name="chatinputtext" rows="5" cols="38" id="chattextarea" > </textarea>
 				
 				
-					<!--<button>Send Meeeeeee!</button>  -->
-				</form>
+				
+				
 				<button onclick="post()">post</button>
 				
 				
@@ -909,14 +950,15 @@
 				<table>
 					<tr>
 						<td class="label">name of chat:</td>
-					<td><input  type="text" placeholder="Enter chat name" name="spec_chatname" size="20" class="smallroundcorners"  /></td>
+					<td><input id="inputchatname" type="text" placeholder="Enter chat name" name="spec_chatname" size="20" class="smallroundcorners"  /></td>
 					</tr>
 					
                 
 				</table>
-				<button id="canclelog"  onclick="newwuserchat(false)" >cancle</button>
+				<button   onclick="newwuserchat(false)" >cancle</button>
 
-			<button id="canclelog"  onclick="createuserchat()" >add / create chat</button>
+			<button   onclick="createuserchat(false)" >create chat</button>
+			<button   onclick="createuserchat(true)" >add  chat</button>
 		</div>
 		
 		<!--end chat html -->
