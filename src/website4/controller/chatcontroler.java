@@ -73,8 +73,26 @@ public class chatcontroler {
 		return db.chatnametoid(Chatnmae);
 				
 	}
+	public List<String> getuserchatnames(int userid){
+		
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		return db.getuserchatnames(userid);
+		
+	}
 	
-	
+	public void addusertochat(int userid,String chatname) {
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		db.addusertochat(chatname, userid);
+	}
+	public void creatuserchat(int userid,String chatname) {
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		db.createchat(chatname, userid);
+		
+		
+	}
 	
 	
 	

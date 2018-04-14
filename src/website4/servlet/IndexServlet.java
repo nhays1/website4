@@ -76,12 +76,12 @@ public class IndexServlet extends HttpServlet {
 		System.out.println("index Servlet: doPost");
 		int chatlength;
 		Integer numpost = 0 ;
-		boolean logout=false,morepots=false;
+		boolean logout=false,morepots=false,getchatnames =false;
 		boolean sync=true;
-		String chatname;
+		String chatname,namesofchat = null;
 		chatcontroler chat =new chatcontroler();
 		UserController usecontrol=new UserController();
-		
+		Gson gson = new GsonBuilder().create();
 		
 	
 		
@@ -109,6 +109,10 @@ public class IndexServlet extends HttpServlet {
 			String username =  req.getParameter("username");
 			String password =  req.getParameter("password");
 			String numberofposts = req.getParameter("numberofpost");
+			String tmp = req.getParameter("getchatnames");
+			if(tmp!=null) {
+				getchatnames=Boolean.parseBoolean(tmp);
+			}
 			String moreposts = req.getParameter("getmoreposts");
 			String async =req.getParameter("isasync");
 			 chatname=req.getParameter("chatname");
@@ -179,7 +183,9 @@ public class IndexServlet extends HttpServlet {
 					
 				}
 			}
-			
+			if(getchatnames) {
+				namesofchat=gson.toJson(chat.getuserchatnames(user.getuserid()));
+			}
 			
 
 		}
@@ -201,7 +207,6 @@ public class IndexServlet extends HttpServlet {
 		
 		chatlength=chatposts.size();
 		
-		Gson gson = new GsonBuilder().create();
 		String jsonchstpost = gson.toJson(chatposts);
 		
 		req.getSession().setAttribute("userid", user.getuserid());
@@ -212,7 +217,12 @@ public class IndexServlet extends HttpServlet {
 		req.setAttribute("chatposts", jsonchstpost);
 		req.setAttribute("chatlength", chatlength);
 		req.setAttribute("user", user);
-		if (!logout) {
+		if(getchatnames) {
+			resp.setContentType("text/plain");
+			resp.getWriter().println("");
+			resp.getWriter().println(namesofchat);
+		}
+		else if (!logout) {
 			resp.setContentType("text/plain");
 			resp.getWriter().println("");
 			resp.getWriter().println(jsonchstpost);
