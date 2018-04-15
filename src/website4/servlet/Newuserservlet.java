@@ -14,6 +14,7 @@ import website4.database.DerbyDatabase;
 
 public class Newuserservlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private boolean success;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -36,34 +37,39 @@ public class Newuserservlet extends HttpServlet {
 		
 		// decode POSTed form parameters and dispatch to controller
 		try {
+			System.out.println("Inside Try");//for testing purposes
 			UserController controller = new UserController();
 			String username = req.getParameter("username");
 			String password = req.getParameter("password");
 			String email = req.getParameter("email");
 
 			// check for errors in the form data before using is in a calculation
-			if (username == null || password == null || email == null) {
+			if (username == null || password == null || email == null) { //checks all inputs are not null
+				System.out.println("if1");//for testing purposes
 				errorMessage = "Username, Password, or Email is typed incorrectly";	
 			}
-			else if(controller.checkUsernameLength(username) == false) {
+			else if(controller.checkUsernameLength(username) == false) {//checks usersname length
+				System.out.println("if2");//for testing purposes
 				errorMessage = "Username is either too long or too short";
 			}
-			else if(controller.checkPasswordLength(password) == false) {
+			else if(controller.checkPasswordLength(password) == false) {//check password length
+				System.out.println("if3");//for testing purposes
 				errorMessage = "Password is either too long or too short";
 			}
-			else {
+			else {//successfully creates user
+				System.out.println("else");//for testing purposes
+				success = true;
 				DerbyDatabase db = new DerbyDatabase();
 				db.createUser(username, password, email);
 			}
 		} catch (SQLException e) {
+			System.out.println("catch");//for testing purposes
 			errorMessage = "Invalid Input";
 		} 
 		
-		// Add parameters as request attributes
-		// this creates attributes named "first" and "second for the response, and grabs the
-		// values that were originally assigned to the request attributes, also named "first" and "second"
-		// they don't have to be named the same, but in this case, since we are passing them back
-		// and forth, it's a good idea
+	
+		
+		
 		req.setAttribute("username", req.getParameter("username"));
 		req.setAttribute("password", req.getParameter("password"));
 		req.setAttribute("email", req.getParameter("email"));
@@ -71,10 +77,17 @@ public class Newuserservlet extends HttpServlet {
 		// add result objects as attributes
 		// this adds the errorMessage text and the result to the response
 		req.setAttribute("errorMessage", errorMessage);
+		System.out.println("end");//for testing purposes
 		
 		// Forward to view to render the result HTML document 
-		req.getRequestDispatcher("/_view/newuser.jsp").forward(req, resp);
+		//req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
 		
-		
+		if(success == true) {//Sends user back to index page
+			req.getRequestDispatcher("/_view/userinfo.jsp").forward(req, resp);
+		}
+		else {
+			errorMessage = "Something went wrong";
+			req.getRequestDispatcher("/_view/newuser.jsp").forward(req, resp);
+		}
 	}
 }
