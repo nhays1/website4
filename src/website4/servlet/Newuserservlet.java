@@ -72,7 +72,7 @@ public class Newuserservlet extends HttpServlet {
 		// this adds the errorMessage text and the result to the response
 		req.setAttribute("errorMessage", errorMessage);
 		
-		// Forward to view to render the result HTML document
+		// Forward to view to render the result HTML document 
 		req.getRequestDispatcher("/_view/newuser.jsp").forward(req, resp);
 		
 		
