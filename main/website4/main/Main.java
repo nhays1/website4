@@ -22,7 +22,7 @@ public class Main {
 		server.dumpStdErr();
 		
 		// Inform user that server is running
-		System.out.println("RUNNING: web tymftyjyhthrtrserver on port 8081");
+		System.out.println("RUNNING: web tymgggggggggggggggggrserver on port 8081");
 		
         // The use of server.join() the will make the current thread join and
         // wait until the server is done executing.

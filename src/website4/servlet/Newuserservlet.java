@@ -19,7 +19,7 @@ public class Newuserservlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
+		System.out.println("__________________________________________________________");
 		System.out.println("newuser Servlet: doGet");	
 		
 		// call JSP to generate empty form
@@ -29,20 +29,23 @@ public class Newuserservlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+		System.out.println("_______________________________________________");
 		System.out.println("newuser Servlet: doPost");
 		
 		// holds the error message text, if there is any
 		String errorMessage = null;
 		
 		// decode POSTed form parameters and dispatch to controller
-		try {
+	
 			System.out.println("Inside Try");//for testing purposes
 			UserController controller = new UserController();
 			String username = req.getParameter("username");
 			String password = req.getParameter("password");
 			String email = req.getParameter("email");
-
+			System.out.println(username);
+			System.out.println(password);
+			System.out.println(email);
+			try {
 			// check for errors in the form data before using is in a calculation
 			if (username == null || password == null || email == null) { //checks all inputs are not null
 				System.out.println("if1");//for testing purposes
@@ -62,7 +65,9 @@ public class Newuserservlet extends HttpServlet {
 				DerbyDatabase db = new DerbyDatabase();
 				db.createUser(username, password, email);
 			}
-		} catch (SQLException e) {
+		}
+			
+			catch (SQLException e) {
 			System.out.println("catch");//for testing purposes
 			errorMessage = "Invalid Input";
 		} 
@@ -80,7 +85,7 @@ public class Newuserservlet extends HttpServlet {
 		System.out.println("end");//for testing purposes
 		
 		// Forward to view to render the result HTML document 
-		//req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
+		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
 		
 		if(success == true) {//Sends user back to index page
 			req.getRequestDispatcher("/_view/userinfo.jsp").forward(req, resp);

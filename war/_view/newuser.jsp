@@ -42,9 +42,8 @@
 	<input type="text" name="email" value="${email}">
 	<br>
 	<br> 
-	</form>
 	
-	<form action="${pageContext.servletContext.contextPath}/newuser" method="get">
+	
 	
 	<input type="submit" name="submit" value="Create Account">
 	</form>
