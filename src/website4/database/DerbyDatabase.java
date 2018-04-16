@@ -143,7 +143,7 @@ public class DerbyDatabase implements IDatabase {
 					);	
 					stmt1.executeUpdate();
 					
-					stmt2 = conn.prepareStatement(
+					stmt2 = conn.prepareStatement( 
 							
 							"create table posts (" +
 							"	postid integer primary key " +
@@ -218,7 +218,8 @@ public class DerbyDatabase implements IDatabase {
 					
 					stmt8 = conn.prepareStatement(
 							"create table usercreatedchats (" +
-									"	chats integer primary key, " +
+									"	chats integer primary key " +
+									"	generated always as identity (start with 0, increment by 1), " +
 									"	userid integer, "
 									+ " chatid integer " +
 									")"
@@ -1418,6 +1419,7 @@ public class DerbyDatabase implements IDatabase {
 						ArrayList<Integer> result=new ArrayList<Integer>();
 						
 						while (resultSet.next()) {
+							//System.out.println("in DB user #   "+userid+" has chat " +resultSet.getInt(1));
 							result.add(resultSet.getInt(1));
 						}
 						return  result;
@@ -1442,7 +1444,7 @@ public class DerbyDatabase implements IDatabase {
 		}
 		
 		
-		return null;
+		return result;
 	}
 
 	public String chatidtoname(final int chatid) {
@@ -1483,23 +1485,26 @@ public class DerbyDatabase implements IDatabase {
 				
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
-				
+				//System.out.println("eror");
 				try { 
 						Integer chatid=chatnametoid(chatname);
 						
 						if(chatid==null||chatid==-1) {
-							String eror="the chat ";
-							eror+=chatname+" does not exsits \n would you like to create it";
+							String eror="the chat -";
+							eror+=chatname+"- does not exsits \ntry creating it";
+							//System.out.println(eror);
 							throw new NoSuchElementException(eror);
 						}
 						else {
 							stmt = conn.prepareStatement(
 
-									"insert into chatnames (chatname) values ( ?)"
+									"insert into usercreatedchats (chatid,userid) values ( ?,?)"
 
 							);
 					
-							stmt.setString(1, chatname);
+							stmt.setInt(1, chatid);
+							stmt.setInt(2, userid);
+							stmt.executeUpdate();
 							
 							stmt.executeUpdate();
 						}
@@ -1534,17 +1539,49 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
 				
-				try { 
+				try { //chatnames
 						Integer chatid=chatnametoid(chatname);
 						
 						if(chatid==null||chatid==-1) {
+							
+							stmt = conn.prepareStatement(
+
+									"select MAX(chatid) from chatnames  "
+
+							);
+							
+							resultSet = stmt.executeQuery();
+
+							Integer chatidd=0;
+							
+							if (resultSet.next()) {
+								chatidd=resultSet.getInt(1);
+							}
+							DBUtil.closeQuietly(resultSet);
+							DBUtil.closeQuietly(stmt);
+							
+							stmt = conn.prepareStatement(
+
+									"insert into chatnames (chatname) values ( ?) "
+
+							);
+							chatidd++;
+							stmt.setString(1, chatname);
+							
+							stmt.executeUpdate();
+							
+							DBUtil.closeQuietly(stmt);
+							
+							//chatid=chatnametoid(chatname);
+							System.out.println("in DB    created chat id "+chatidd+"   _"+chatname);
+							
 							stmt = conn.prepareStatement(
 
 									"insert into usercreatedchats (chatid,userid) values ( ?,?)"
 
 							);
 					
-							stmt.setInt(1, chatid);
+							stmt.setInt(1, chatidd);
 							stmt.setInt(2, userid);
 							stmt.executeUpdate();
 						}
@@ -1560,7 +1597,6 @@ public class DerbyDatabase implements IDatabase {
 				
 					
 				} finally {
-					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
 				}
 				return null;

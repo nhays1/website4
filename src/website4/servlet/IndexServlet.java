@@ -76,12 +76,12 @@ public class IndexServlet extends HttpServlet {
 		System.out.println("index Servlet: doPost");
 		int chatlength;
 		Integer numpost = 0 ;
-		boolean logout=false,morepots=false;
+		boolean logout=false,morepots=false,getchatnames =false,addchatto=false;
 		boolean sync=true;
-		String chatname;
+		String chatname,namesofchat = null,error=null;
 		chatcontroler chat =new chatcontroler();
 		UserController usecontrol=new UserController();
-		
+		Gson gson = new GsonBuilder().create();
 		
 	
 		
@@ -106,12 +106,23 @@ public class IndexServlet extends HttpServlet {
 
 			String chatinput =  req.getParameter("chatinputtext");
 			chatinput= usecontrol.escapestring(chatinput);
+			
 			String username =  req.getParameter("username");
 			String password =  req.getParameter("password");
 			String numberofposts = req.getParameter("numberofpost");
+			String tmp = req.getParameter("getchatnames");
+			if(tmp!=null) {
+				getchatnames=Boolean.parseBoolean(tmp);
+			}
 			String moreposts = req.getParameter("getmoreposts");
 			String async =req.getParameter("isasync");
-			 chatname=req.getParameter("chatname");
+			chatname=req.getParameter("chatname");
+			String addchat=req.getParameter("addusertochat");
+			if(addchat!=null) {
+				addchatto=Boolean.parseBoolean(addchat);
+				System.out.println("wants adddddd   "+addchatto);
+			}
+			String createchat=req.getParameter("inputchatname");
 			
 			if(async!=null)
 				sync=!Boolean.parseBoolean(async);
@@ -133,55 +144,75 @@ public class IndexServlet extends HttpServlet {
 			
 			System.out.println("wants logout   "+logout);
 			
+			if(createchat!=null) {
+				if(addchatto==true) {
+					try {
+						chat.addusertochat(user.getuserid(), createchat);
+					}
+					catch(Exception e){
+						error=e.getMessage();
+						//System.out.println(error);
+					}
+					
+				}
+				else {
+					chat.creatuserchat(user.getuserid(), createchat);
+				}
+				namesofchat=gson.toJson(chat.getuserchatnames(user.getuserid()));
+				//System.out.println("created new user chat  _"+namesofchat+"    "+createchat);
+			}
 			if(logout) {
 				user=usecontrol.createguestuser();
 				
 				
 				
 			}
+			else {
 			
-			
-			System.out.println("number of posts   "+numpost);
+				System.out.println("number of posts   "+numpost);
 		
 			
-			System.out.println("username      _ "+username);
-			System.out.println("assword      _ "+password);
-			System.out.println("chat      _ "+chatinput);
+				System.out.println("username      _ "+username);
+				System.out.println("assword      _ "+password);
+				System.out.println("chat      _ "+chatinput);
 			
-			if(username!=null&&password!=null) {
-				if(username.trim().length()>0&&password.trim().length()>0) {
+				if(username!=null&&password!=null) {
+					if(username.trim().length()>0&&password.trim().length()>0) {
 					
 						usser temp=usecontrol.loguserin(username, password);
 						
-					if(temp!=null) {
-						user=temp;
+						if(temp!=null) {
+							user=temp;
+						}
 					}
 				}
-			}
 			
-			if(chatinput!=null) {
-				if(chatinput.trim().length()>0) {
-					long now=Instant.now().toEpochMilli();
-					if(chatname==null) {
-						chatname="general";
+				if(chatinput!=null) {
+					if(chatinput.trim().length()>0) {
+						long now=Instant.now().toEpochMilli();
+						if(chatname==null) {
+							chatname="general";
+						}
+						chat.makenewpost(now,user.getuserid() , chatinput,chatname);
+					
+						sync=false;
+					
+						System.out.println("chatpassed      _ "+chatinput);
+						//System.out.println("chatpasseduser  _ "+user.getusername());
+						//ArrayList<post> chatposts= (ArrayList<post>) chat.Getchat(0);
+					
+						//System.out.println("chatpassed      _ "+chatposts.get(chatposts.size()-1).Getpost());
+					
+					
+					
 					}
-					chat.makenewpost(now,user.getuserid() , chatinput,chatname);
-					
-					sync=false;
-					
-					System.out.println("chatpassed      _ "+chatinput);
-					System.out.println("chatpasseduser  _ "+user.getusername());
-					//ArrayList<post> chatposts= (ArrayList<post>) chat.Getchat(0);
-					
-					//System.out.println("chatpassed      _ "+chatposts.get(chatposts.size()-1).Getpost());
-					
-					
-					
 				}
+				if(getchatnames) {
+					namesofchat=gson.toJson(chat.getuserchatnames(user.getuserid()));
+					System.out.println("       user chat  _"+namesofchat);
+				}
+			
 			}
-			
-			
-
 		}
 		finally{
 			
@@ -201,7 +232,6 @@ public class IndexServlet extends HttpServlet {
 		
 		chatlength=chatposts.size();
 		
-		Gson gson = new GsonBuilder().create();
 		String jsonchstpost = gson.toJson(chatposts);
 		
 		req.getSession().setAttribute("userid", user.getuserid());
@@ -212,7 +242,16 @@ public class IndexServlet extends HttpServlet {
 		req.setAttribute("chatposts", jsonchstpost);
 		req.setAttribute("chatlength", chatlength);
 		req.setAttribute("user", user);
-		if (!logout) {
+		if(error!=null) {
+			resp.getWriter().println(error);
+			
+		}
+		else if(getchatnames) {
+			resp.setContentType("text/plain");
+			resp.getWriter().println("");
+			resp.getWriter().println(namesofchat);
+		}
+		else if (!logout) {
 			resp.setContentType("text/plain");
 			resp.getWriter().println("");
 			resp.getWriter().println(jsonchstpost);

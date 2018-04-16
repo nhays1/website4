@@ -213,7 +213,7 @@
 		cursor: pointer;
 		padding: 7px 8px;
 		transition: 0.3s;
-		font-size: 17px;
+		font-size: 17px; 
 		
 		}
 		.swithchchatactive {
@@ -230,6 +230,52 @@
 		
 		.swithchchat:hover {
 		background-color: #dddddd;
+		}
+		
+		#newchatoverlay{
+		height: 100%;
+		width:100%;
+		background-color:rgba(128,128,128,0.5);
+		position: fixed;
+		left:0;
+		top:0;
+		visibility: hidden;
+		transition: 0.3s;
+		 z-index: 3;
+		}
+		
+		#newchatwindow{
+		padding: 20px;
+		heiht: 300px;
+		width: 300px;
+		background-color: white;
+		position: fixed;
+		right:50%;
+		top:50%;
+		visibility: hidden;
+		 z-index: 4;
+		}
+		
+		#userchats{
+		padding: 4px;
+		
+		float: right;
+		background-color: grey;
+		display: none;
+    	position: fixed;
+    	top:56px;
+    	right:10px;
+    	 z-index: 3;
+		}
+		
+		
+		#usercahtscontainer{
+		 display: inline;
+		 padding: 2px;
+		}
+		
+		#swithcuserchat{
+    	display: block;
 		}
 		
 		#chattext{
@@ -348,7 +394,8 @@
 								isguest=this.response;
 								console.log("isguest");
 								console.log(isguest);
-								
+								newchat(event,'general');
+								getusechats();
 							}
 						}
 					 
@@ -395,17 +442,23 @@
 		}
 		
 		
-		
-		
-		
-		
-		
-		
 		///////////start chat
+		function  toggleuserchats(inn){
+			if(inn==true){
+				document.getElementById("userchats").style.display = "inline";
+			}
+			else{
+				document.getElementById("userchats").style.display = "none";
+			}
+			
+			
+		}
+		
 		
 		document.onload = function(){
 
 			post();
+			getusechats();
 		}
 		
 		function togglechat(){
@@ -652,20 +705,142 @@
 			        	
 			       }
 			    };
-		    
-		    
-		    
-		    
-		    
+
 			console.log(chatname);
 		}
 		
 		
+		function getusechats(){
+			var urlEncodedData = "";
+			var urlEncodedDataPairs = [];
+
+			urlEncodedDataPairs.push(encodeURIComponent("isasync") + '=' + encodeURIComponent(true));
+			urlEncodedDataPairs.push(encodeURIComponent("getchatnames") + '=' + encodeURIComponent(true));
+			
+			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+			
+			
+			var xmlreq = new XMLHttpRequest();
+			xmlreq.open("post", "index");
+			xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xmlreq.send(urlEncodedData);
+				
+			xmlreq.onload=function(){
+				if (this.status==200){
+					//console.log(this.response);
+					chatedc= JSON.parse(this.responseText);
+					console.log(chatedc)
+					makeusechats(chatedc);
+				}
+			}
+			
+			
+			
+		}
+		
+		function makeusechats(chatnames){
+		
+			document.getElementById("userchats").innerHTML = "";
+			var toAdd = document.createDocumentFragment();
+			
+			
+			var newbutt = document.createElement('button');
+			   newbutt.id='swithcuserchat';
+			   newbutt.className = 'swithchchat';
+			   newbutt.setAttribute("onclick","javascript:newchat(event,'general');");
+			   newbutt.innerHTML="gen";
+			   toAdd.appendChild(newbutt);
+			
+			   newbutt = document.createElement('button');
+			   newbutt.id='swithcuserchat';
+			   newbutt.className = 'swithchchat';
+			   newbutt.setAttribute("onclick","javascript:newwuserchat(true);");
+			   newbutt.innerHTML="create/add chat";
+			   toAdd.appendChild(newbutt);
+			
+			   
+			   if(chatnames!=null){
+					for(var i=0; i < chatnames.length; i++){
+
+			  			var newbutt = document.createElement('button');
+			   			newbutt.id='swithcuserchat';
+			   			newbutt.className = 'swithchchat';
+			   			var chatnammm=chatnames[i];
+			   			//newbutt.onclick="newchat(event,'general') ";
+			   			newbutt.onclick = function() { 
+			   				newchat(event, this.innerHTML);
+			   	        };
+			   
+			   
+			   			newbutt.innerHTML=chatnammm;
+			   
+			   			toAdd.appendChild(newbutt);
+					}
+			   }
+			//toAdd.appendChild(previousposts);
+			document.getElementById("userchats").appendChild(toAdd);
+			
+		}
+		getusechats();
+		function newwuserchat(make){
+			if(make==true){
+				document.getElementById("newchatoverlay").style.visibility ="visible";
+				document.getElementById("newchatwindow").style.visibility ="visible";
+			}
+			else{
+				document.getElementById("newchatoverlay").style.visibility ="hidden";
+				document.getElementById("newchatwindow").style.visibility ="hidden";
+				//document.getElementById("pass").value="";
+			}
+			
+		}
+		function createuserchat(add){
+			var urlEncodedData = "";
+			var urlEncodedDataPairs = [];
+			var text = document.getElementById("inputchatname").value;
+			document.getElementById("inputchatname").value='';
+			if(add==true){
+				urlEncodedDataPairs.push(encodeURIComponent("addusertochat") + '=' + encodeURIComponent(true));
+			}
+		
+				urlEncodedDataPairs.push(encodeURIComponent("inputchatname") + '=' + encodeURIComponent(text));
+		
+			urlEncodedDataPairs.push(encodeURIComponent("isasync") + '=' + encodeURIComponent(true));
+			urlEncodedDataPairs.push(encodeURIComponent("getchatnames") + '=' + encodeURIComponent(true));
+			
+			
+			
+			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+			
+			
+			var xmlreq = new XMLHttpRequest();
+			xmlreq.open("post", "index");
+			xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xmlreq.send(urlEncodedData);
+				
+			xmlreq.onload=function(){
+				if (this.status==200){
+					var resp=this.responseText;
+					//console.log(this.response);
+					try {
+						chatedc= JSON.parse(resp);
+						console.log(chatedc)
+						makeusechats(chatedc);
+					}
+					catch(err) {
+						window.alert(resp);
+					}
+					
+				}
+			}
+			
+			
+			
+			
+		}
 		
 		
-		
-		
-		setInterval(refreshchat(null),1);
+		//setInterval(refreshchat(null),1);
 		
 		///////////end chat  
 		
@@ -715,7 +890,7 @@
 		
 		 </div>
 		 
-		 <!-- start chat html -->
+		 <!-- start chat html /////////////////////////-->
 		 
 		 
 		<div id="chatwindow">
@@ -727,9 +902,18 @@
 			
 				
 			</div>
-			<div id="chattabs" >
+		<div id="chattabs" >
 				<button class="swithchchatactive" onclick="newchat(event,'general')  ">general</button>
 				<button class="swithchchat" onclick="newchat(event,'towerdef1')  ">towerdef1</button>
+				<div id="usercahtscontainer" onmouseover="toggleuserchats(true);" onmouseout="toggleuserchats(false);">
+					<button class="swithchchat"  id ="showuserchats">your chats</button>
+					<div id="userchats">
+					<!-- <button id="swithcuserchat" class=" swithchchat" onclick="newchat(event,'general')  ">chat 1</button>-->
+					
+					</div>
+					
+				</div>
+				
 			</div>
 			
 			<div id="chattext">
@@ -741,12 +925,12 @@
 			
 			<div id="chatinput">
 				<p>add comment</p>
-				<form action="${pageContext.servletContext.contextPath}/index" method="post">
+				
 					<textarea class="smallroundcorners" name="chatinputtext" rows="5" cols="38" id="chattextarea" > </textarea>
 				
 				
-					<!--<button>Send Meeeeeee!</button>  -->
-				</form>
+				
+				
 				<button onclick="post()">post</button>
 				
 				
@@ -755,6 +939,27 @@
 			</div>
 			
 		 </div>
+		  <div id="newchatoverlay"  onclick="newwuserchat(false)" >
+        
+        
+        </div>
+        
+        
+        <div class="medroundcorners" id="newchatwindow">
+			
+				<table>
+					<tr>
+						<td class="label">name of chat:</td>
+					<td><input id="inputchatname" type="text" placeholder="Enter chat name" name="spec_chatname" size="20" class="smallroundcorners"  /></td>
+					</tr>
+					
+                
+				</table>
+				<button   onclick="newwuserchat(false)" >cancle</button>
+
+			<button   onclick="createuserchat(false)" >create chat</button>
+			<button   onclick="createuserchat(true)" >add  chat</button>
+		</div>
 		
 		<!--end chat html -->
 		
@@ -834,6 +1039,7 @@
         
         
         </div>
+         
         
         <div class="medroundcorners" id="loginwindow">
 			<form id="loginpost" action="${pageContext.servletContext.contextPath}/index" method="post">
