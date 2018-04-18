@@ -5,6 +5,7 @@ public class post implements Comparable<post>{
 	private int usid;
 	private long mit;
 	private String user,post;
+	private boolean guest;
 	
 	// onece the data bese is set up the user id will be used as oposed to username 
 	
@@ -14,6 +15,13 @@ public class post implements Comparable<post>{
 	
 	
 	public post(long mils_time ,String username,String post) {
+		this.mit=mils_time;
+		this.user=username;
+		this.post=post;
+	}
+	
+	public post(long mils_time ,String username,String post,boolean isguest) {
+		this.guest=isguest;
 		this.mit=mils_time;
 		this.user=username;
 		this.post=post;
@@ -67,6 +75,10 @@ public class post implements Comparable<post>{
 	}
 	
 	
-	
-
+	public void setguest(boolean isguest) {
+		this.guest=isguest;
+	}
+	public boolean getguest() {
+		return guest;
+	}
 }

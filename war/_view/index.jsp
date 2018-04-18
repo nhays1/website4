@@ -574,6 +574,7 @@
 
 			   
 			   var posttext=chat[i].post;
+			   console.log(posttext);
 			   var username=chat[i].user;
 			   username+=" ";
 			   var posttime=chat[i].mit;
@@ -609,9 +610,10 @@
 				   username+=" years agao"  
 			   }
 			
-			   newDiv.id = 'r'+i;
+			   //newDiv.id = 'r'+i;
 			   newDiv.className = 'chatentry';
 			   newP.className='chatheader';
+			   //newP.
 			   newDiv.innerHTML = posttext;
 			   newP.innerHTML = username;
 			   toAdd.appendChild(newP);
@@ -840,6 +842,16 @@
 		}
 		
 		
+		function otheruseroptions(make){//make= boolean
+			
+			
+			
+			
+		}
+		
+		
+		
+		
 		//setInterval(refreshchat(null),1);
 		
 		///////////end chat  
@@ -938,7 +950,7 @@
 				
 			</div>
 			
-		 </div>
+		 </div><!-- end fixed chat window -->
 		  <div id="newchatoverlay"  onclick="newwuserchat(false)" >
         
         
@@ -960,6 +972,20 @@
 			<button   onclick="createuserchat(false)" >create chat</button>
 			<button   onclick="createuserchat(true)" >add  chat</button>
 		</div>
+		
+		
+		 <div id="chatuseroptionsoverlay"  onclick="otheruseroptions(false)" >        </div>
+        
+        
+        <div class="medroundcorners" id="chatuseropt">
+			<button   onclick="otheruseroptions(false)" >cancle</button>
+			
+			<form action="${pageContext.servletContext.contextPath}/pmpage" method="post">
+					<input name="newuser" type="submit" value="privatte mesage" />
+				</form>
+			<!--<button   onclick="" >blacklist (WIP)</button>-->
+		</div>
+		
 		
 		<!--end chat html -->
 		
