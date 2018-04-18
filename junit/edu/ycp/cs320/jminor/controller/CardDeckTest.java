@@ -31,4 +31,33 @@ public class CardDeckTest {
 		assertEquals(testNum2, cd1.getCard(6));
 	}
 	
+	@Test
+	public void testShuffle(){
+		cd1.createDeck();
+		Integer test1 = cd1.getCard(0);
+		Integer test2 = cd1.getCard(1);
+		Integer test3 = cd1.getCard(2);
+		Integer test4 = cd1.getCard(3);
+		Integer test5 = cd1.getCard(4);
+		Integer test6 = cd1.getCard(5);
+		Integer test7 = cd1.getCard(6);
+		
+		cd1.shuffleDeck();
+		assertNotEquals(test1, cd1.getCard(0));
+		assertNotEquals(test1, cd1.getCard(1));
+		assertNotEquals(test1, cd1.getCard(2));
+		assertNotEquals(test1, cd1.getCard(3));
+		assertNotEquals(test1, cd1.getCard(4));
+		assertNotEquals(test1, cd1.getCard(5));
+		assertNotEquals(test1, cd1.getCard(6));
+		
+	}
+	
+	@Test
+	public void testGetTopCard(){
+		cd1.createDeck();
+		Integer ten = 10;
+		assertEquals(ten, cd1.getTopCard());
+	}
+	
 }
