@@ -256,6 +256,33 @@
 		 z-index: 4;
 		}
 		
+		#chatuseropt{
+		padding: 20px;
+		heiht: 300px;
+		width: 100px;
+		background-color: white;
+		position: fixed;
+		right:300px;
+		//top:50%;
+		visibility: hidden;
+		 z-index: 4;
+		
+		}
+		#chatuseroptionsoverlay{
+		height: 100%;
+		width:100%;
+		background-color:rgba(128,128,128,0);
+		position: fixed;
+		left:0;
+		top:0;
+		visibility: hidden;
+		transition: 0.3s;
+		 z-index: 3;
+		
+		
+		}
+		
+		
 		#userchats{
 		padding: 4px;
 		
@@ -313,6 +340,10 @@
 		overflow: scroll;
 		}
 		
+		.hide{
+		visibility: hidden;
+		display:block;
+		}
 		<!-- end chat style -->
 		
 		
@@ -574,8 +605,9 @@
 
 			   
 			   var posttext=chat[i].post;
-			   console.log(posttext);
+			   //console.log(posttext);
 			   var username=chat[i].user;
+			   newP.id=chat[i].usid;
 			   username+=" ";
 			   var posttime=chat[i].mit;
 			   now-=posttime;
@@ -613,7 +645,10 @@
 			   //newDiv.id = 'r'+i;
 			   newDiv.className = 'chatentry';
 			   newP.className='chatheader';
-			   //newP.
+			   
+			   newP.onclick = function() { 
+				   otheruseroptions(event, true ,this.id);
+			   };
 			   newDiv.innerHTML = posttext;
 			   newP.innerHTML = username;
 			   toAdd.appendChild(newP);
@@ -842,9 +877,27 @@
 		}
 		
 		
-		function otheruseroptions(make){//make= boolean
-			
-			
+		
+	
+		
+		function otheruseroptions(event,make,id){//make= boolean
+			//console.log(id);
+			//console.log(event.pageY);
+			var ypos=event.pageY;
+			ypos-=window.pageYOffset;
+			//console.log(ypos);
+			if(make==true){
+				document.getElementById("chatuseroptionsoverlay").style.visibility ="visible";
+				document.getElementById("chatuseropt").style.visibility ="visible";
+				document.getElementById("chatuseropt").style.top=ypos+"px";
+				document.getElementById("pmid").value=id;
+				console.log(document.getElementById("pmid").value);
+			}
+			else{
+				document.getElementById("chatuseroptionsoverlay").style.visibility ="hidden";
+				document.getElementById("chatuseropt").style.visibility ="hidden";
+				//document.getElementById("pass").value="";
+			}
 			
 			
 		}
@@ -981,7 +1034,10 @@
 			<button   onclick="otheruseroptions(false)" >cancle</button>
 			
 			<form action="${pageContext.servletContext.contextPath}/pmpage" method="post">
+				<!--  -->
+					
 					<input name="newuser" type="submit" value="privatte mesage" />
+					<input class="hide" id="pmid" type="text" name="pmid" value="0" >
 				</form>
 			<!--<button   onclick="" >blacklist (WIP)</button>-->
 		</div>

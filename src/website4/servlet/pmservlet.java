@@ -52,13 +52,12 @@ public class pmservlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+		System.out.println("__________________________________________________________");
 		System.out.println("pm Servlet: doPost");
 		
 		
 		
-		System.out.println("__________________________________________________________");
-	
+		
 		
 		usser user = null;
 		Integer userid = (Integer) req.getSession().getAttribute("userid");
@@ -82,11 +81,11 @@ public class pmservlet extends HttpServlet {
 			
 			String username =  req.getParameter("username");
 			String password =  req.getParameter("password");
+			String pmid =  req.getParameter("pmid");
 			
 			
 			
-			
-			
+			System.out.println("pmid          _ "+pmid);
 			System.out.println("username      _ "+username);
 			System.out.println("assword      _ "+password);
 		

@@ -147,6 +147,29 @@ public class FakeDatabase implements IDatabase {
 		return null;
 	}
 
+	public Integer creatpm(int user1, int user2) {
+		return null;
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
+	public List<post> posttopm(long mils_time, String posttext, int senderid, int pmid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int getpmid(int user1, int user2) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public List<post> getpm(int numposts, int pmid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	
 	
