@@ -44,19 +44,34 @@ public class UserControllerTest {
 		
 		assertFalse(userCrl.isValid(username, password, email));
 		
-		userCrl.createUser(username, password, email);
+		try {
+			userCrl.createUser(username, password, email);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		username = null;
 		email = "email";
 		
-		userCrl.createUser(username, password, email);
+		try {
+			userCrl.createUser(username, password, email);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		assertFalse(userCrl.isValid(username, password, email));
 		
 		username = "username";
 		password = null;
 		
-		userCrl.createUser(username, password, email);
+		try {
+			userCrl.createUser(username, password, email);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		userCrl.isValid(username, password, email);
 		
 		assertFalse(userCrl.isValid(username, password, email));
@@ -65,7 +80,12 @@ public class UserControllerTest {
 		password = "password";
 		email = "email";
 		
-		userCrl.createUser(username, password, email);
+		try {
+			userCrl.createUser(username, password, email);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		assertTrue(userCrl.isValid(username, password, email));
 		
