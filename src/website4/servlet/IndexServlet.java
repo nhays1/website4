@@ -84,23 +84,29 @@ public class IndexServlet extends HttpServlet {
 		Gson gson = new GsonBuilder().create();
 		
 	
-		
-		//
 		usser user = null;
-		Integer userid = (Integer) req.getSession().getAttribute("userid");
-		if(userid!=null) {
-			
-			user=usecontrol.getuserbyid(userid);
-			System.out.println("sesion usser     "+user.getusername());
-		}
-	
-		if(user==null) {//if user id was not found creates a new guest 
-			user=usecontrol.createguestuser() ;
-
-		}
-		//req.getSession().setAttribute("userid", userid);
 		//
-		
+		try {
+			
+			Integer userid = (Integer) req.getSession().getAttribute("userid");
+			if(userid!=null) {
+			
+				
+				user=usecontrol.getuserbyid(userid);
+				if(user!=null)
+					System.out.println("sesion usser     "+user.getusername());
+			}
+	
+			if(user==null) {//if user id was not found creates a new guest 
+				user=usecontrol.createguestuser() ;
+
+			}
+			//req.getSession().setAttribute("userid", userid);
+			//
+		}
+		finally{
+			
+		}
 		
 		try {
 

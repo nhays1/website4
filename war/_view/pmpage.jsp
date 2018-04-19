@@ -7,18 +7,8 @@
 		<title>acount information</title>
 		<style type="text/css">
 	
-		#allgames{
-		float:left;
-		width:150px;
-		height: 1000px;
-		border: 3px solid;
-		border-color: darkred;
-		background-color: darkred;
-		
-		}
-
 		body {
-		background-color: brown;
+		background-color: #909090;
 		
 		}
 		
@@ -40,8 +30,9 @@
 		min-width:1000px;
 		height: 100px;
 		width:100%;
-		 font-size: 400%;
-		background-color: #e60000;
+		font-size: 400%;
+		color:  #c0c0c0;
+		background-color: #040404;
 		}
 		
 		#bannerholder{
@@ -52,36 +43,83 @@
 		height: 150px;
 		width:100%;
 		 font-size: 400%;
-		background-color: #e60000;
+		background-color: #202020;
 		}
-		#acountopt{
-		cursor: pointer;
-		float: right;
-		margin-right:300px;
-		transition: ease-in-out, margin .4s  ease-in-out;
-		}
+	
+			<!-- start chat style -->
+		#hidechatbutt{
+		position:fixed;
+		right:0px;
 		
-		#acountopt{
-		float: right;
-		height: 50px;
-		width:50px;
-		}
-		#userphoto{
-		padding-left:25px;
-		padding-right:25px;
 		
 		}
-		#acountoptions{
+		
+		#chatwindow{
+		visibility: visible;
 		position: fixed;
-		top:-200px;
-		right:300px;
-		height: 200px;
-		width:200px;
 		background-color: black;
-		transition: ease-in-out, top .4s  ease-in-out;
+		
+		width: 300px;
+		height: 100%;
+		right:0;
+		top:0;
+		transition: ease-in-out, width .4s  ease-in-out;
+		
+		
 		}
 		
-		#loginwindow{
+		#chatoptions{
+		
+		width: 300px;
+		height:24px;
+		background-color: lightgrey;
+		}
+		
+		#chattabs{
+		width: 300px;
+		height: 36px;
+		background-color: grey;
+		}
+		.swithchchat{
+		background-color: inherit;
+		
+		border: none;
+		outline: none;
+		cursor: pointer;
+		padding: 7px 8px;
+		transition: 0.3s;
+		font-size: 17px; 
+		
+		}
+		.swithchchatactive {
+		
+		color:#c0c0c0;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		padding: 7px 8px;
+		transition: 0.3s;
+		font-size: 17px;
+		background-color: #303030;
+		}
+		
+		.swithchchat:hover {
+		background-color: #dddddd;
+		}
+		
+		#newchatoverlay{
+		height: 100%;
+		width:100%;
+		background-color:rgba(128,128,128,0.5);
+		position: fixed;
+		left:0;
+		top:0;
+		visibility: hidden;
+		transition: 0.3s;
+		 z-index: 3;
+		}
+		
+		#newchatwindow{
 		padding: 20px;
 		heiht: 300px;
 		width: 300px;
@@ -90,135 +128,105 @@
 		right:50%;
 		top:50%;
 		visibility: hidden;
+		 z-index: 4;
 		}
 		
-		
-		#canclelog{
-		float: right;
+		#chatuseropt{
+		padding: 20px;
+		heiht: 300px;
+		width: 100px;
+		background-color: white;
+		position: fixed;
+		right:300px;
+		//top:50%;
+		visibility: hidden;
+		 z-index: 4;
 		
 		}
-		
-		#loginoverlay{
+		#chatuseroptionsoverlay{
 		height: 100%;
 		width:100%;
-		background-color:rgba(128,128,128,0.5);
+		background-color:rgba(128,128,128,0);
 		position: fixed;
 		left:0;
 		top:0;
 		visibility: hidden;
-		}
-		
-		#login{
-		visibility: visible;
-		
-		
+		transition: 0.3s;
+		 z-index: 3;
 		
 		
 		}
 		
 		
+		#userchats{
+		padding: 4px;
 		
-		#pageoptions{
+		float: right;
+		background-color: grey;
+		display: none;
+    	position: fixed;
+    	top:56px;
+    	right:10px;
+    	 z-index: 3;
+		}
 		
+		
+		#usercahtscontainer{
+		 display: inline;
+		 padding: 2px;
+		}
+		
+		#swithcuserchat{
+    	display: block;
+		}
+		
+		#chattext{
+		position: absolute;
+		bottom: 140px;
+		width: 300px;
+		top:60px;
+		background-color: #303030;
+		overflow: scroll;
+		}
+		
+		
+		.chatentry{
+		margin-left:16px;
+		white-space:pre-wrap;
+		color: #c0c0c0;
+		}
+		.chatheader{
+		color: #fc5200;
+		white-space:pre-wrap;
+		
+		}
+		
+		#chatinput{
+		position: absolute;
+		width: 300px;
+		height:140px;
+		background-color: white;
+		bottom: 0px;
+		
+		}
+		
+		#comment{
+		word-break: break-word;
+		overflow: scroll;
+		}
+		
+		.hide{
+		visibility: hidden;
 		position: fixed;
-		right:0;
-		top:0;
+		top:-64px;
+    	right:-64px;
 		}
-			#userstats{
-		
-		min-width:300px;
-		
-		padding:5px;
-		margin-left:160px;
-		margin-right:300px;
-		transition: ease-in-out, margin .4s  ease-in-out;
-		}
-		
-		.information{
-		margin:5px;
-		margin-left:160px;
-		margin-right:600px;
-			
-			font-size: 200%;
-			padding: 5px;
-			border: solid red;
-		
-		}
-		.data{
-		padding:0;
-			margin:0;
-		padding-left:40px;
-		font-size: 125%;
-		
-		}
+		<!-- end chat style -->
 		
 		
 		
 		</style>
-		<script>
-		//if(user.)
-		
-			
-			
-			
-			var acountoptionsvisible = false;
-			var loginvisable = false;
-			var ussing  = "${ user.username    }"
-			
-			
-			
-			function logclick(){
-			if(loginvisable){
-				document.getElementById("uzer").value="";
-				document.getElementById("pass").value="";
-				document.getElementById("loginwindow").style.visibility ="hidden";
-				document.getElementById("loginoverlay").style.visibility ="hidden";
-				loginvisable= false;
-			}
-			else{
-			document.getElementById("loginwindow").style.visibility ="visible";
-			document.getElementById("loginoverlay").style.visibility ="visible";
-			
-			
-			loginvisable=true;
-			}
-		}
-			function toggleacountoptions(){
-			
-			if(acountoptionsvisible){
-				document.getElementById("acountopt").style.visibility="visible";
-				document.getElementById("acountoptions").style.top="-200px";
-				//document.getElementById("cancleacountopt").style.visibility="hidden";
-				acountoptionsvisible=false;
-				document.getElementById("loginpost").method="get";
-				
-				
-				
-				
-				// if(){
-				//	 document.getElementById("login").innerHTML = "logout";
-				//	 document.getElementById("login").onclick="logout()"
-				// }
-				// else{
-				//	 document.getElementById("login").innerHTML = "login";
-				//	 document.getElementById("login").onclick="logclick()"
-					 
-				// }
-				
-			}
-			else{
-			document.getElementById("acountopt").style.visibility="hidden";
-			document.getElementById("acountoptions").style.top="0px";
-			//document.getElementById("cancleacountopt").style.visibility="visible";
-			acountoptionsvisible=true;
-			}
-			document.getElementById("loginpost").method = "post";
-		}
-			
-			
-		
-		
-		</script>
+		<script src="_view/chat.js"></script>
 		
 		
 		
@@ -227,7 +235,7 @@
 		
 	</head>
 
-	<body >
+	<body onload="post()">
 	
 	<div id="bannerholder" onclick="home()">
 			
@@ -238,68 +246,120 @@
 		
 		</div>
 
-	<div id ="allgames">
-		<ul>
-			<li>game1</li>
-			<li>game2</li>
-			<li>game3</li>
-		</ul>	
+	
+	
+	
+	
+	
 		
+	
+	<div id="pageoptions">
+		
+			<button id="showchatbutt" onclick="togglechat() ">__</button>
+	
+			
+			
 		
 		 </div>
-	
-	
-	
-	
-	
-	<div id="userstats"> 
-		
-			<div class= "userphoto">
-				<div class="smallroundcorners" id= "acountoptions">
-				<img id="userphoto" onclick="toggleacountoptions()" src="img/largeloginicon.png"  />
-				<button id="login"  onclick="logclick()" >login</button>
+		 
+		 <!-- start chat html /////////////////////////-->
+		 
+		 
+		<div id="chatwindow">
+			<div id="chatoptions">
+			<button id="hidechatbutt" onclick="togglechat() ">__</button>
+			<!-- <button id="refresfchatbut" onclick="post() ">refresh</button> -->
+			<button id="refresfchatbut" onclick="post()  ">refresh</button>
 			
 			
 				
+			</div>
+		<div id="chattabs" >
+				<button class="swithchchatactive" onclick="newchat(event,'general')  ">general</button>
+				<button class="swithchchat" onclick="newchat(event,'towerdef1')  ">towerdef1</button>
+				<div id="usercahtscontainer" onmouseover="toggleuserchats(true);" onmouseout="toggleuserchats(false);">
+					<button class="swithchchat"  id ="showuserchats">your chats</button>
+					<div id="userchats">
+					<!-- <button id="swithcuserchat" class=" swithchchat" onclick="newchat(event,'general')  ">chat 1</button>-->
+					
+					</div>
+					
 				</div>
+				
+			</div>
+			
+			<div id="chattext">
+			
+		
+		
 			</div>
 			
 			
+			<div id="chatinput">
+				<p>add comment</p>
+				
+					<textarea class="smallroundcorners" name="chatinputtext" rows="5" cols="38" id="chattextarea" > </textarea>
+				
+				
+				
+				
+				<button onclick="post()">post</button>
+				
+				
+				
+				
+			</div>
 			
+		 </div><!-- end fixed chat window -->
+		  <div id="newchatoverlay"  onclick="newwuserchat(false)" >
+        
+        
+        </div>
+        
+        
+        <div class="medroundcorners" id="newchatwindow">
+			
+				<table>
+					<tr>
+						<td class="label">name of chat:</td>
+					<td><input id="inputchatname" type="text" placeholder="Enter chat name" name="spec_chatname" size="20" class="smallroundcorners"  /></td>
+					</tr>
+					
+                
+				</table>
+				<button   onclick="newwuserchat(false)" >cancle</button>
+
+			<button   onclick="createuserchat(false)" >create chat</button>
+			<button   onclick="createuserchat(true)" >add  chat</button>
 		</div>
+		
+		
+		 <div id="chatuseroptionsoverlay"  onclick="otheruseroptions(false)" >        </div>
+        
+        
+        <div class="medroundcorners" id="chatuseropt">
+			<button   onclick="otheruseroptions(false)" >cancle</button>
+			
+			<form action="${pageContext.servletContext.contextPath}/pmpage" method="post">
+				<!--  -->
+					
+					<input name="newuser" type="submit" value="privatte mesage" />
+					<input class="hide" id="pmid" type="text" name="pmid" value="0" >
+				</form>
+			<!--<button   onclick="" >blacklist (WIP)</button>-->
+		</div>
+		
+		
+		<!--end chat html -->
+	
+	
+	
+	
+	
+	
+			
 	
 		
-	
-	
-	
-	
-	
-	
-	
-	
-			<a>
-				<img id="acountopt" onclick="toggleacountoptions()" src="img/loginicon.png"  />
-			
-			</a>
-	
-	
-		<div class="information" >
-		username
-		<p class="data">${ user.username    }</p> 
-		
-		</div>
-	
-		<div class="information" >
-		email adress
-		<p  class="data">${ user.email    }</p> 
-		</div>
-	
-		<div class="information" id="coins">
-		coins
-		<p class="data">${ user.coins    }</p> 
-		</div>
-	
-	
 	
 	
 	
@@ -313,37 +373,6 @@
 
 
 
-	<div id="loginoverlay"  onclick="logclick()" >
-        
-        
-        </div>
-        
-        <div class="medroundcorners" id="loginwindow">
-			<form id="loginpost" action="${pageContext.servletContext.contextPath}/userinfo" method="post">
-				<table>
-					<tr>
-						<td class="label">username:</td>
-					<td><input  id="uzer" type="text" name="username" size="20" class="smallroundcorners" value="${ model.username     }" /></td>
-					</tr>
-					<tr>
-						<td class="label">Password:</td>
-					<td><input id="pass" type="password" name="password" size="20" class="smallroundcorners" value="${  model.password   }" /></td>
-                    
-					</tr>
-                
-				</table>
-				<input type="Submit" name="loginsubmit" value="login">
-			</form>
-			
-			  <form action="${pageContext.servletContext.contextPath}/newuser" method="get">
-			
-				<input name="newuser" type="submit" value="new user" />
-			
-		
-			</form>
-			
-			<button id="canclelog"  onclick="logclick()" >cancle</button>
-		</div>
 	
 	
 	

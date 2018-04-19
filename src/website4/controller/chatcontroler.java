@@ -114,8 +114,25 @@ public class chatcontroler {
 		
 		
 	}
+	public List<post> gotopm(int usid1,int usid2){
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		db.creatpm(usid1, usid2);
+		int pmid=db.getpmid(usid1, usid2);
+		return db.getpm(10, pmid);
+
+	}
+	public List<post> morepm(int numposts, int pmid){
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		return db.getpm(numposts, pmid);
+	}
 	
-	
+	public void posttopm(long mils_time ,int senderid,String posttext,int pmid) {
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		db.posttopm(mils_time, posttext, senderid, pmid);
+	}
 	
 	
 }
