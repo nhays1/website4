@@ -31,6 +31,11 @@
     <servlet-name>Newuserservlet</servlet-name>
     <servlet-class>website4.servlet.Newuserservlet</servlet-class>
   </servlet>
+  
+   <servlet>
+    <servlet-name>pmservlet</servlet-name>
+    <servlet-class>website4.servlet.pmservlet</servlet-class>
+  </servlet>
 
 
   <!-- Servlet mappings -->
@@ -58,6 +63,11 @@
     <servlet-mapping>
     <servlet-name>Newuserservlet</servlet-name>
     <url-pattern>/newuser</url-pattern>
+  </servlet-mapping>
+  
+   <servlet-mapping>
+    <servlet-name>pmservlet</servlet-name>
+    <url-pattern>/pmpage</url-pattern>
   </servlet-mapping>
 
 

@@ -130,6 +130,8 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement stmt6 = null;
 				PreparedStatement stmt7 = null;
 				PreparedStatement stmt8 = null;
+				PreparedStatement stmt9 = null;
+				PreparedStatement stmt0 = null;
 				try {
 					stmt1 = conn.prepareStatement(
 							"create table users (" +
@@ -237,6 +239,30 @@ public class DerbyDatabase implements IDatabase {
 					stmt7.executeUpdate();
 					
 					
+					stmt9 = conn.prepareStatement(
+							"create table pmlist (" +
+									"	pmid integer primary key "
+									+ " generated always as identity (start with 0, increment by 1),  " +
+									"	user1id integer, " +
+									"	user2id integer " +
+									")"
+					);	
+					stmt9.executeUpdate();
+					
+					
+					stmt0 = conn.prepareStatement(
+							"create table pmchats (" +
+									"	postid integer primary key " +
+									"	generated always as identity (start with 1, increment by 1), " +
+									"	userid integer , " +	
+									"	timeposted bigint," +
+									"	posttext varchar(512), "
+									+ " pmid  integer" +
+									")"
+					);	
+					stmt0.executeUpdate();
+					
+					
 					return true;
 				} finally {
 					DBUtil.closeQuietly(stmt1);
@@ -247,6 +273,8 @@ public class DerbyDatabase implements IDatabase {
 					DBUtil.closeQuietly(stmt6);
 					DBUtil.closeQuietly(stmt7);
 					DBUtil.closeQuietly(stmt8);
+					DBUtil.closeQuietly(stmt9);
+					DBUtil.closeQuietly(stmt0);
 				}
 			}
 		});
@@ -1594,6 +1622,213 @@ public class DerbyDatabase implements IDatabase {
 		});
 	}
 	
+
+	public Integer creatpm(final int user1, final int user2) {
+		return executeTransaction(new Transaction<Integer>() {
+			public Integer execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				Integer pmid=-1;
+				try { //chatnames
+						pmid=getpmid(user1,user2);
+						
+						if(pmid==null||pmid==-1) {
+							stmt = conn.prepareStatement(
+
+									"insert into pmlist (user1id,user2id) values ( ?,?) "
+
+							);
+							
+							stmt.setInt(1, user1);
+							stmt.setInt(2, user2);
+							stmt.executeUpdate();
+														
+						}
+						else {
+							String eror="the chat ";
+							eror+=" already exsits ";
+							//throw new NoSuchElementException(eror);
+							
+						}
+						// execute the query
+				
+					
+				
+					
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+				
+				return pmid;
+			}
+		});
+	}
+
+	public List<post> getpm(final int numposts ,final int pmid) {
+
+		return executeTransaction(new Transaction<List<post>>() {
+			public List<post> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					
+					stmt = conn.prepareStatement(
+							"SELECT postid " + 
+							"FROM pmchats "
+							+ "where pmid= ?"
+							
+					);//gets the largest(newest) post id
+					stmt.setInt(1, pmid);
+					
+					resultSet = stmt.executeQuery();
+
+						//int totalposts=0 ;
+						ArrayList<Integer> postids=new 	ArrayList<Integer>();
+						while (resultSet.next()) {
+							postids.add(resultSet.getInt(1));
+							
+						}
+							
+						//Collections.sort(postids);
+						
+						int bottomindexindb = 0;   // bottom index is the newest post that is requested
+						if(postids.size()>0) {
+							 bottomindexindb = postids.get(postids.size()-1); 
+						}
+						int topindexindb = 0;  //top index is the oldest post requested 
+						if(postids.size()>numposts+2) {
+							topindexindb = postids.get(postids.size()-(numposts+1));
+						}
+					
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+			
+					
+					stmt = conn.prepareStatement(
+							"select pmchats.postid , pmchats.userid , pmchats.timeposted, pmchats.posttext, users.username  from users , pmchats " 
+							+"where postid >= ? " + 
+							" and postid <= ? "
+							+ "and pmchats.userid = users.userid "
+							+ " and pmid= ?"
+					);//selects everything between top and bottom
+					stmt.setInt(1, topindexindb);
+					stmt.setInt(2, bottomindexindb);
+					stmt.setInt(3, pmid);
+					//System.out.println(pmid);
+					ArrayList<post> result=new ArrayList<post>();
+					
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned 
+				
+					while (resultSet.next()) {
+						
+						post post = new post();
+						loadpost(post, resultSet, 1);
+						
+						//System.out.println(post);
+						result.add(post);
+						
+					}
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					
+						
+			
+					Collections.sort(result);
+					
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}  
+			}
+		});
+	}
+	
+	
+	
+	
+
+	public List<post> posttopm(final long mils_time, final String posttext, final int senderid, final int pmid) {
+		// TODO Auto-generated method stub
+		 executeTransaction(new Transaction<post>() {
+				public post execute(Connection conn) throws SQLException {
+					
+					PreparedStatement stmt = null;
+					ResultSet resultSet = null;
+					
+					try {
+					
+					stmt = conn.prepareStatement(
+	
+							"insert into pmchats (userid,  timeposted, posttext,pmid)"
+							+" values( ? ,  ?, ?,?)"
+
+					);
+
+					stmt.setInt(1, senderid);
+					//stmt.setString(2, username);
+					stmt.setLong(2, mils_time);
+					stmt.setString(3, posttext);
+					stmt.setInt(4, pmid);
+					// execute the query
+					
+					stmt.executeUpdate();
+
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+					}
+					return null;
+				}
+			});
+
+		
+		
+		
+		
+		
+		return null;
+	}
+
+	public int getpmid(final int user1, final int user2) {
+		// TODO Auto-generated method stub
+		return executeTransaction(new Transaction<Integer>() {
+			public Integer execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try { 
+						stmt = conn.prepareStatement(//user1id   user2id
+								"select pmid from pmlist "
+								+ " where (user1id= ? and user2id= ? ) or (user1id= ? and user2id= ? )"
+						);
+						stmt.setInt(1, user1);
+						stmt.setInt(2, user2);
+						stmt.setInt(3, user2);
+						stmt.setInt(4, user1);
+						resultSet = stmt.executeQuery();
+
+						int chatid=-1;
+						
+						if (resultSet.next()) {
+							chatid=resultSet.getInt(1);
+						}
+						return  chatid;
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			
+			}
+		});
+		
+	}
 	
 }
 	

@@ -3,10 +3,11 @@ package website4.controller;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.time.Instant;
+
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
+
 
 import website4.database.DatabaseProvider;
 import website4.database.IDatabase;
@@ -24,7 +25,26 @@ public class chatcontroler {
 	}
 	
 	
-	
+	public static void main(String[] args) throws IOException {
+		//String name="towerdef1";
+		//Gson gson = new GsonBuilder().create();
+		//String jsonchstpost = gson.toJson(addtouserscores(name,4,50));
+		//System.out.println(jsonchstpost);
+		System.out.println("aver er " );
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		long now=Instant.now().toEpochMilli();
+		//now+=86400000;
+		//db.updateguestlist(now);
+		System.out.println("aver er " );
+		db.creatpm(2, 5);
+		int s= db.getpmid(2, 5);
+		
+		System.out.println(db.getpmid(1, 2) );
+		db.posttopm(now, "aerfe ser", 2, s);
+		System.out.println(db.getpm(2, s));
+		
+	}
 	
 	
 	
@@ -94,8 +114,25 @@ public class chatcontroler {
 		
 		
 	}
+	public List<post> gotopm(int usid1,int usid2){
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		db.creatpm(usid1, usid2);
+		int pmid=db.getpmid(usid1, usid2);
+		return db.getpm(10, pmid);
+
+	}
+	public List<post> morepm(int numposts, int pmid){
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		return db.getpm(numposts, pmid);
+	}
 	
-	
+	public void posttopm(long mils_time ,int senderid,String posttext,int pmid) {
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		db.posttopm(mils_time, posttext, senderid, pmid);
+	}
 	
 	
 }
