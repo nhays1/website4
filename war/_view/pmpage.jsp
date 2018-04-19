@@ -11,7 +11,16 @@
 		background-color: #909090;
 		
 		}
+		p{
+			padding:0;
+			margin:0;
+		}
+		#homebut{
+			top:200px;
+		left:550px;
+		position:absolute;
 		
+		}
 		.smallroundcorners{
 		border-radius: 5px;
 		
@@ -33,6 +42,7 @@
 		font-size: 400%;
 		color:  #c0c0c0;
 		background-color: #040404;
+		 z-index: 2;
 		}
 		
 		#bannerholder{
@@ -64,7 +74,7 @@
 		right:0;
 		top:0;
 		transition: ease-in-out, width .4s  ease-in-out;
-		
+		 z-index: 3;
 		
 		}
 		
@@ -221,14 +231,193 @@
 		top:-64px;
     	right:-64px;
 		}
-		<!-- end chat style -->
+		
+		
+		#pmcontainer{
+		position: absolute;
+		width:500px;
+		
+		}
+		#pmotheruser{
+		width: 500px;
+		height:40px;
+		
+		background-color: lightgrey;
+		}
+		#pmchats{
+		//position: absolute;
+		
+		width: 500px;
+		top:40px;
+		background-color: #303030;
+		
+		}
+		#pminput{
+		//position: absolute;
+		width: 500px;
+		
+		background-color: white;
+		//bottom: 0px;
+		
+		}
+		.mypost{
+		width: 300px;
+		position: relative;
+		left:185px;
+		background-color: #0000cc;
+		padding:2px;
+		margin: 5px;
+		border-radius: 10px;
+		color: #f0f0f0;
+		
+		}
+		.otherpost{
+		width: 300px;
+		position: relative;
+		right:0px;
+		background-color: #b0b0b0;
+		padding:2px;
+		margin: 5px;
+		border-radius: 10px;
+		color: black;
+		}
+		.pmentry{
+		margin-left:16px;
+		white-space:pre-wrap;
+		//color: #c0c0c0;
+		color: inherit;
+		}
+		.pmheader{
+		//color: #fc5200;
+		color: inherit;
+		white-space:pre-wrap;
+		
+		}
+		
+		#pmtextarea{
+		
+		
+		}
 		
 		
 		
 		</style>
 		<script src="_view/chat.js"></script>
 		
+		<script>
+		var thisid='${user.userid}';
+		function refreshpm(chats){
+			
+			
+			
+			if(chats!=null){
+				chat=chats;
+			}
+			
+			console.log(chat);
 		
+		
+			  count = Object.keys(chat).length;
+			  console.log(count);
+			
+			
+			
+			
+			document.getElementById("pmchats").innerHTML = "";
+			var toAdd = document.createDocumentFragment();
+			
+			var neHr = document.createElement('hr');
+			var newbutt = document.createElement('button');
+			newbutt.innerHTML="show more posts";
+			newbutt.id="morepostsbutt";
+			 toAdd.appendChild(newbutt);
+			 toAdd.appendChild(neHr);
+			
+			
+			
+			
+			for(var i=0; i < chat.length; i++){
+				var containerdiv=document.createElement('div');
+			   var newDiv = document.createElement('p');
+			   var newHr = document.createElement('hr');
+			   var newP = document.createElement('p');
+			   var time= new Date();
+			   var now = time.getTime();
+
+			   
+			   var posttext=chat[i].post;
+			   //console.log(posttext);
+			   var username;
+			   newP.id=chat[i].usid;
+			   username=" ";
+			   var posttime=chat[i].mit;
+			   now-=posttime;
+			   if(now<60000){
+				   now=now/1000
+				   now= Math.floor(now);
+				   username+=now;
+				   username+=" seconds agao"  
+			   }
+			   else if(now<3600000){
+				   now=now/60000
+				   now= Math.floor(now);
+				   username+=now;
+				   username+=" minutes agao"
+			   }
+			   else if(now<86400000){
+				   now=now/3600000
+				   now= Math.floor(now);
+				   username+=now;
+				   username+=" hours agao"
+			   }
+			   else if(now<(86400000*365)) {
+				   now=now/86400000;
+				   now= Math.floor(now);
+				   username+=now;
+				   username+=" days agao"
+			   }
+			   else {
+				   now=now/(86400000*365)
+				   now= Math.floor(now);
+				   username+=now;
+				   username+=" years agao"  
+			   }
+			
+			   //newDiv.id = 'r'+i;
+			   
+			   newDiv.className = 'pmentry';
+			   newP.className='pmheader';
+			   if((chat[i].usid)!=thisid){
+				   containerdiv.className='otherpost';
+			   }
+			   else{
+				   containerdiv.className='mypost';
+			   }
+			   newP.onclick = function() { 
+				   otheruseroptions(event, true ,this.id);
+			   };
+			   newDiv.innerHTML = posttext;
+			   newP.innerHTML = username;
+			   containerdiv.appendChild(newP);
+			   containerdiv.appendChild(newDiv);
+			  
+			   toAdd.appendChild(containerdiv);
+			  // toAdd.appendChild(newHr);
+			}
+			//toAdd.appendChild(previousposts);
+			document.getElementById("pmchats").appendChild(toAdd);
+			//document.getElementById("chattext").appendChild(previousposts);
+			
+			
+			
+			
+			//element.scrollTop = element.scrollHeight;
+			
+			
+		}
+		
+		
+		</script>
 		
 		
 		
@@ -253,21 +442,14 @@
 	
 		
 	
-	<div id="pageoptions">
-		
-			<button id="showchatbutt" onclick="togglechat() ">__</button>
 	
-			
-			
-		
-		 </div>
 		 
 		 <!-- start chat html /////////////////////////-->
 		 
 		 
 		<div id="chatwindow">
 			<div id="chatoptions">
-			<button id="hidechatbutt" onclick="togglechat() ">__</button>
+			
 			<!-- <button id="refresfchatbut" onclick="post() ">refresh</button> -->
 			<button id="refresfchatbut" onclick="post()  ">refresh</button>
 			
@@ -352,7 +534,25 @@
 		
 		<!--end chat html -->
 	
+	<div id="pmcontainer">
+		<div id="pmotheruser">
+		<button id="refresfchatbut" onclick="refreshpm()  ">refresh</button>
+		</div>
+		<div id="pmchats"></div>
+		<div id="pminput">
+			<p>add comment</p>
+			<textarea class="smallroundcorners" name="chatinputtext" rows="5" cols="38" id="chattextarea" > </textarea>
+			<button onclick="postpm()">post</button>
+		</div>
 	
+	
+	
+	
+	
+	
+	
+	
+	</div>
 	
 	
 	
@@ -364,8 +564,8 @@
 	
 	
 	
-	 <form action="${pageContext.servletContext.contextPath}/index" method="get">
-	 	<input type="Submit" name="chatsubmit" value="home">
+	 <form id="homebut" action="${pageContext.servletContext.contextPath}/index" method="get">
+	 	<input type="Submit"  value="home">
 	 </form>
 	
 
