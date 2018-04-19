@@ -432,6 +432,7 @@
 			else{
 				document.getElementById("chatuseroptionsoverlay").style.visibility ="hidden";
 				document.getElementById("chatuseropt").style.visibility ="hidden";
+				document.getElementById("pmid").value=-1;
 				//document.getElementById("pass").value="";
 			}
 			

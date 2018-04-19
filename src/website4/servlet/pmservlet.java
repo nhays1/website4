@@ -55,12 +55,12 @@ public class pmservlet extends HttpServlet {
 		System.out.println("__________________________________________________________");
 		System.out.println("pm Servlet: doPost");
 		UserController control=new UserController();
-		boolean sync=true,morepots=false;
+		boolean sync=true,morepots=false,getpmlist=false;
 		int pmid=-1,numpost=0,pmchatid=-1;
 		chatcontroler chat=new chatcontroler();
 		Gson gson = new GsonBuilder().create();
 		ArrayList<post> pmposts = null;
-		
+		String jsonpmlist=null;
 		
 		
 		usser user = null;
@@ -84,6 +84,8 @@ public class pmservlet extends HttpServlet {
 			}
 			System.out.println("   pm first   id  "+user.getuserid());
 		
+			
+			
 			String pmi =  req.getParameter("pmid");
 			if (pmi!=null) {
 				pmid=Integer.parseInt(pmi);
@@ -103,14 +105,17 @@ public class pmservlet extends HttpServlet {
 			String moreposts = req.getParameter("getmoreposts");
 			String async =req.getParameter("isasync");
 			
+			String pmlist=req.getParameter("getpmlist");
 			
 			
+			if(pmlist!=null)
+				getpmlist=Boolean.parseBoolean(pmlist);
 			
 			if(async!=null)
 				sync=!Boolean.parseBoolean(async);
 			
 			if(moreposts!=null)
-				morepots=!Boolean.parseBoolean(moreposts);
+				morepots=Boolean.parseBoolean(moreposts);
 			
 			if(numberofposts!=null) {
 				try {
@@ -150,6 +155,9 @@ public class pmservlet extends HttpServlet {
 				}
 			}
 			pmposts= (ArrayList<post>)chat.gotopm(pmchatid);
+			if(getpmlist) {
+				jsonpmlist=gson.toJson(chat.getpmlist(user.getuserid()));
+			}
 			
 		}
 		finally{
@@ -164,12 +172,16 @@ public class pmservlet extends HttpServlet {
 		req.setAttribute("user", user);
 		String jsonpmpost= gson.toJson(pmposts);
 		
-		
-		
+		if(getpmlist) {
+			resp.setContentType("text/plain");
+			resp.getWriter().println("");
+			resp.getWriter().println(jsonpmlist);
+		}
+		else {
 			resp.setContentType("text/plain");
 			resp.getWriter().println("");
 			resp.getWriter().println(jsonpmpost);
-		
+		}
 		
 		
 		

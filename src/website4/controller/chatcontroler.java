@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.time.Instant;
 
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import com.google.gson.Gson;
@@ -140,6 +141,10 @@ public class chatcontroler {
 		IDatabase db = DatabaseProvider.getInstance();
 		db.posttopm(mils_time, posttext, senderid, pmid);
 	}
-	
+	public List<Map.Entry<String, Integer>> getpmlist(int userid){
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		return db.getpmlist(userid);
+	}
 	
 }

@@ -310,10 +310,13 @@
 		var pmcont;
 		var currentpm='${pmchaid}'
 		console.log(currentpm);
+		var pmlist;
+		
 		
 		function init(){
 			post();
 			postpm();
+			getpmlist();
 		}
 		
 		function postpm(){
@@ -342,9 +345,9 @@
 				 
 					xmlreq.onreadystatechange = function() {
 				        if (this.readyState == 4 && this.status == 200) {
-				        	var chattts=this.responseText;
+				        	//var chattts=this.responseText;
 				        	
-				        	console.log(chattts);
+				        	//console.log(chattts);
 				        	//if(chattts.charAt(0)=='['){
 				        		chatedc= JSON.parse(this.responseText);
 								console.log(chatedc)
@@ -353,13 +356,7 @@
 				       }
 				    };
 
-			
-			
-			
 		}
-		
-		
-		
 		
 		function refreshpm(chats){
 			
@@ -470,7 +467,43 @@
 			
 			
 		}
-		
+		function getpmlist(){
+			 var urlEncodedData = "";
+				var urlEncodedDataPairs = [];
+				var text = document.getElementById("pmtextarea").value;
+				var chatedc;
+				document.getElementById("pmtextarea").value='';
+				
+				
+				urlEncodedDataPairs.push(encodeURIComponent("isasync") + '=' + encodeURIComponent(true));
+				//urlEncodedDataPairs.push(encodeURIComponent("pmcahtid") + '=' + encodeURIComponent(currentpm));
+				urlEncodedDataPairs.push(encodeURIComponent("getpmlist") + '=' + encodeURIComponent(true));
+				
+				 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+				 
+				 
+				 
+				 var xmlreq = new XMLHttpRequest();
+				 xmlreq.open("post", "pmpage");
+					xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+					xmlreq.send(urlEncodedData);
+				 
+				 
+					xmlreq.onreadystatechange = function() {
+				        if (this.readyState == 4 && this.status == 200) {
+				        		pmlist= JSON.parse(this.responseText);
+								console.log(pmlist)
+					        	makepmlist(pmlist);
+				        	
+				       }
+				    };
+
+			
+		}
+		function makepmlist(list){
+			
+			
+		}
 		
 		</script>
 		
