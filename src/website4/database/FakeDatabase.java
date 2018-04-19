@@ -170,6 +170,11 @@ public class FakeDatabase implements IDatabase {
 		return null;
 	}
 
+	public void createUser(String userName, String password, String email, String userid) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	
 	
