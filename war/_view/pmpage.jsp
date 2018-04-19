@@ -240,7 +240,7 @@
 		}
 		#pmotheruser{
 		width: 500px;
-		height:40px;
+		//height:40px;
 		
 		background-color: lightgrey;
 		}
@@ -301,6 +301,33 @@
 		
 		
 		
+		.swithpm{
+		background-color: inherit;
+		//display:inline;
+		//float:left;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		padding: 7px 8px;
+		transition: 0.3s;
+		font-size: 17px; 
+		}
+		.swithpmactive{
+		//float:left;
+		color:#c0c0c0;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		padding: 7px 8px;
+		transition: 0.3s;
+		font-size: 17px;
+		background-color: #303030;
+		}
+		.swithchchat:hover {
+		background-color: #dddddd;
+		}
+		
+		
 		</style>
 		<script src="_view/chat.js"></script>
 		
@@ -319,7 +346,7 @@
 			getpmlist();
 		}
 		
-		function postpm(){
+		function postpm(pmid){
 			
 			 var urlEncodedData = "";
 				var urlEncodedDataPairs = [];
@@ -501,9 +528,84 @@
 			
 		}
 		function makepmlist(list){
+			document.getElementById("userchats").innerHTML = "";
+			var toAdd = document.createDocumentFragment();
+
+			   
+			   if(list!=null){
+					for(var i=0; i < list.length; i++){
+
+			  			var newbutt = document.createElement('button');
+			   			newbutt.id='swithcuserchat';
+			   			newbutt.className = 'swithpm';
+			   			newbutt.value=list[i].value;
+			   			var chatnammm=list[i].key;
+			   			//newbutt.onclick="newchat(event,'general') ";
+			   			newbutt.onclick = function() { 
+			   				newpm(event, this.value);
+			   	        };
+			   
+			   
+			   			newbutt.innerHTML=chatnammm;
+			   
+			   			toAdd.appendChild(newbutt);
+					}
+			   }
+			//toAdd.appendChild(previousposts);
+			document.getElementById("pmotheruser").appendChild(toAdd);
 			
 			
 		}
+		function newpm(thisbut, pmid){
+			currentpm=pmid;
+			var chattabs = document.getElementsByClassName("swithpmactive");
+		    for (i = 0; i < chattabs.length; i++) {
+		    	chattabs[i].className = chattabs[i].className="swithpm";
+		    	console.log(i);
+		    }
+		    //document.getElementById(chatname).style.display = "block";
+		    thisbut.currentTarget.className += "active";
+		    
+		    var urlEncodedData = "";
+			var urlEncodedDataPairs = [];
+			var chatedc;
+			document.getElementById("pmtextarea").value='';
+			
+			
+			
+			
+			urlEncodedDataPairs.push(encodeURIComponent("isasync") + '=' + encodeURIComponent(true));
+			//urlEncodedDataPairs.push(encodeURIComponent("getpmlist") + '=' + encodeURIComponent(true));
+			urlEncodedDataPairs.push(encodeURIComponent("pmcahtid") + '=' + encodeURIComponent(currentpm));
+			
+			
+			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+			 
+			 
+			 
+			 var xmlreq = new XMLHttpRequest();
+			 xmlreq.open("post", "pmpage");
+			 xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			 xmlreq.send(urlEncodedData);
+			 
+		
+				xmlreq.onreadystatechange = function() {
+			        if (this.readyState == 4 && this.status == 200) {
+			        	chatedc= JSON.parse(this.responseText);
+						console.log(chatedc);
+						refreshpm(chatedc);
+			        	//document.getElementById("chattext").scrollTo(0, document.getElementById('chattext').scrollHeight);
+			        	
+			       }
+			    };
+
+			console.log(pmid);
+			
+			
+		}
+		
+		
+		
 		
 		</script>
 		
