@@ -9,7 +9,15 @@ public class CardDeck {
 	private Card card;
 	private Random rand = new Random();
 	
-	public void createDeck(){
+	public CardDeck() {
+		
+	}
+	
+	public CardDeck(ArrayList<Card> cd) {
+		this.deck = cd;
+	}
+	
+	public ArrayList<Card> createDeck(){
 		//HEARTS
 		deck.add(card = new Card(Rank.ACE, Suit.HEARTS));
 		deck.add(card = new Card(Rank.TWO, Suit.HEARTS));
@@ -67,14 +75,21 @@ public class CardDeck {
 		deck.add(card = new Card(Rank.QUEEN, Suit.CLUBS));
 		deck.add(card = new Card(Rank.KING, Suit.CLUBS));
 		
+		return deck;
 	}
 	
-	public CardDeck splitDeck(CardDeck d) {
-		CardDeck splitDeck = d;
-		for(int i = 0; i < d.size()/2; i++) {
-			
+	public ArrayList<Card> splitDeck(ArrayList<Card> cd) {
+		ArrayList<Card> splitDeck = new ArrayList<Card>();
+		for(int i = 0; i < cd.size()/2; i++) {
+			splitDeck.add(i, cd.get(i));
+			cd.remove(cd.get(i));
 		}
+		this.deck = cd;
 		return splitDeck;
+	}
+	
+	public void addCard(Card c) {
+		
 	}
 	
 	public int size(){
@@ -89,14 +104,13 @@ public class CardDeck {
 		return deck.get(deck.size() - 1);
 	}
 	
-	/*
+	
 	public void shuffleDeck(){
 		for(int i = 0; i < deck.size(); i++){
 			int index = rand.nextInt(deck.size());
 			Card temp = deck.get(i);
-			deck.set(index, i);
+			deck.set(index, deck.get(i));
 			deck.set(i, temp);
 		}
 	}
-	*/
 }
