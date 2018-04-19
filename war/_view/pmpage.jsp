@@ -306,19 +306,74 @@
 		
 		<script>
 		var thisid='${user.userid}';
+		var chatpm;
+		var pmcont;
+		var currentpm='${pmchaid}'
+		console.log(currentpm);
+		
+		function init(){
+			post();
+			postpm();
+		}
+		
+		function postpm(){
+			
+			 var urlEncodedData = "";
+				var urlEncodedDataPairs = [];
+				var text = document.getElementById("pmtextarea").value;
+				var chatedc;
+				document.getElementById("pmtextarea").value='';
+				
+				urlEncodedDataPairs.push(encodeURIComponent("pminput") + '=' + encodeURIComponent(text));
+				urlEncodedDataPairs.push(encodeURIComponent("numberofpost") + '=' + encodeURIComponent(pmcont));
+				urlEncodedDataPairs.push(encodeURIComponent("getmoreposts") + '=' + encodeURIComponent(false));
+				urlEncodedDataPairs.push(encodeURIComponent("isasync") + '=' + encodeURIComponent(true));
+				urlEncodedDataPairs.push(encodeURIComponent("pmcahtid") + '=' + encodeURIComponent(currentpm));
+				
+				 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+				 
+				 
+				 
+				 var xmlreq = new XMLHttpRequest();
+				 xmlreq.open("post", "pmpage");
+					xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+					xmlreq.send(urlEncodedData);
+				 
+				 
+					xmlreq.onreadystatechange = function() {
+				        if (this.readyState == 4 && this.status == 200) {
+				        	var chattts=this.responseText;
+				        	
+				        	console.log(chattts);
+				        	//if(chattts.charAt(0)=='['){
+				        		chatedc= JSON.parse(this.responseText);
+								console.log(chatedc)
+					        	refreshpm(chatedc);
+				        	//}
+				       }
+				    };
+
+			
+			
+			
+		}
+		
+		
+		
+		
 		function refreshpm(chats){
 			
 			
 			
 			if(chats!=null){
-				chat=chats;
+				chatpm=chats;
 			}
 			
-			console.log(chat);
+			console.log(chatpm);
 		
 		
-			  count = Object.keys(chat).length;
-			  console.log(count);
+			pmcont = Object.keys(chatpm).length;
+			  console.log(pmcont);
 			
 			
 			
@@ -336,7 +391,7 @@
 			
 			
 			
-			for(var i=0; i < chat.length; i++){
+			for(var i=0; i < chatpm.length; i++){
 				var containerdiv=document.createElement('div');
 			   var newDiv = document.createElement('p');
 			   var newHr = document.createElement('hr');
@@ -345,12 +400,12 @@
 			   var now = time.getTime();
 
 			   
-			   var posttext=chat[i].post;
+			   var posttext=chatpm[i].post;
 			   //console.log(posttext);
 			   var username;
-			   newP.id=chat[i].usid;
+			   newP.id=chatpm[i].usid;
 			   username=" ";
-			   var posttime=chat[i].mit;
+			   var posttime=chatpm[i].mit;
 			   now-=posttime;
 			   if(now<60000){
 				   now=now/1000
@@ -387,7 +442,7 @@
 			   
 			   newDiv.className = 'pmentry';
 			   newP.className='pmheader';
-			   if((chat[i].usid)!=thisid){
+			   if((chatpm[i].usid)!=thisid){
 				   containerdiv.className='otherpost';
 			   }
 			   else{
@@ -424,7 +479,7 @@
 		
 	</head>
 
-	<body onload="post()">
+	<body onload=" init()">
 	
 	<div id="bannerholder" onclick="home()">
 			
@@ -536,12 +591,12 @@
 	
 	<div id="pmcontainer">
 		<div id="pmotheruser">
-		<button id="refresfchatbut" onclick="refreshpm()  ">refresh</button>
+		<button id="refresfchatbut" onclick="postpm()  ">refresh</button>
 		</div>
 		<div id="pmchats"></div>
 		<div id="pminput">
 			<p>add comment</p>
-			<textarea class="smallroundcorners" name="chatinputtext" rows="5" cols="38" id="chattextarea" > </textarea>
+			<textarea class="smallroundcorners" name="chatinputtext" rows="5" cols="38" id="pmtextarea" > </textarea>
 			<button onclick="postpm()">post</button>
 		</div>
 	
