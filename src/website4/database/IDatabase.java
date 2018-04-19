@@ -127,7 +127,7 @@ public interface IDatabase {
 	 * @param email
 	 * @throws SQLException
 	 */
-	public void createUser(String userName, String password, String email)throws SQLException;
+	public void createUser(String userName, String password, String email, String userid)throws SQLException;
 	/**
 	 * 
 	 * @param userName

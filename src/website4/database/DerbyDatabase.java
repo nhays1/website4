@@ -570,8 +570,9 @@ public class DerbyDatabase implements IDatabase {
 		});
 	}
 	
-	public void createUser(final String userName, final String password, final String email) throws SQLException {
+	public void createUser(final String userName, final String password, final String email, final String userid) throws SQLException {
 		executeTransaction(new Transaction<post>() {
+			
 			private Connection conn2;
 
 			public post execute(Connection conn) throws SQLException {
@@ -581,28 +582,17 @@ public class DerbyDatabase implements IDatabase {
 			PreparedStatement insertNewID = null;
 			conn = null;
 			if (validInfo == true) {
-				// Add information to database
-				//user.add(new usser(userName, password, email));
-				//Finish this implementation after we have a database		
-				
-				
-				String newID = "insert into users(username, password) values (?, ?)";
+			
+				String newID = "insert into users(username, password, email, userid) values (?, ?, ?, ?)";
 				conn2 = conn;
 				insertNewID = conn2.prepareStatement(newID);
 				insertNewID.setString(1, userName);
 				insertNewID.setString(2, password);
+				insertNewID.setString(3, email);
+				insertNewID.setString(4, userid);
 				insertNewID.execute();
 
 			}
-			
-			else {
-				//send error to user that account already exists with user or email
-				
-			}
-			
-		}
-		else {
-			//send error to user that information entered was not valid
 		}
 		return null;
 			}

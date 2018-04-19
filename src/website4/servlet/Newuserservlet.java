@@ -8,9 +8,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 //import edu.ycp.cs320.lab02.controller.AddNumbersController;
 import website4.controller.UserController;
 import website4.database.DerbyDatabase;
+import website4.model.usser;
 
 public class Newuserservlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -37,7 +41,7 @@ public class Newuserservlet extends HttpServlet {
 		
 		// decode POSTed form parameters and dispatch to controller
 	
-			System.out.println("Inside Try");//for testing purposes
+			
 			UserController controller = new UserController();
 			String username = req.getParameter("username");
 			String password = req.getParameter("password");
@@ -45,36 +49,52 @@ public class Newuserservlet extends HttpServlet {
 			System.out.println(username);
 			System.out.println(password);
 			System.out.println(email);
+			usser user = new usser(null, null);
+			
 			try {
 			// check for errors in the form data before using is in a calculation
-			if (username == null || password == null || email == null) { //checks all inputs are not null
-				System.out.println("if1");//for testing purposes
+			if (username == null || password == null || email == null || email == "") { //checks all inputs are not null
+				
 				errorMessage = "Username, Password, or Email is typed incorrectly";	
 			}
-			else if(controller.checkUsernameLength(username) == false) {//checks usersname length
-				System.out.println("if2");//for testing purposes
+			else if(controller.checkUsernameLength(username) == false) {//checks users name length
+				
 				errorMessage = "Username is either too long or too short";
 			}
+			else if(controller.checkUsernameLength(username) == false && controller.checkPasswordLength(password) == false) {
+				errorMessage = "Username and password are too long or too short";
+			}
 			else if(controller.checkPasswordLength(password) == false) {//check password length
-				System.out.println("if3");//for testing purposes
+				
 				errorMessage = "Password is either too long or too short";
 			}
 			else {//successfully creates user
-				System.out.println("else");//for testing purposes
+				
 				success = true;
-				DerbyDatabase db = new DerbyDatabase();
-				db.createUser(username, password, email);
+				user = controller.createUser(username, password, email);
+				System.out.println("User created successfully");
+				Gson gson = new GsonBuilder().create();
+				System.out.println(gson.toJson(user));
+				
+				//req.getSession().setAttribute("userid", user.getuserid());
+				//controller.loguserin(username, password);
+				
+				
+				
 			}
 		}
 			
 			catch (SQLException e) {
-			System.out.println("catch");//for testing purposes
-			errorMessage = "Invalid Input";
-		} 
+			
+			errorMessage = e.getMessage();
+		} catch (Exception e) {
+				
+			errorMessage = e.getMessage();
+			} 
 		
 	
 		
-		
+			
 		req.setAttribute("username", req.getParameter("username"));
 		req.setAttribute("password", req.getParameter("password"));
 		req.setAttribute("email", req.getParameter("email"));
@@ -82,12 +102,14 @@ public class Newuserservlet extends HttpServlet {
 		// add result objects as attributes
 		// this adds the errorMessage text and the result to the response
 		req.setAttribute("errorMessage", errorMessage);
-		System.out.println("end");//for testing purposes
+		
 		
 		// Forward to view to render the result HTML document 
-		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
+		//req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
+		req.getSession().setAttribute("userid", user.getuserid());
 		
 		if(success == true) {//Sends user back to index page
+			controller.loguserin(username, password);
 			req.getRequestDispatcher("/_view/userinfo.jsp").forward(req, resp);
 		}
 		else {
