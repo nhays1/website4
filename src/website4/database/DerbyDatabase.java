@@ -886,17 +886,7 @@ public class DerbyDatabase implements IDatabase {
 			public List<Map.Entry<String, Integer>> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
-				/*
-				 * 
-				 * 	"select posts.postid , posts.userid , posts.timeposted, posts.posttext, users.username  from users , posts " 
-							+"where postid >= ? " + 
-							" and postid <= ? "
-							+ "and posts.userid = users.userid "
-							+ " and chatname= ?"
-				 * 
-				 * 
-				 * 
-				 */
+			
 				try {
 					stmt = conn.prepareStatement(  
 							
@@ -1628,7 +1618,7 @@ public class DerbyDatabase implements IDatabase {
 			public Integer execute(Connection conn) throws SQLException {
 				
 				PreparedStatement stmt = null;
-				ResultSet resultSet = null;
+			//	ResultSet resultSet = null;
 				Integer pmid=-1;
 				try { //chatnames
 						pmid=getpmid(user1,user2);
@@ -1646,8 +1636,8 @@ public class DerbyDatabase implements IDatabase {
 														
 						}
 						else {
-							String eror="the chat ";
-							eror+=" already exsits ";
+							//String eror="the chat ";
+							//eror+=" already exsits ";
 							//throw new NoSuchElementException(eror);
 							
 						}
@@ -1828,6 +1818,112 @@ public class DerbyDatabase implements IDatabase {
 			}
 		});
 		
+	}
+
+	public List<Entry<String, Integer>> getpmlist(final int userid) {
+		// TODO Auto-generated method stub
+		return executeTransaction(new Transaction<List<Entry<String, Integer>>>() {
+			public List<Entry<String, Integer>> execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try { 
+						stmt = conn.prepareStatement(//user1id   user2id
+								"select * from pmlist "
+								+ " where (user1id= ? ) or (user2id= ? )"
+						);
+						stmt.setInt(1, userid);
+						stmt.setInt(2, userid);
+						
+						resultSet = stmt.executeQuery();
+
+						List<Map.Entry<String, Integer>> result=new ArrayList<Map.Entry<String, Integer>>();
+						//List<Map.Entry<String, Integer>> result=new LinkedList(Map.entrySet());
+						
+						// for testing that a result was returned
+						
+						ArrayList<Entry<Integer, Integer>> otherusers=new ArrayList<Entry<Integer, Integer>>();
+						//key pmchat id
+						//value other userid
+						int pmid,user1,user2,userf;
+						
+						while(resultSet.next()) {
+							 pmid=resultSet.getInt(1);
+							 user1=resultSet.getInt(2);
+							 user2=resultSet.getInt(3);
+							if(user1!=userid) {
+								userf=user1;
+							}
+							else  {
+								userf=user2;
+							}
+							if(userf>0) {
+								Entry<Integer,Integer> tmp =new AbstractMap.SimpleEntry<Integer, Integer>(pmid, userf);
+								
+								otherusers.add(tmp);
+							}
+							//key pmid
+							//value  final userid
+							
+						}
+						String username=null;
+						for (Entry<Integer,Integer> thing : otherusers) {
+							username=getusernamebyid(thing.getValue());
+							Entry<String,Integer> tmp =new AbstractMap.SimpleEntry<String, Integer>(username, thing.getKey());
+
+							result.add(tmp);
+							
+						}
+						
+						return  result;
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			
+			}
+		});
+		
+
+	}
+
+	public String getusernamebyid(final int userid) {
+		 return executeTransaction(new Transaction<String>() {
+				public String execute(Connection conn) throws SQLException {
+					
+					PreparedStatement stmt = null;
+					ResultSet resultSet = null;
+					String username=null;
+					try {
+						stmt = conn.prepareStatement(
+								"select username   "
+								+"  from users  "
+								+"  where 	users.userid =  ?  "
+						);
+
+						stmt.setInt(1, userid);
+
+						resultSet = stmt.executeQuery();
+						
+						if (resultSet.next()) {
+							
+							username=resultSet.getString(1);
+						}
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(stmt);
+					}
+					return username;
+				}
+			});
+		
+		
+		
+		
+		
+		// TODO Auto-generated method stub
 	}
 	
 }

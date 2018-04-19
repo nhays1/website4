@@ -240,7 +240,7 @@
 		}
 		#pmotheruser{
 		width: 500px;
-		height:40px;
+		//height:40px;
 		
 		background-color: lightgrey;
 		}
@@ -301,24 +301,103 @@
 		
 		
 		
+		.swithpm{
+		background-color: inherit;
+		//display:inline;
+		//float:left;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		padding: 7px 8px;
+		transition: 0.3s;
+		font-size: 17px; 
+		}
+		.swithpmactive{
+		//float:left;
+		color:#c0c0c0;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		padding: 7px 8px;
+		transition: 0.3s;
+		font-size: 17px;
+		background-color: #303030;
+		}
+		.swithchchat:hover {
+		background-color: #dddddd;
+		}
+		
+		
 		</style>
 		<script src="_view/chat.js"></script>
 		
 		<script>
 		var thisid='${user.userid}';
+		var chatpm;
+		var pmcont;
+		var currentpm='${pmchaid}'
+		console.log(currentpm);
+		var pmlist;
+		
+		
+		function init(){
+			post();
+			postpm();
+			getpmlist();
+		}
+		
+		function postpm(pmid){
+			
+			 var urlEncodedData = "";
+				var urlEncodedDataPairs = [];
+				var text = document.getElementById("pmtextarea").value;
+				var chatedc;
+				document.getElementById("pmtextarea").value='';
+				
+				urlEncodedDataPairs.push(encodeURIComponent("pminput") + '=' + encodeURIComponent(text));
+				urlEncodedDataPairs.push(encodeURIComponent("numberofpost") + '=' + encodeURIComponent(pmcont));
+				urlEncodedDataPairs.push(encodeURIComponent("getmoreposts") + '=' + encodeURIComponent(false));
+				urlEncodedDataPairs.push(encodeURIComponent("isasync") + '=' + encodeURIComponent(true));
+				urlEncodedDataPairs.push(encodeURIComponent("pmcahtid") + '=' + encodeURIComponent(currentpm));
+				
+				 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+				 
+				 
+				 
+				 var xmlreq = new XMLHttpRequest();
+				 xmlreq.open("post", "pmpage");
+					xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+					xmlreq.send(urlEncodedData);
+				 
+				 
+					xmlreq.onreadystatechange = function() {
+				        if (this.readyState == 4 && this.status == 200) {
+				        	//var chattts=this.responseText;
+				        	
+				        	//console.log(chattts);
+				        	//if(chattts.charAt(0)=='['){
+				        		chatedc= JSON.parse(this.responseText);
+								console.log(chatedc)
+					        	refreshpm(chatedc);
+				        	//}
+				       }
+				    };
+
+		}
+		
 		function refreshpm(chats){
 			
 			
 			
 			if(chats!=null){
-				chat=chats;
+				chatpm=chats;
 			}
 			
-			console.log(chat);
+			console.log(chatpm);
 		
 		
-			  count = Object.keys(chat).length;
-			  console.log(count);
+			pmcont = Object.keys(chatpm).length;
+			  console.log(pmcont);
 			
 			
 			
@@ -336,7 +415,7 @@
 			
 			
 			
-			for(var i=0; i < chat.length; i++){
+			for(var i=0; i < chatpm.length; i++){
 				var containerdiv=document.createElement('div');
 			   var newDiv = document.createElement('p');
 			   var newHr = document.createElement('hr');
@@ -345,12 +424,12 @@
 			   var now = time.getTime();
 
 			   
-			   var posttext=chat[i].post;
+			   var posttext=chatpm[i].post;
 			   //console.log(posttext);
 			   var username;
-			   newP.id=chat[i].usid;
+			   newP.id=chatpm[i].usid;
 			   username=" ";
-			   var posttime=chat[i].mit;
+			   var posttime=chatpm[i].mit;
 			   now-=posttime;
 			   if(now<60000){
 				   now=now/1000
@@ -387,7 +466,7 @@
 			   
 			   newDiv.className = 'pmentry';
 			   newP.className='pmheader';
-			   if((chat[i].usid)!=thisid){
+			   if((chatpm[i].usid)!=thisid){
 				   containerdiv.className='otherpost';
 			   }
 			   else{
@@ -415,6 +494,117 @@
 			
 			
 		}
+		function getpmlist(){
+			 var urlEncodedData = "";
+				var urlEncodedDataPairs = [];
+				var text = document.getElementById("pmtextarea").value;
+				var chatedc;
+				document.getElementById("pmtextarea").value='';
+				
+				
+				urlEncodedDataPairs.push(encodeURIComponent("isasync") + '=' + encodeURIComponent(true));
+				//urlEncodedDataPairs.push(encodeURIComponent("pmcahtid") + '=' + encodeURIComponent(currentpm));
+				urlEncodedDataPairs.push(encodeURIComponent("getpmlist") + '=' + encodeURIComponent(true));
+				
+				 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+				 
+				 
+				 
+				 var xmlreq = new XMLHttpRequest();
+				 xmlreq.open("post", "pmpage");
+					xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+					xmlreq.send(urlEncodedData);
+				 
+				 
+					xmlreq.onreadystatechange = function() {
+				        if (this.readyState == 4 && this.status == 200) {
+				        		pmlist= JSON.parse(this.responseText);
+								console.log(pmlist)
+					        	makepmlist(pmlist);
+				        	
+				       }
+				    };
+
+			
+		}
+		function makepmlist(list){
+			document.getElementById("userchats").innerHTML = "";
+			var toAdd = document.createDocumentFragment();
+
+			   
+			   if(list!=null){
+					for(var i=0; i < list.length; i++){
+
+			  			var newbutt = document.createElement('button');
+			   			newbutt.id='swithcuserchat';
+			   			newbutt.className = 'swithpm';
+			   			newbutt.value=list[i].value;
+			   			var chatnammm=list[i].key;
+			   			//newbutt.onclick="newchat(event,'general') ";
+			   			newbutt.onclick = function() { 
+			   				newpm(event, this.value);
+			   	        };
+			   
+			   
+			   			newbutt.innerHTML=chatnammm;
+			   
+			   			toAdd.appendChild(newbutt);
+					}
+			   }
+			//toAdd.appendChild(previousposts);
+			document.getElementById("pmotheruser").appendChild(toAdd);
+			
+			
+		}
+		function newpm(thisbut, pmid){
+			currentpm=pmid;
+			var chattabs = document.getElementsByClassName("swithpmactive");
+		    for (i = 0; i < chattabs.length; i++) {
+		    	chattabs[i].className = chattabs[i].className="swithpm";
+		    	console.log(i);
+		    }
+		    //document.getElementById(chatname).style.display = "block";
+		    thisbut.currentTarget.className += "active";
+		    
+		    var urlEncodedData = "";
+			var urlEncodedDataPairs = [];
+			var chatedc;
+			document.getElementById("pmtextarea").value='';
+			
+			
+			
+			
+			urlEncodedDataPairs.push(encodeURIComponent("isasync") + '=' + encodeURIComponent(true));
+			//urlEncodedDataPairs.push(encodeURIComponent("getpmlist") + '=' + encodeURIComponent(true));
+			urlEncodedDataPairs.push(encodeURIComponent("pmcahtid") + '=' + encodeURIComponent(currentpm));
+			
+			
+			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+			 
+			 
+			 
+			 var xmlreq = new XMLHttpRequest();
+			 xmlreq.open("post", "pmpage");
+			 xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			 xmlreq.send(urlEncodedData);
+			 
+		
+				xmlreq.onreadystatechange = function() {
+			        if (this.readyState == 4 && this.status == 200) {
+			        	chatedc= JSON.parse(this.responseText);
+						console.log(chatedc);
+						refreshpm(chatedc);
+			        	//document.getElementById("chattext").scrollTo(0, document.getElementById('chattext').scrollHeight);
+			        	
+			       }
+			    };
+
+			console.log(pmid);
+			
+			
+		}
+		
+		
 		
 		
 		</script>
@@ -424,7 +614,7 @@
 		
 	</head>
 
-	<body onload="post()">
+	<body onload=" init()">
 	
 	<div id="bannerholder" onclick="home()">
 			
@@ -536,12 +726,12 @@
 	
 	<div id="pmcontainer">
 		<div id="pmotheruser">
-		<button id="refresfchatbut" onclick="refreshpm()  ">refresh</button>
+		<button id="refresfchatbut" onclick="postpm()  ">refresh</button>
 		</div>
 		<div id="pmchats"></div>
 		<div id="pminput">
 			<p>add comment</p>
-			<textarea class="smallroundcorners" name="chatinputtext" rows="5" cols="38" id="chattextarea" > </textarea>
+			<textarea class="smallroundcorners" name="chatinputtext" rows="5" cols="38" id="pmtextarea" > </textarea>
 			<button onclick="postpm()">post</button>
 		</div>
 	

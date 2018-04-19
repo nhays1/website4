@@ -54,51 +54,109 @@ public class pmservlet extends HttpServlet {
 			throws ServletException, IOException {
 		System.out.println("__________________________________________________________");
 		System.out.println("pm Servlet: doPost");
-		
-		
-		
+		UserController control=new UserController();
+		boolean sync=true,morepots=false,getpmlist=false;
+		int pmid=-1,numpost=0,pmchatid=-1;
+		chatcontroler chat=new chatcontroler();
+		Gson gson = new GsonBuilder().create();
+		ArrayList<post> pmposts = null;
+		String jsonpmlist=null;
 		
 		
 		usser user = null;
-		Integer userid = (Integer) req.getSession().getAttribute("userid");
-		if(userid!=null) {
-			UserController control=new UserController();
-			user=control.getuserbyid(userid);
-			
-		}
-	
-		if(user==null) {//if user id was not found creates a new guest 
-			user= new usser();
-		}
-		//req.getSession().setAttribute("userid", user.getuserid());
+		//req.getSessusser user = null;ion().setAttribute("userid", user.getuserid());
 		//
 		
 		
 		try {
+			System.out.println("     pm is async   "+req.getParameter("isasync"));
 			
 			
-			
-			
-			String username =  req.getParameter("username");
-			String password =  req.getParameter("password");
-			String pmid =  req.getParameter("pmid");
-			
-			
-			
-			System.out.println("pmid          _ "+pmid);
-			System.out.println("username      _ "+username);
-			System.out.println("assword      _ "+password);
+			Integer userid = (Integer) req.getSession().getAttribute("userid");
+			if(userid!=null) {
+				
+				user=control.getuserbyid(userid);
+				
+			}
+		
+			if(user==null) {//if user id was not found creates a new guest 
+				user= new usser();
+			}
+			System.out.println("   pm first   id  "+user.getuserid());
 		
 			
-			if(username!=null&&password!=null) {
-				if(username.trim().length()>0&&password.trim().length()>0) {
-					UserController loger=new UserController();
-						usser temp=loger.loguserin(username, password);
-						
-					if(temp!=null) {
-						user=temp;
-					}
+			
+			String pmi =  req.getParameter("pmid");
+			if (pmi!=null) {
+				pmid=Integer.parseInt(pmi);
+			}
+			System.out.println("   pm second   id  "+pmid);
+			String pmir =  req.getParameter("pmcahtid");
+			System.out.println("   pm chad   id  "+req.getParameter("pmcahtid"));
+			if (pmir!=null&&pmir!="") {
+				pmchatid=Integer.parseInt(pmir);
+			}
+			
+			String pminput =  req.getParameter("pminput");
+			pminput= control.escapestring(pminput);
+			
+			String numberofposts = req.getParameter("numberofpost");
+			
+			String moreposts = req.getParameter("getmoreposts");
+			String async =req.getParameter("isasync");
+			
+			String pmlist=req.getParameter("getpmlist");
+			
+			
+			if(pmlist!=null)
+				getpmlist=Boolean.parseBoolean(pmlist);
+			
+			if(async!=null)
+				sync=!Boolean.parseBoolean(async);
+			
+			if(moreposts!=null)
+				morepots=Boolean.parseBoolean(moreposts);
+			
+			if(numberofposts!=null) {
+				try {
+					numpost =Integer.parseInt(numberofposts);
 				}
+				catch(Exception e){
+					
+				}
+				
+				if(morepots) {
+					 numpost -=11;
+				}
+			}
+			
+			System.out.println("    pmid          _ "+pmid);
+			
+			if(pmchatid==-1) {
+				//pmposts= (ArrayList<post>)chat.gotopm(user.getuserid(), pmid);
+				pmchatid= chat.getpmid(user.getuserid(), pmid);
+			}
+			System.out.println("   pm chad   id fin     "+pmchatid);
+			
+			if(pminput!=null) {
+				if(pminput.trim().length()>0) {
+					long now=Instant.now().toEpochMilli();
+					chat.posttopm(now, user.getuserid(), pminput, pmchatid);
+					
+					
+					
+				
+					sync=false;
+				
+					System.out.println("   pmchatpassed      _ "+pminput);
+					
+				
+				
+				}
+			}
+			pmposts= (ArrayList<post>)chat.gotopm(pmchatid);
+			if(getpmlist) {
+				jsonpmlist=gson.toJson(chat.getpmlist(user.getuserid()));
 			}
 			
 		}
@@ -108,10 +166,27 @@ public class pmservlet extends HttpServlet {
 		
 
 		req.getSession().setAttribute("userid", user.getuserid());
+		req.setAttribute("pmchaid", pmchatid);
 		
-		System.out.println("username      _ "+user.getusername());
+		System.out.println("    pmusername      _ "+user.getusername());
 		req.setAttribute("user", user);
-		req.getRequestDispatcher("/_view/pmpage.jsp").forward(req, resp);
+		String jsonpmpost= gson.toJson(pmposts);
+		
+		if(getpmlist) {
+			resp.setContentType("text/plain");
+			resp.getWriter().println("");
+			resp.getWriter().println(jsonpmlist);
+		}
+		else {
+			resp.setContentType("text/plain");
+			resp.getWriter().println("");
+			resp.getWriter().println(jsonpmpost);
+		}
+		
+		
+		
+		if(sync)
+			req.getRequestDispatcher("/_view/pmpage.jsp").forward(req, resp);
 		
 		
 		
