@@ -127,7 +127,7 @@ public class UserController {
 	
 	
 	
-	public usser createUser(String userName, String password, String email) throws SQLException {
+	public usser createUser(String userName, String password, String email) throws Exception {
 		usser uzer = null;
 		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();
@@ -158,12 +158,14 @@ public class UserController {
 			
 			else {
 				//send error to user that account already exists with user or email
+				throw new Exception("An account with this username or email already exists.");
 				
 			}
 			
 		}
 		else {
 			//send error to user that information entered was not valid
+			throw new Exception("The information entered is not valid.");
 			
 		}
 		return uzer;

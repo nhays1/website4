@@ -12,8 +12,31 @@
 		
 	
 		body {
-		background-color: brown;
+		background-color: grey;
 		
+		}
+		
+		
+		#banner{
+		top:0px;
+		left:0px;
+		position:fixed;
+		margin-right:200px;
+		cursor: pointer;
+		min-width:1000px;
+		height: 100px;
+		width:100%;
+		 font-size: 400%;
+		color: FF0000;
+		background-color: #C0C0C0 ;
+		}
+		p{
+			padding:100px;
+			margin:0;
+		}
+		b{
+		border-style: solid;
+		border-width: 5px;
 		}
 		
 		
@@ -21,13 +44,21 @@
 	</head>
 
 	<body>
-		
+	
+	<p>
+	</p>
+	<box>
+	<div align = "center">	
 	<c:if test="${! empty errorMessage}">
 			<div class="error">${errorMessage}</div>
 		</c:if>
-	
-	
-	<form action="${pageContext.servletContext.contextPath}/newuser" method="post">
+	</div>
+	<div id="banner" onclick="home()">
+			this is the title of our website (img)
+			
+		</div>
+		
+	<form border-width = "5" action="${pageContext.servletContext.contextPath}/newuser" method="post" align = "center">
   	
   	Username:<br>
   	<input type="text" name="username" value="${username}"><br>
@@ -48,7 +79,7 @@
 	<input type="submit" name="submit" value="Create Account">
 	</form>
 	
-	
+	</box>
 
 	
 	

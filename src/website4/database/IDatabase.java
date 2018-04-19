@@ -43,6 +43,15 @@ public interface IDatabase {
 	public void addusertochat(String chatname,int userid);
 	
 	public void createchat(String chatname,int userid);
+	
+	public Integer creatpm(int user1,int user2);
+	
+	public List<post> getpm(final int numposts ,int pmid);
+	
+	public List<post> posttopm(long mils_time ,String posttext, int senderid,int pmid);
+	
+	public int getpmid(int user1,int user2);
+	
 	/**intended for sesion verification returns usser specied by id
 	 * 
 	 * @param id
@@ -127,7 +136,7 @@ public interface IDatabase {
 	 * @param email
 	 * @throws SQLException
 	 */
-	public void createUser(String userName, String password, String email)throws SQLException;
+	public void createUser(String userName, String password, String email, String userid)throws SQLException;
 	/**
 	 * 
 	 * @param userName
