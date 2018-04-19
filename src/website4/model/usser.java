@@ -37,7 +37,7 @@ public class usser {
 		coins=0;
 		blacklist=new ArrayList<Integer>();
 		isguest=false;
-		userid=rand.nextInt();
+		userid=rand.nextInt(67108264);
 		//TODO call to data base method which will check this value in a while loop until unique value is generated
 		
 
@@ -61,7 +61,7 @@ public class usser {
 		coins=0;
 		blacklist=new ArrayList<Integer>();
 		isguest=false;
-		userid=rand.nextInt();
+		userid=rand.nextInt(67108264);
 		//TODO call to data base method which will check this value in a while loop until unique value is generated
 		
 

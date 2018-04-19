@@ -8,6 +8,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import website4.database.DatabaseProvider;
 import website4.database.IDatabase;
@@ -27,22 +29,21 @@ public class chatcontroler {
 	
 	public static void main(String[] args) throws IOException {
 		//String name="towerdef1";
-		//Gson gson = new GsonBuilder().create();
+		Gson gson = new GsonBuilder().create();
 		//String jsonchstpost = gson.toJson(addtouserscores(name,4,50));
 		//System.out.println(jsonchstpost);
 		System.out.println("aver er " );
 		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();
-		long now=Instant.now().toEpochMilli();
+		//long now=Instant.now().toEpochMilli();
 		//now+=86400000;
 		//db.updateguestlist(now);
 		System.out.println("aver er " );
-		db.creatpm(2, 5);
-		int s= db.getpmid(2, 5);
 		
-		System.out.println(db.getpmid(1, 2) );
-		db.posttopm(now, "aerfe ser", 2, s);
-		System.out.println(db.getpm(2, s));
+		
+		System.out.println(gson.toJson(db.getpmlist(2)));
+		//db.posttopm(now, "aerfe ser", 2, s);
+		//System.out.println(db.getpm(2, s));
 		
 	}
 	

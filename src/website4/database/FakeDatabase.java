@@ -175,6 +175,16 @@ public class FakeDatabase implements IDatabase {
 		
 	}
 
+	public List<Entry<String, Integer>> getpmlist(int userid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getusernamebyid(int userid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	
 	

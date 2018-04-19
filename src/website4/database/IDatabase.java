@@ -52,6 +52,10 @@ public interface IDatabase {
 	
 	public int getpmid(int user1,int user2);
 	
+	public List<Map.Entry<String, Integer>> getpmlist(int userid);
+	
+	public String getusernamebyid(int userid);
+	
 	/**intended for sesion verification returns usser specied by id
 	 * 
 	 * @param id
