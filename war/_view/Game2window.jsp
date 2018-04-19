@@ -96,11 +96,36 @@
 	
 		<div id=gamecontent>
 		
-		
-		
-		
-		
+		<form action="${pageContext.servletContext.contextPath}/Gamewindow2" method="post">
+			<table>
+				<tr>
+					<td class="label">Bet Amount:</td>
+					<td><input type="text" name="userBet" size="12" value="${userBet}" /></td>
+				</tr>
+				<tr>
+					<!-- add game input here  -->
+				</tr>
+				</tr>
+				<tr>
+					<td><input type="submit" name="flip" size="12" value="FLIP" /></td>
+				</tr>
+				<tr>
+					<td class="label">User Chose:</td>
+					<td>${choice}</td>
+				</tr>
+				<tr>
+					<td class="label">Result:</td>
+					<td>${result}</td>
+				</tr>
+				<tr>
+					<td class="label">User:</td>
+					<td>${transaction}</td>
+				</tr>
+			</table>
+		</form>
+
 		</div>
+
 	
 	
 	

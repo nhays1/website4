@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Cards.CardDeck;
+
 
 
 public class Game2windowservlet extends HttpServlet {
@@ -26,8 +28,13 @@ public class Game2windowservlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		System.out.println("Gamewindow Servlet: doPost");
+		System.out.println("Gamewindow 2 Servlet: doPost");
 		
+		CardDeck cd1 = new CardDeck();
+		cd1.createDeck();
+		CardDeck cd2 = new CardDeck(cd1.splitDeck(cd1.getDeck()));
+		int userBet = 0;
+		int reward = 0;
 		
 		
 		// holds the error message text, if there is any

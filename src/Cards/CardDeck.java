@@ -8,13 +8,22 @@ public class CardDeck {
 	private ArrayList<Card> deck = new ArrayList<Card>();
 	private Card card;
 	private Random rand = new Random();
+	private ArrayList<Card> discards = new ArrayList<Card>();
 	
 	public CardDeck() {
-		
 	}
 	
 	public CardDeck(ArrayList<Card> cd) {
 		this.deck = cd;
+	}
+	
+	public int isWin(Card a, Card b) {
+		if(a.compareTo(b) > 1) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 	
 	public ArrayList<Card> createDeck(){
@@ -78,6 +87,7 @@ public class CardDeck {
 		return deck;
 	}
 	
+	
 	public ArrayList<Card> splitDeck(ArrayList<Card> cd) {
 		ArrayList<Card> splitDeck = new ArrayList<Card>();
 		for(int i = 0; i < cd.size()/2; i++) {
@@ -88,12 +98,22 @@ public class CardDeck {
 		return splitDeck;
 	}
 	
+	public ArrayList<Card> getDeck(){
+		return deck;
+	}
+	
 	public void addCard(Card c) {
 		
 	}
 	
 	public int size(){
 		return deck.size();
+	}
+	
+	public Card pullCard() { //pulls top card from a deck and removes that card from deck
+		Card returnCard = deck.get(deck.size() - 1);
+		deck.remove(deck.get(deck.size() - 1));
+		return returnCard;
 	}
 	
 	public Card getCard(int i){
