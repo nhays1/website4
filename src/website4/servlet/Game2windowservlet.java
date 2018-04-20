@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Cards.Card;
 import Cards.CardDeck;
 import website4.controller.UserController;
 import website4.model.usser;
@@ -48,19 +49,19 @@ public class Game2windowservlet extends HttpServlet {
 		uc.getuserbyid(currentUser.getuserid());
 		
 		
-		CardDeck cd1 = new CardDeck();
-		cd1.createDeck();
-		CardDeck cd2 = new CardDeck(cd1.splitDeck(cd1.getDeck()));
+		CardDeck userDeck = new CardDeck();
+		userDeck.createDeck();
+		CardDeck cpuDeck = new CardDeck(userDeck.splitDeck(userDeck.getDeck()));
+		Card userCard;
+		Card cpuCard;
 		
 		int userBet = 0;
 		int reward = 0;
-		int userSelection = 0;
 		
-		String result = null;
-		String userCard = " ";
-		String cpuCard = " ";
-		String errorMessage;
-		String choice = null;
+		String result = " ";
+		String errorMessage = " ";
+		String choice = " ";
+		String transactMsg = "";
 		
 		try {
 			
@@ -73,58 +74,53 @@ public class Game2windowservlet extends HttpServlet {
 					choice = getChoice(req, "choice");
 					
 				}
+				
 			}catch(NullPointerException e) {
+				
 				errorMessage = "Please select an option";
+				
 			}
+			
+
+			if (userBet <= 0) {
+				errorMessage = "Please enter a valid Bet Amount";
+			}
+			
+			else {
+				
+				//calculations with decks and cards, and comparisons
+				reward = userBet * 3;
+			}
+			
 		} catch (NumberFormatException e) {
+			
 			errorMessage = "Invalid Input";
+			
 		}
 		
-		if(choice.equals("higher")) {
-			userSelection = 1;			//higher is 1
+		req.setAttribute("userBet", req.getParameter("userBet"));
+		
+		if(userDeck.pullCard().compareTo(cpuDeck.pullCard()) == 1) {
+			result = "You have won the card game!";
+			currentUser.setcoins(currentUser.getcoins() + reward);
+			transactMsg = transactMsg.concat("User " + currentUser.getusername() + " has won " + reward + " Coins!");
+			
+			//add user updates here
 		}
 		else {
-			userSelection = 0;			//lower is 0
+			result = "You have lost the card game...";
+			reward = 0 - userBet;
+			currentUser.setcoins(currentUser.getcoins() + reward);
+			transactMsg = transactMsg.concat("User " + currentUser.getusername() + " has lost " + userBet + " Coins!");
+			//add user updates here
 		}
 		
-		// check for errors in the form data before using is in a calculation
-					if (userBet <= 0) {
-						errorMessage = "Please enter a valid Bet Amount";
-					}
-					// otherwise, data is good, do the calculation
-					// must create the controller each time, since it doesn't persist between POSTs
-					// the view does not alter data, only controller methods should be used for that
-					// thus, always call a controller method to operate on the data
-					
-					if(req.getParameter("higher") != null) {
-						choice = req.getParameter("higher");
-						
-					}
-					
-					else {
-						cd1.setSelection(userSelection);
-						cd1.setBet(userBet);
-						
-						if(cd1.isWin(cd1.getTopCard(), cd2.getTopCard()) == 1) {
-							reward = userBet * 3;
-							result = "You have won the card guess!";
-							
-							//currentUser.setcoins(currentUser.getcoins() + reward);
-							//transactMsg = transactMsg.concat("User " + currentUser.getusername() + " has won " + reward + " Coins!");
-						}
-						else {
-							result = "You have lost the card guess...";
-							reward = 0 - userBet;
-							//currentUser.setcoins(currentUser.getcoins() + reward);
-							//transactMsg = transactMsg.concat("User " + currentUser.getusername() + " has lost " + userBet + " Coins!");
-						}
-					}
-		
-		// holds the error message text, if there is any
-		errorMessage = null;
-		
 		// Forward to view to render the result HTML document
+		req.getSession().setAttribute("userid", currentUser.getuserid());
+		req.setAttribute("userCardResult", userDeck.getTopCard().toString());
+		req.setAttribute("cpuCardResult", cpuDeck.getTopCard().toString());
 		req.getRequestDispatcher("/_view/Game2window.jsp").forward(req, resp);
+		System.out.println(errorMessage);
 	}
 	
 	

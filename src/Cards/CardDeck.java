@@ -9,7 +9,6 @@ public class CardDeck {
 	private Card card;
 	private Random rand = new Random();
 	private ArrayList<Card> discards = new ArrayList<Card>();
-	private int userSelection = 0;
 	private int userBet = 0;
 	private String toString = null;
 	
@@ -136,10 +135,6 @@ public class CardDeck {
 			deck.set(index, deck.get(i));
 			deck.set(i, temp);
 		}
-	}
-
-	public void setSelection(int userSelection) {
-		this.userSelection = userSelection;
 	}
 
 	public void setBet(int userBet) {

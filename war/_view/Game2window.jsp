@@ -168,11 +168,8 @@
 				<tr>
 					<tr>
 					<form action="choice">
-  					<input  type="submit" class="buttonHigher" name="higher" value="higher"><br>
-  					<input  type="submit" class="buttonLower"name="lower" value="lower"><br>
-				</tr>
-					<!-- add game input here  -->
-				</tr>
+  					<input  type="submit" class="buttonHigher" name="choice" value="higher"><br>
+  					<input  type="submit" class="buttonLower"name="choice" value="lower"><br>
 				</tr>
 				<div>
 					<tr>

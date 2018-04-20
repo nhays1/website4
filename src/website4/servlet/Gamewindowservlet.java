@@ -69,16 +69,15 @@ public class Gamewindowservlet extends HttpServlet {
 				
 				if (req.getParameter(choice) != null) {
 					
-					
 					choice = getChoice(req, "choice");
 					
-					
 				}
+				
 			}catch(NullPointerException e) {
+				
 				errorMessage = "Please select an option";
+				
 			}
-			
-			errorMessage = "choice is null";
 			
 			if(choice.equals("heads")) {
 				userSelection = 1;
@@ -131,6 +130,7 @@ public class Gamewindowservlet extends HttpServlet {
 		req.setAttribute("transaction", transactMsg);
 		req.setAttribute("result", result);
 		req.getRequestDispatcher("/_view/Gamewindow.jsp").forward(req, resp);
+		System.out.println(errorMessage);
 	}
 
 	private int getInteger(HttpServletRequest req, String name) {
