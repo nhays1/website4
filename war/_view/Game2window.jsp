@@ -159,7 +159,7 @@
 	
 		<div id=gamecontent>
 		
-		<form action="${pageContext.servletContext.contextPath}/Gamewindow2" method="post">
+		<form action="${pageContext.servletContext.contextPath}/Game2window" method="post">
 			<table>
 				<tr>
 					<td class="label">Bet Amount:</td>
@@ -169,7 +169,7 @@
 					<tr>
 					<form action="choice">
   					<input  type="submit" class="buttonHigher" name="choice" value="higher"><br>
-  					<input  type="submit" class="buttonLower"name="choice" value="lower"><br>
+  					 <input  type="submit" class="buttonLower"name="choice" value="lower"><br>
 				</tr>
 				<div>
 					<tr>

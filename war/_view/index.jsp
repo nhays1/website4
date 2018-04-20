@@ -367,6 +367,7 @@
 		//var ussing  = "${ user.username    }";
 		var isguest='${user.isguest}';
 		
+		
 		var chat;
 		var chatedc;
 		
@@ -393,11 +394,10 @@
 			loginvisable=true;
 			}
 		}
-
-	
-		function toggleacountoptions(){
-			console.log(isguest);
-			 if(isguest=='false'){
+		
+		
+		function switchlogbutton(){
+			 if(isguest==false){
 				 console.log("dsaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 				 document.getElementById("login").innerHTML = "logout";
 				 document.getElementById("login").onclick=function(){
@@ -473,7 +473,35 @@
 			}
 			document.getElementById("loginpost").method = "post";
 		}
+			
 		
+	
+		function toggleacountoptions(){
+			checkisguest();
+			console.log(isguest);
+		}
+		
+		
+		function checkisguest(){
+
+			 
+			 var xmlreq = new XMLHttpRequest();
+			 xmlreq.open("post", "user_asyinc");
+				xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				xmlreq.send();
+			 
+			 
+				xmlreq.onreadystatechange = function() {
+			        if (this.readyState == 4 && this.status == 200) {
+			        	//console.log(this.responseText);
+			        	isguest= JSON.parse(this.responseText);
+						//console.log(isguest)
+			        	switchlogbutton();
+			        	
+			       }
+			    };
+
+		}
 		 
 		
 		

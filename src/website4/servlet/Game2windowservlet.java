@@ -20,7 +20,7 @@ public class Game2windowservlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		System.out.println("Gamewindow Servlet: doGet");	
+		System.out.println("Gamewindow  2 Servlet: doGet");	
 		
 		// call JSP to generate empty form
 		req.getRequestDispatcher("/_view/Game2window.jsp").forward(req, resp);

@@ -26,19 +26,22 @@
     <servlet-name>Userinfoservlet</servlet-name>
     <servlet-class>website4.servlet.Userinfoservlet</servlet-class>
   </servlet>
-
   <servlet>
     <servlet-name>Newuserservlet</servlet-name>
     <servlet-class>website4.servlet.Newuserservlet</servlet-class>
   </servlet>
-  
    <servlet>
     <servlet-name>pmservlet</servlet-name>
     <servlet-class>website4.servlet.pmservlet</servlet-class>
   </servlet>
+ <servlet>
+    <servlet-name>userasyincservlet</servlet-name>
+    <servlet-class>website4.servlet.userasyincservlet</servlet-class>
+  </servlet>
 
 
-  <!-- Servlet mappings -->
+
+  <!-- Servlet mappings    user_asyinc -->
   <servlet-mapping>
     <servlet-name>IndexServlet</servlet-name>
     <url-pattern>/index</url-pattern>
@@ -59,16 +62,19 @@
     <servlet-name>Userinfoservlet</servlet-name>
     <url-pattern>/userinfo</url-pattern>
   </servlet-mapping>
-
     <servlet-mapping>
     <servlet-name>Newuserservlet</servlet-name>
     <url-pattern>/newuser</url-pattern>
   </servlet-mapping>
-  
    <servlet-mapping>
     <servlet-name>pmservlet</servlet-name>
     <url-pattern>/pmpage</url-pattern>
   </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>userasyincservlet</servlet-name>
+    <url-pattern>/user_asyinc</url-pattern>
+  </servlet-mapping>
+  
 
 
   <welcome-file-list>

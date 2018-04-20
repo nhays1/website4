@@ -292,7 +292,13 @@ public class UserController {
 			
 			return tounescape;
 		}
-
+		public boolean isguest(int userid) {
+			
+			InitDatabase.init(1);
+			IDatabase db = DatabaseProvider.getInstance();
+			return db.isguest(userid);
+			
+		}
 
 
 
