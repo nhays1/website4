@@ -8,7 +8,7 @@ public class CardDeck {
 	private ArrayList<Card> deck = new ArrayList<Card>();
 	private Card card;
 	private Random rand = new Random();
-	private ArrayList<Card> discards = new ArrayList<Card>();
+	//private ArrayList<Card> discards = new ArrayList<Card>();
 	private int userBet = 0;
 	private String toString = null;
 	
