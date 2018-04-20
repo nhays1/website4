@@ -48,11 +48,35 @@
 	<p>
 	</p>
 	<box>
+	
 	<div align = "center">	
 	<c:if test="${! empty errorMessage}">
 			<div class="error">${errorMessage}</div>
 		</c:if>
 	</div>
+	
+	<div align = "center">	
+	<c:if test="${! empty userErrorMessage}">
+			<div class="error">${userErrorMessage}</div>
+		</c:if>
+	</div>
+	
+	
+	<div align = "center">	
+	<c:if test="${! empty passErrorMessage}">
+			<div class="error">${passErrorMessage}</div>
+		</c:if>
+	</div>
+	
+	
+	<div align = "center">	
+	<c:if test="${! empty emailErrorMessage}">
+			<div class="error">${emailErrorMessage}</div>
+		</c:if>
+	</div>
+	
+	
+	
 	<div id="banner" onclick="home()">
 			this is the title of our website (img)
 			
@@ -68,12 +92,19 @@
   	<input type="text" name="password" value="${password}">
 	<br>
 	
+	Confirm Password:<br> 
+  	<input type="text" name="rpass" value="${rpass}">
+	<br>
 	
 	Email:<br>   
 	<input type="text" name="email" value="${email}">
 	<br>
-	<br> 
 	
+	
+	Confirm Email:<br>   
+	<input type="text" name="remail" value="${remail}">
+	<br>
+	<br>
 	
 	
 	<input type="submit" name="submit" value="Create Account">

@@ -19,7 +19,9 @@ import website4.model.usser;
 public class Newuserservlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private boolean success;
-
+	private boolean validUser;
+	private boolean validPass;
+	private boolean validEmail;
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -28,6 +30,7 @@ public class Newuserservlet extends HttpServlet {
 		
 		// call JSP to generate empty form
 		req.getRequestDispatcher("/_view/newuser.jsp").forward(req, resp);
+		success = false;
 	}
 	
 	@Override
@@ -38,6 +41,10 @@ public class Newuserservlet extends HttpServlet {
 		
 		// holds the error message text, if there is any
 		String errorMessage = null;
+		String userErrorMessage = null;
+		String passErrorMessage = null;
+		String emailErrorMessage = null;
+		success = false;
 		
 		// decode POSTed form parameters and dispatch to controller
 	
@@ -46,42 +53,85 @@ public class Newuserservlet extends HttpServlet {
 			String username = req.getParameter("username");
 			String password = req.getParameter("password");
 			String email = req.getParameter("email");
-			System.out.println(username);
-			System.out.println(password);
-			System.out.println(email);
+			String rpass = req.getParameter("rpass");
+			String remail = req.getParameter("remail");
+			System.out.println("_______________________________________________");
+			System.out.println("Username: "+username);
+			System.out.println("Password: "+password);
+			System.out.println("Email: "+email);
+			System.out.println("Rpass: "+rpass);
+			System.out.println("Remail: "+remail);
+			System.out.println("_______________________________________________");
 			usser user = new usser(null, null);
 			
 			try {
-			// check for errors in the form data before using is in a calculation
-			if (username == null || password == null || email == null || email == "") { //checks all inputs are not null
-				
-				errorMessage = "Username, Password, or Email is typed incorrectly";	
+
+
+			//Check username for validness
+			if(username == null || username == "") {
+				userErrorMessage = "Please enter a valid username";
+				validUser = false;
 			}
-			else if(controller.checkUsernameLength(username) == false) {//checks users name length
-				
-				errorMessage = "Username is either too long or too short";
+			
+			else if(controller.checkUsernameLength(username) == false) {
+				userErrorMessage = "Username must be between 6-20 characters";
+				validUser = false;
+			}			
+			else {
+				System.out.println("validUser = true");
+				userErrorMessage = null;
+				validUser = true;
+			}			
+			
+			//Check password for validness
+			if(password == null || password == "") {
+				passErrorMessage = "Please enter a valid password";
+				validPass = false;
 			}
-			else if(controller.checkUsernameLength(username) == false && controller.checkPasswordLength(password) == false) {
-				errorMessage = "Username and password are too long or too short";
+			else if(controller.checkPasswordLength(password) == false) {
+				passErrorMessage = "Password must be between 6-20 characters";
+				validPass = false;
 			}
-			else if(controller.checkPasswordLength(password) == false) {//check password length
-				
-				errorMessage = "Password is either too long or too short";
+			else if(password.equals(rpass) == false) {
+				passErrorMessage = "Passwords do not match";
+				validPass = false;
 			}
-			else {//successfully creates user
+			else {
+				System.out.println("validPass = true");
+				passErrorMessage = null;
+				validPass = true;
+			}			
+						
+			//Check email for validness
+			if(email == null || email == "") {
+				emailErrorMessage = "Please enter a valid email";
+				validEmail = false;
+			}
+			else if(email.equals(remail) == false) {
+				emailErrorMessage = "Emails do not match";
+				validEmail = false;
+			}
+			else {
+				emailErrorMessage = null;
+				System.out.println("validEmail = true");
+				validEmail = true;
+			}
 				
+				
+			if(validUser == true && validPass == true && validEmail == true) {
 				success = true;
 				user = controller.createUser(username, password, email);
 				System.out.println("User created successfully");
 				Gson gson = new GsonBuilder().create();
 				System.out.println(gson.toJson(user));
+				req.getSession().setAttribute("userid", user.getuserid());
+				controller.loguserin(username, password);
+			}					
 				
+						
 				//req.getSession().setAttribute("userid", user.getuserid());
 				//controller.loguserin(username, password);
 				
-				
-				
-			}
 		}
 			
 			catch (SQLException e) {
@@ -98,10 +148,15 @@ public class Newuserservlet extends HttpServlet {
 		req.setAttribute("username", req.getParameter("username"));
 		req.setAttribute("password", req.getParameter("password"));
 		req.setAttribute("email", req.getParameter("email"));
+		req.setAttribute("rpass", req.getParameter("rpass"));
+		req.setAttribute("remail", req.getParameter("remail"));
 		
 		// add result objects as attributes
 		// this adds the errorMessage text and the result to the response
 		req.setAttribute("errorMessage", errorMessage);
+		req.setAttribute("userErrorMessage", userErrorMessage);
+		req.setAttribute("passErrorMessage", passErrorMessage);
+		req.setAttribute("emailErrorMessage", emailErrorMessage);
 		
 		
 		// Forward to view to render the result HTML document 
