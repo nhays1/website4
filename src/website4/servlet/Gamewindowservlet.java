@@ -30,6 +30,8 @@ public class Gamewindowservlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
+		System.out.println("Gamewindow Servlet: doPost");
+		
 		usser currentUser = null;
 		UserController uc = new UserController();
 		
@@ -46,7 +48,6 @@ public class Gamewindowservlet extends HttpServlet {
 		
 		uc.getuserbyid(currentUser.getuserid());
 		
-		System.out.println("Gamewindow Servlet: doPost");
 		CoinGame cg = new CoinGame();
 		String choice = " ";
 		int userBet = 0;
@@ -68,18 +69,15 @@ public class Gamewindowservlet extends HttpServlet {
 				
 				if (req.getParameter(choice) != null) {
 					
-					
 					choice = getChoice(req, "choice");
 					
-					
-					
-					
 				}
+				
 			}catch(NullPointerException e) {
+				
 				errorMessage = "Please select an option";
+				
 			}
-			
-			errorMessage = "choice is null";
 			
 			if(choice.equals("heads")) {
 				userSelection = 1;
@@ -132,6 +130,7 @@ public class Gamewindowservlet extends HttpServlet {
 		req.setAttribute("transaction", transactMsg);
 		req.setAttribute("result", result);
 		req.getRequestDispatcher("/_view/Gamewindow.jsp").forward(req, resp);
+		System.out.println(errorMessage);
 	}
 
 	private int getInteger(HttpServletRequest req, String name) {

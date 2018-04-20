@@ -20,7 +20,7 @@
 		
 		#allgames{
 		float:left;
-		width:150px;
+		width:300px;
 		height: 1000px;
 		border: 3px solid;
 		border-color: darkred;
@@ -51,18 +51,53 @@
 		background-color: #e60000;
 		}
 		#gamecontent{
-			padding:5px;
-		margin-left:160px;
+		padding:5px;
+		margin-left:360px;
 		margin-right:300px;
 	
 		height: 600px;
 		min-width: 600px;
-		border: 3px solid blue;
-		
-		
+		border: 3px solid gray;
+		background-image: url(img/pokerFelt.jpg);
+		background-size: fill;
 		
 		
 		}
+		
+		.radButton{
+			top-margin: 24px;
+			width: 24px;
+			text-align: left;
+			color: white;
+			font-family: "Arial", sans-serif;
+			font-size: 24pt;
+			text-shadow: 3px 2px black;
+		}
+		
+		.label{
+			text-align: left;
+			color: white;
+			font-family: "Arial", sans-serif;
+			font-size: 24pt;
+			text-shadow: 3px 2px black;
+		}
+		
+		.betInput{
+			border: 2px solid black;
+   			border-radius: 4px;
+		}
+		
+		.buttonHigher {
+			background-color: #4CAF50; /* Green */
+		    border: none;
+		    color: white;
+		    padding: 15px 32px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 16px;
+		    margin-top: 10px;
+		 }
 		
 		</style>
 		
@@ -91,11 +126,22 @@
 		
 		<div id ="allgames">
 		<ul>
-			<li>game1</li>
-			<li>game2</li>
-			<li>game3</li>
+			<li> 
+				<form action="${pageContext.servletContext.contextPath}/Gamewindow" method="get">
+					<input name="newuser" class="buttonHigher" type="submit" value="Coin Flip" />
+				</form>
+			</li>
+			<li>
+			<form action="${pageContext.servletContext.contextPath}/Game2window" method="get">
+					<input name="newuser" class="buttonHigher" type="submit" value="What's your guess?" />
+				</form>
+			</li>
+			<li><form action="${pageContext.servletContext.contextPath}/Game3window" method="get">
+					<input name="newuser" class="buttonHigher" type="submit" value="Yeet Shooter" />
+				</form>
+			</li>
 		</ul>	
-		
+		<%= session.getAttribute( "userid" ) %>
 		
 		 </div>
 	
@@ -105,29 +151,29 @@
 			<table>
 				<tr>
 					<td class="label">Bet Amount:</td>
-					<td><input type="text" name="userBet" size="12" value="${userBet}" /></td>
+					<td><input type="text" class="betInput" name="userBet" size="12" value="${userBet}" /></td>
 				</tr>
 				<tr>
 					<form action="choice">
-  					<input type="radio" name="choice" value="heads"> Heads<br>
-  					<input type="radio" name="choice" value="tails"> Tails<br>
+	  					<input type="radio" class="radButton" name="choice" value="heads"> Heads<br>
+	  					<input type="radio" class="radButton" name="choice" value="tails"> Tails<br>
   					</form>
 				</tr>
 				</tr>
 				<tr>
-					<td><input type="submit" name="flip" size="12" value="FLIP" /></td>
+					<td><input type="submit" class="buttonHigher" name="flip" size="12" value="FLIP" /></td>
 				</tr>
 				<tr>
 					<td class="label">User Chose:</td>
-					<td>${choice}</td>
+					<td class="label">${choice}</td>
 				</tr>
 				<tr>
 					<td class="label">Result:</td>
-					<td>${result}</td>
+					<td class="label">${result}</td>
 				</tr>
 				<tr>
 					<td class="label">User:</td>
-					<td>${transaction}</td>
+					<td class="label">${transaction}</td>
 				</tr>
 			</table>
 		</form>

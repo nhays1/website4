@@ -43,8 +43,7 @@ public class CoinGame{
 		return false;				//if not, they lost, and should lose what they bet
 	}
 	
-	
-	public int getReward() {		//gets reward based on result, and if 
+	public int getReward() {		//gets reward based on result
 		if(getIsWin() == true) {
 			return (int)(betAmnt * betMultiplier);
 		}

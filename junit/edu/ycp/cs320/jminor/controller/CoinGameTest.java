@@ -1,4 +1,4 @@
-package edu.ycp.cs320.jminor.model;
+package edu.ycp.cs320.jminor.controller;
 
 import static org.junit.Assert.*;
 
