@@ -103,6 +103,18 @@
 					<td><input type="text" name="userBet" size="12" value="${userBet}" /></td>
 				</tr>
 				<tr>
+					<td class="label">Bet Amount:</td>
+					<td><input type="text" name="userBet" size="12" value="${userBet}" /></td>
+					
+					<tr>
+					<form action="choice">
+  					<input type="radio" name="choice" value="higher"> Heads<br>
+  					<input type="radio" name="choice" value="lower"> Tails<br>
+  					</form>
+					<form action="flip cards">
+  					<input type="Submit" name="flip" value="flip"> Flip! <br>
+  					</form>
+				</tr>
 					<!-- add game input here  -->
 				</tr>
 				</tr>
@@ -110,12 +122,12 @@
 					<td><input type="submit" name="flip" size="12" value="FLIP" /></td>
 				</tr>
 				<tr>
-					<td class="label">User Chose:</td>
-					<td>${choice}</td>
+					<td class="label">User Flipped:</td>
+					<td>${userCardResult}</td>
 				</tr>
 				<tr>
-					<td class="label">Result:</td>
-					<td>${result}</td>
+					<td class="label">CPU Flipped:</td>
+					<td>${cpuCardResult}</td>
 				</tr>
 				<tr>
 					<td class="label">User:</td>

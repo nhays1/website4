@@ -13,11 +13,11 @@ import Cards.CardDeck;
 
 public class Game2windowservlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
+		
 		System.out.println("Gamewindow Servlet: doGet");	
 		
 		// call JSP to generate empty form
@@ -35,16 +35,39 @@ public class Game2windowservlet extends HttpServlet {
 		CardDeck cd2 = new CardDeck(cd1.splitDeck(cd1.getDeck()));
 		int userBet = 0;
 		int reward = 0;
+		String errorMessage;
+		String choice = null;
 		
+		try {
+			
+			userBet = getInteger(req, "userBet");
+			
+			try {
+				
+				if (req.getParameter(choice) != null) {
+					
+					choice = getChoice(req, "choice");
+					
+				}
+			}catch(NullPointerException e) {
+				errorMessage = "Please select an option";
+			}
+		} catch (NumberFormatException e) {
+			errorMessage = "Invalid Input";
+		}
 		
 		// holds the error message text, if there is any
-		
-	
+		errorMessage = null;
 		
 		// Forward to view to render the result HTML document
 		req.getRequestDispatcher("/_view/Game2window.jsp").forward(req, resp);
 	}
-
 	
 	
+	private int getInteger(HttpServletRequest req, String name) {
+		return Integer.parseInt(req.getParameter(name));
+	}
+	private String getChoice(HttpServletRequest req, String choice) {
+		return req.getParameter(choice);
+	}
 }
