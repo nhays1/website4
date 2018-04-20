@@ -40,7 +40,7 @@ public class Newuserservlet extends HttpServlet {
 		System.out.println("newuser Servlet: doPost");
 		
 		// holds the error message text, if there is any
-		String errorMessage = null;
+		String errorMessage = null; 
 		String userErrorMessage = null;
 		String passErrorMessage = null;
 		String emailErrorMessage = null;

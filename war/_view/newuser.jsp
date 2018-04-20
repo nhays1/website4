@@ -98,7 +98,7 @@
 	
 	Email:<br>   
 	<input type="text" name="email" value="${email}">
-	<br>
+	<br> 
 	
 	
 	Confirm Email:<br>   
