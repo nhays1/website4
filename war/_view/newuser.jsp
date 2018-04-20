@@ -80,7 +80,7 @@
 	<div id="banner" onclick="home()">
 			this is the title of our website (img)
 			
-		</div>
+		</div> 
 		
 	<form border-width = "5" action="${pageContext.servletContext.contextPath}/newuser" method="post" align = "center">
   	

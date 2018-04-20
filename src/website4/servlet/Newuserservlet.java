@@ -37,7 +37,7 @@ public class Newuserservlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		System.out.println("_______________________________________________");
-		System.out.println("newuser Servlet: doPost");
+		System.out.println("newuser Servlet: doPost"); 
 		
 		// holds the error message text, if there is any
 		String errorMessage = null; 
