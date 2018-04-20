@@ -5,6 +5,7 @@ package Cards;
 public class Card implements Comparable<Card> {
 	private Rank rank;
 	private Suit suit;
+	private int cardIndex;
 	
 	/**
 	 * Constructor.
@@ -12,9 +13,10 @@ public class Card implements Comparable<Card> {
 	 * @param rank the card's rank
 	 * @param suit the card's suit
 	 */
-	public Card(Rank rank, Suit suit) {
+	public Card(Rank rank, Suit suit, int cardIndex) {
 		this.rank = rank;
 		this.suit = suit;
+		this.cardIndex = cardIndex;
 	}
 
 	/**
@@ -29,6 +31,10 @@ public class Card implements Comparable<Card> {
 	 */
 	public Suit getSuit() {
 		return suit;
+	}
+	
+	public int getCardIndex() {
+		return cardIndex;
 	}
 	
 	@Override

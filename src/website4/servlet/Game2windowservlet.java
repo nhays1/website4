@@ -1,13 +1,14 @@
 package website4.servlet;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Cards.CardDeck;
+import website4.controller.UserController;
+import website4.model.usser;
 
 
 
@@ -29,6 +30,23 @@ public class Game2windowservlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		System.out.println("Gamewindow 2 Servlet: doPost");
+		
+		usser currentUser = null;
+		UserController uc = new UserController();
+		
+        Integer userid = (Integer) req.getSession().getAttribute("userid");
+        if(userid!=null) {
+           
+            currentUser=uc.getuserbyid(userid);
+
+        }
+
+        if(currentUser==null) {//if user id was not found creates a new guest 
+            currentUser= uc.createguestuser() ;
+        }
+		
+		uc.getuserbyid(currentUser.getuserid());
+		
 		
 		CardDeck cd1 = new CardDeck();
 		cd1.createDeck();

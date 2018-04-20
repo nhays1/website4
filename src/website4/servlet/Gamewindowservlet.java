@@ -30,6 +30,8 @@ public class Gamewindowservlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
+		System.out.println("Gamewindow Servlet: doPost");
+		
 		usser currentUser = null;
 		UserController uc = new UserController();
 		
@@ -46,7 +48,6 @@ public class Gamewindowservlet extends HttpServlet {
 		
 		uc.getuserbyid(currentUser.getuserid());
 		
-		System.out.println("Gamewindow Servlet: doPost");
 		CoinGame cg = new CoinGame();
 		String choice = " ";
 		int userBet = 0;
