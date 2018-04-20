@@ -91,11 +91,22 @@
 		
 		<div id ="allgames">
 		<ul>
-			<li>game1</li>
-			<li>game2</li>
-			<li>game3</li>
+			<li> 
+				<form action="${pageContext.servletContext.contextPath}/Gamewindow" method="get">
+					<input name="newuser" type="submit" value="game 1?!?!?!?!?" />
+				</form>
+			</li>
+			<li>
+			<form action="${pageContext.servletContext.contextPath}/Game2window" method="get">
+					<input name="newuser" type="submit" value="game 2!!!!!!!!" />
+				</form>
+			</li>
+			<li><form action="${pageContext.servletContext.contextPath}/Game3window" method="get">
+					<input name="newuser" type="submit" value="game 3¡¡¡¡¡iIi¡¡¡¡¡¡" />
+				</form>
+			</li>
 		</ul>	
-		
+		<%= session.getAttribute( "userid" ) %>
 		
 		 </div>
 	

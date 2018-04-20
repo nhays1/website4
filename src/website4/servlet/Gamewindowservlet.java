@@ -72,8 +72,6 @@ public class Gamewindowservlet extends HttpServlet {
 					choice = getChoice(req, "choice");
 					
 					
-					
-					
 				}
 			}catch(NullPointerException e) {
 				errorMessage = "Please select an option";

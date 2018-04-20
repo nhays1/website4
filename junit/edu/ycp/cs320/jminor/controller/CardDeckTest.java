@@ -45,7 +45,6 @@ public class CardDeckTest {
 		Card test6 = cd1.getCard(5);
 		Card test7 = cd1.getCard(6);
 		
-		
 		cd1.shuffleDeck();
 		assertNotEquals(test1, cd1.getCard(0));
 		assertNotEquals(test2, cd1.getCard(1));
@@ -54,7 +53,6 @@ public class CardDeckTest {
 		assertNotEquals(test5, cd1.getCard(4));
 		assertNotEquals(test6, cd1.getCard(5));
 		assertNotEquals(test7, cd1.getCard(6));
-		
 	}
 	
 	@Test
@@ -68,8 +66,6 @@ public class CardDeckTest {
 	public void testSplitDeck() {
 		cd1.createDeck();
 		cd2 = new CardDeck(cd1.splitDeck(cd1.getDeck()));
-		
-		
 	}
 	
 }
