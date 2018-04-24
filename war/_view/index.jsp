@@ -7,7 +7,7 @@
 		<title>our game site</title>
 		<style type="text/css">
 		body {
-		background-color: brown;
+		background-color: #909090;
 		
 		}
 		
@@ -34,13 +34,13 @@
 		  
 		height: 290px;
 		border: 3px solid;
-		border-color: darkred;
+		border-color: #040404;
 		margin: 10px;
 		
 		}
 		
 		.gametitle{
-		background-color: brown;
+		background-color: #c0c0c0;
 		width: 256px;
 		height: 30px;
 		
@@ -64,8 +64,8 @@
 		width:150px;
 		height: 1000px;
 		border: 3px solid;
-		border-color: darkred;
-		background-color: darkred;
+		border-color: #040404;
+		background-color: #040404;
 		
 		}
 		#banner{
@@ -78,7 +78,8 @@
 		height: 100px;
 		width:100%;
 		 font-size: 400%;
-		background-color: #e60000;
+		 color:  #c0c0c0;
+		background-color: #040404;
 		}
 		
 		#bannerholder{
@@ -89,7 +90,7 @@
 		height: 150px;
 		width:100%;
 		 font-size: 400%;
-		background-color: #e60000;
+		background-color: #202020;
 		}
 		
 		
@@ -321,6 +322,7 @@
 		color: #c0c0c0;
 		}
 		.chatheader{
+		cursor: pointer;
 		color: #fc5200;
 		white-space:pre-wrap;
 		
@@ -675,7 +677,7 @@
 			<div class= "gamedisplay">
 			<form action="${pageContext.servletContext.contextPath}/Gamewindow" method="get">
 				
-				<input type="image" src="img/giph.gif" alt="Submit" > 
+				<input type="image" src="img/giphy.gif" alt="Submit" > 
 				<div class="gametitle">
 					<input name="newuser" type="submit" value="game 1?!?!?!?!?" />
 				</div>
@@ -683,10 +685,10 @@
 			</div>
 			
 			<div class= "gamedisplay">
-				<img src="img/giph.gif" />
+				<img src="img/giphy.gif" />
 	
 				<div class="gametitle">
-					game2
+					game2 
 				</div>
 	
 			</div>
@@ -703,11 +705,14 @@
 			
 			
 			<div class= "gamedisplay">
-				<img src="img/giph.gif"  />
-					
+			<form action="${pageContext.servletContext.contextPath}/Game4window" method="get">
+				
+					<input type="image" src="img/game3snap.PNG" alt="Submit" onmouseover="this.src='img/giphy.gif'" onmouseout="this.src='img/game3snap.PNG'"style="width:256px;height:256px;"  > 
 				<div class="gametitle">
-					game4
+					<input name="newuser" type="submit" value="game 4¡¡¡¡¡iIi¡¡¡¡¡¡" />
 				</div>
+			</form>
+			</div>
 
 			</div>
 			

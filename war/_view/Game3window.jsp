@@ -67,7 +67,8 @@
 		width: 170px;
 		top:50%;
 		left:50%;
-		 z-index: -1;
+		visibility: hidden;
+		z-index: 3;
 		}
 		
 		#bannerholder{
@@ -368,7 +369,7 @@
 			
 			function startGame() {
 			
-				document.getElementById("restart").style.zIndex="-1";
+				document.getElementById("restart").style.visibility="hidden";
 				
 				gravity=.05;
 				score=0;
@@ -561,7 +562,7 @@
 					     var disttotarget= this.position.distance( origon);
 				    	 if(disttotarget<25){//if this was fired at my tank and moves withinn my tank, end the game
 				    		 console.log("kill");
-							document.getElementById("restart").style.zIndex="2";
+							document.getElementById("restart").style.visibility="visible";
 				    		 gameover=true;
 				    		 post(true );
 				    	 }

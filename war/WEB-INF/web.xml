@@ -38,7 +38,10 @@
     <servlet-name>userasyincservlet</servlet-name>
     <servlet-class>website4.servlet.userasyincservlet</servlet-class>
   </servlet>
-
+<servlet>
+    <servlet-name>Game4windowservlet</servlet-name>
+    <servlet-class>website4.servlet.Game4windowservlet</servlet-class>
+  </servlet>
 
 
   <!-- Servlet mappings    user_asyinc -->
@@ -74,7 +77,10 @@
     <servlet-name>userasyincservlet</servlet-name>
     <url-pattern>/user_asyinc</url-pattern>
   </servlet-mapping>
-  
+  <servlet-mapping>
+    <servlet-name>Game4windowservlet</servlet-name>
+    <url-pattern>/Game4window</url-pattern>
+  </servlet-mapping>
 
 
   <welcome-file-list>
