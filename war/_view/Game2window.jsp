@@ -118,6 +118,7 @@
 		</style>
 		
 		<script type="text/javascript"> 
+			
 		
 			images = new Array();
 			images[0] = null;
@@ -134,10 +135,49 @@
 			images[11] = "img/CardImages/HeartJ.png";
 			images[12] = "img/CardImages/HeartQ.png";
 			images[13] = "img/CardImages/HeartK.png";
+			
 			images[14] = "img/CardImages/DiamondA.png";
 			images[15] = "img/CardImages/Diamond2.png";
+			images[16] = "img/CardImages/Diamond3.png";
+			images[17] = "img/CardImages/Diamond4.png";
+			images[18] = "img/CardImages/Diamond5.png";
+			images[19] = "img/CardImages/Diamond6.png";
+			images[20] = "img/CardImages/Diamond7.png";
+			images[21] = "img/CardImages/Diamond8.png";
+			images[22] = "img/CardImages/Diamond9.png";
+			images[23] = "img/CardImages/Diamond10.png";
+			images[24] = "img/CardImages/DiamondJ.png";
+			images[25] = "img/CardImages/DiamondQ.png";
+			images[26] = "img/CardImages/DiamondK.png";
 			
-			};
+			images[27] = "img/CardImages/SpadeA.png";
+			images[28] = "img/CardImages/Spade2.png";
+			images[29] = "img/CardImages/Spade3.png";
+			images[30] = "img/CardImages/Spade4.png";
+			images[31] = "img/CardImages/Spade5.png";
+			images[32] = "img/CardImages/Spade6.png";
+			images[33] = "img/CardImages/Spade7.png";
+			images[34] = "img/CardImages/Spade8.png";
+			images[35] = "img/CardImages/Spade9.png";
+			images[36] = "img/CardImages/Spade10.png";
+			images[37] = "img/CardImages/SpadeJ.png";
+			images[38] = "img/CardImages/SpadeQ.png";
+			images[39] = "img/CardImages/SpadeK.png";
+			
+			images[40] = "img/CardImages/ClubA.png";
+			images[41] = "img/CardImages/Club2.png";
+			images[42] = "img/CardImages/Club3.png";
+			images[43] = "img/CardImages/Club4.png";
+			images[44] = "img/CardImages/Club5.png";
+			images[45] = "img/CardImages/Club6.png";
+			images[46] = "img/CardImages/Club7.png";
+			images[47] = "img/CardImages/Club8.png";
+			images[48] = "img/CardImages/Club9.png";
+			images[49] = "img/CardImages/Club10.png";
+			images[50] = "img/CardImages/ClubJ.png";
+			images[51] = "img/CardImages/ClubQ.png";
+			images[52] = "img/CardImages/ClubK.png";
+			
 			
 		</script>
 		
