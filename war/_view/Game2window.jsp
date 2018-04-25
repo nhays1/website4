@@ -116,9 +116,35 @@
 		}
 		
 		</style>
+		
+		<script type="text/javascript"> 
+		
+			images = new Array();
+			images[0] = null;
+			images[1] = "img/CardImages/HeartA.png";
+			images[2] = "img/CardImages/Heart2.png";
+			images[3] = "img/CardImages/Heart3.png";
+			images[4] = "img/CardImages/Heart4.png";
+			images[5] = "img/CardImages/Heart5.png";
+			images[6] = "img/CardImages/Heart6.png";
+			images[7] = "img/CardImages/Heart7.png";
+			images[8] = "img/CardImages/Heart8.png";
+			images[9] = "img/CardImages/Heart9.png";
+			images[10] = "img/CardImages/Heart10.png";
+			images[11] = "img/CardImages/HeartJ.png";
+			images[12] = "img/CardImages/HeartQ.png";
+			images[13] = "img/CardImages/HeartK.png";
+			images[14] = "img/CardImages/DiamondA.png";
+			images[15] = "img/CardImages/Diamond2.png";
+			
+			};
+			
+		</script>
+		
 	</head>
 
 	<body>
+	
 	
 	<!-- once the chat is flushed out it will go here -->
 	
