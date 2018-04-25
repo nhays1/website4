@@ -1,6 +1,6 @@
 package Cards;
 
-
+//test branch
 
 public class Card implements Comparable<Card> {
 	private Rank rank;
