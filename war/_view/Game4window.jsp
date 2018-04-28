@@ -84,14 +84,24 @@
 		#gamecontent{
 			position: relative;
 			left:160px;
-			top:270;
+			//top:270px;
 		
 		margin-right:300px;
-	
+		
 		height: 600px;
 		min-width: 600px;
 		border: 3px solid blue;
 		}
+		
+		#container{
+		position: absolute;
+		left:0px;
+		right:0px:
+		top:0px;
+		height: 600px;
+		width: inherit;
+		}
+		
 		
 		#gamescores{
 		margin-left:10px;
@@ -272,7 +282,7 @@
 			<script type="text/javascript" src="threejs-master/mygame/js/controls/FlyControls.js"></script>
 			<script type="text/javascript" src="threejs-master/mygame/js/Detector.js"></script>
 			<script type="text/javascript" src="threejs-master/mygame/js/libs/stats.min.js"></script>
-			<script type="text/javascript" src="threejs-master/mygame/3djsgame.js"> </script>
+			<script type="text/javascript" src="threejs-master/mygame/3djspong.js"> </script>
 						
 			<button id="restart" onclick="restart()">restart</button>
 		</div>
