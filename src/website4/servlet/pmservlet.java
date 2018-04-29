@@ -130,7 +130,7 @@ public class pmservlet extends HttpServlet {
 				}
 			}
 			
-			System.out.println("    pmid          _ "+pmid);
+			System.out.println("    pmid second user       _ "+pmid);
 			
 			if(pmchatid==-1) {
 				//pmposts= (ArrayList<post>)chat.gotopm(user.getuserid(), pmid);
@@ -142,10 +142,6 @@ public class pmservlet extends HttpServlet {
 				if(pminput.trim().length()>0) {
 					long now=Instant.now().toEpochMilli();
 					chat.posttopm(now, user.getuserid(), pminput, pmchatid);
-					
-					
-					
-				
 					sync=false;
 				
 					System.out.println("   pmchatpassed      _ "+pminput);
@@ -154,7 +150,7 @@ public class pmservlet extends HttpServlet {
 				
 				}
 			}
-			pmposts= (ArrayList<post>)chat.gotopm(pmchatid);
+			pmposts= (ArrayList<post>)chat.gotopm(pmchatid,user.getuserid());
 			if(getpmlist) {
 				jsonpmlist=gson.toJson(chat.getpmlist(user.getuserid()));
 			}

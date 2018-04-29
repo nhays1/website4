@@ -46,15 +46,19 @@ public interface IDatabase {
 	
 	public Integer creatpm(int user1,int user2);
 	
-	public List<post> getpm(final int numposts ,int pmid);
+	public List<post> getpm(final int numposts ,int pmid, int retriverid);
 	
 	public List<post> posttopm(long mils_time ,String posttext, int senderid,int pmid);
 	
 	public int getpmid(int user1,int user2);
 	
-	public List<Map.Entry<String, Integer>> getpmlist(int userid);
+	public List<Triplet<String, Integer,Integer>> getpmlist(int userid);
 	
 	public String getusernamebyid(int userid);
+	
+	public void updatepmacesstime(int userid,int pmid);
+	
+	public int getunreadpms(int retriverid, int pmid, long lastacessed);
 	
 	/**intended for sesion verification returns usser specied by id
 	 * 

@@ -165,17 +165,12 @@ public class FakeDatabase implements IDatabase {
 		return 0;
 	}
 
-	public List<post> getpm(int numposts, int pmid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void createUser(String userName, String password, String email, String userid) throws SQLException {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public List<Entry<String, Integer>> getpmlist(int userid) {
+	public List<Triplet<String, Integer,Integer>> getpmlist(int userid) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -183,6 +178,21 @@ public class FakeDatabase implements IDatabase {
 	public String getusernamebyid(int userid) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public List<post> getpm(int numposts, int pmid, int retriverid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void updatepmacesstime(int userid, int pmid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int getunreadpms(int retriverid, int pmid, long lastacessed) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 

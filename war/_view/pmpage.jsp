@@ -538,8 +538,9 @@
 			  			var newbutt = document.createElement('button');
 			   			newbutt.id='swithcuserchat';
 			   			newbutt.className = 'swithpm';
-			   			newbutt.value=list[i].value;
-			   			var chatnammm=list[i].key;
+			   			newbutt.value=list[i].second;
+			   			var chatnammm=list[i].first;
+			   			chatnammm+="   ("+list[i].third+")";
 			   			//newbutt.onclick="newchat(event,'general') ";
 			   			newbutt.onclick = function() { 
 			   				newpm(event, this.value);

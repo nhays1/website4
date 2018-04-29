@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -105,7 +106,7 @@ public class DerbyDatabase implements IDatabase {
 		post.setmils_time(resultSet.getLong(index++));
 		post.setpost(resultSet.getString(index++));
 		post.setusername(resultSet.getString(index++));
-		//System.out.println(post.getuserid());
+		
 		
 	}
 	
@@ -132,6 +133,8 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement stmt8 = null;
 				PreparedStatement stmt9 = null;
 				PreparedStatement stmt0 = null;
+				PreparedStatement stmt10 = null;
+				
 				try {
 					stmt1 = conn.prepareStatement(
 							"create table users (" +
@@ -243,8 +246,10 @@ public class DerbyDatabase implements IDatabase {
 							"create table pmlist (" +
 									"	pmid integer primary key "
 									+ " generated always as identity (start with 0, increment by 1),  " +
-									"	user1id integer, " +
-									"	user2id integer " +
+									"	user1id integer,"
+									+ " user1lastacess bigint," +
+									"	user2id integer,"
+									+ " user2lastacess bigint" +
 									")"
 					);	
 					stmt9.executeUpdate();
@@ -262,6 +267,18 @@ public class DerbyDatabase implements IDatabase {
 					);	
 					stmt0.executeUpdate();
 					
+					stmt10 = conn.prepareStatement(
+							"create table userchattimetable (" +
+									"	userid integer  primary key, " +	
+									"	lastused bigint," +
+									"	chatid integer "+
+									")"
+					);	
+					stmt10.executeUpdate();
+					
+					
+					
+					
 					
 					return true;
 				} finally {
@@ -275,6 +292,7 @@ public class DerbyDatabase implements IDatabase {
 					DBUtil.closeQuietly(stmt8);
 					DBUtil.closeQuietly(stmt9);
 					DBUtil.closeQuietly(stmt0);
+					DBUtil.closeQuietly(stmt10);
 				}
 			}
 		});
@@ -311,11 +329,11 @@ public class DerbyDatabase implements IDatabase {
 					//insertuser = conn.prepareStatement("insert into users (userid, username, password, coins, email,isguset) values (?, ?, ?, ?, ?,?)");
 					insertuser = conn.prepareStatement("insert into users (userid, username, password, coins, email) values (?, ?, ?, ?, ?)");
 					for (usser user : userlist) {
-
+						
 						insertuser.setInt(1, user.getuserid());
 						insertuser.setString(2, user.getusername());
 						insertuser.setString(3, user.getpassword());
-						insertuser.setInt(4, user.getcoins());
+						insertuser.setInt(4, 0);
 						insertuser.setString(5, user.getemail());
 						//insertuser.setBoolean(6, user.getisguest());
 						
@@ -365,7 +383,7 @@ public class DerbyDatabase implements IDatabase {
 					
 					
 					for (per_game_scores score : gamescoreslist) {
-						//System.out.println(score.getscore());
+						
 						insertgamescores.setString(2, score.getnameofgame());
 						insertgamescores.setInt(1, score.getscore());
 						insertgamescores.setInt(3, score.getusid());
@@ -382,7 +400,7 @@ public class DerbyDatabase implements IDatabase {
 					
 					
 					for (Entry<String, Integer> name : chatid) {
-						//System.out.println(score.getscore());
+						
 						
 						
 						insertchatnames.setString(1, name.getKey());
@@ -437,7 +455,7 @@ public class DerbyDatabase implements IDatabase {
 					int chatindex=0;
 					ArrayList<Integer> blacklist= new ArrayList<Integer>();
 					chatindex=chatnametoid(Chatname);
-					System.out.println("in db chat index "+chatindex+"   _"+Chatname);
+					
 					
 					
 					stmt = conn.prepareStatement(
@@ -916,7 +934,6 @@ public class DerbyDatabase implements IDatabase {
 						String usid=resultSet.getString(index++);		
 						
 						Map.Entry<String,Integer> skore =new AbstractMap.SimpleEntry<String, Integer>(usid, score);
-						//System.out.println( "map score        "+skore);
 						result.add(skore);
 					}
 					
@@ -1060,13 +1077,11 @@ public class DerbyDatabase implements IDatabase {
 					
 					
 					List<Integer> existingscores= getperuserscores(nameofthegame,userid);
-					//Gson gson = new GsonBuilder().create();
-					//System.out.println(gson.toJson(existingscores));
+
+					
 					existingscores.add(score);
 					Collections.sort(existingscores);
-					//System.out.println(gson.toJson(existingscores));
 					Collections.reverse(existingscores);
-					//System.out.println(gson.toJson(existingscores));
 					
 					PreparedStatement stmt = null;
 					ResultSet resultSet = null;
@@ -1074,7 +1089,6 @@ public class DerbyDatabase implements IDatabase {
 						for(int i=0;i<(25-existingscores.size());i++ ) {
 							existingscores.add(0);
 						}
-						//System.out.println(gson.toJson(existingscores));
 					}
 					try {
 						
@@ -1281,7 +1295,6 @@ public class DerbyDatabase implements IDatabase {
 							Long usid=resultSet.getLong(index++);	
 							
 							Map.Entry<Integer,Long> skore =new AbstractMap.SimpleEntry<Integer, Long>(score, usid);
-							//System.out.println( "map score        "+skore);
 							result.add(skore);
 						}
 						
@@ -1384,10 +1397,9 @@ public class DerbyDatabase implements IDatabase {
 							while (resultSet.next()) {
 								num++;
 								loaduser(user, resultSet, 1);
-								//System.out.println("log in db    _"+user.getusername());
+								
 							}
 							if(num==1) {
-								System.out.println("log in db    _"+user.getusername());
 								return  user;
 							}
 							else {
@@ -1427,7 +1439,6 @@ public class DerbyDatabase implements IDatabase {
 						ArrayList<Integer> result=new ArrayList<Integer>();
 						
 						while (resultSet.next()) {
-							//System.out.println("in DB user #   "+userid+" has chat " +resultSet.getInt(1));
 							result.add(resultSet.getInt(1));
 						}
 						return  result;
@@ -1493,14 +1504,13 @@ public class DerbyDatabase implements IDatabase {
 				
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
-				//System.out.println("eror");
+
 				try { 
 						Integer chatid=chatnametoid(chatname);
 						
 						if(chatid==null||chatid==-1) {
 							String eror="the chat -";
 							eror+=chatname+"- does not exsits \ntry creating it";
-							//System.out.println(eror);
 							throw new NoSuchElementException(eror);
 						}
 						else {
@@ -1580,9 +1590,6 @@ public class DerbyDatabase implements IDatabase {
 							
 							DBUtil.closeQuietly(stmt);
 							
-							//chatid=chatnametoid(chatname);
-							System.out.println("in DB    created chat id "+chatidd+"   _"+chatname);
-							
 							stmt = conn.prepareStatement(
 
 									"insert into usercreatedchats (chatid,userid) values ( ?,?)"
@@ -1617,21 +1624,27 @@ public class DerbyDatabase implements IDatabase {
 		return executeTransaction(new Transaction<Integer>() {
 			public Integer execute(Connection conn) throws SQLException {
 				
+				if (user2==-1) {
+					return null;
+				}
 				PreparedStatement stmt = null;
 			//	ResultSet resultSet = null;
 				Integer pmid=-1;
+				long now=Instant.now().toEpochMilli();
 				try { //chatnames
 						pmid=getpmid(user1,user2);
 						
 						if(pmid==null||pmid==-1) {
 							stmt = conn.prepareStatement(
 
-									"insert into pmlist (user1id,user2id) values ( ?,?) "
+									"insert into pmlist (user1id,user1lastacess ,user2id, user2lastacess) values ( ?,?,?,?) "
 
 							);
 							
 							stmt.setInt(1, user1);
-							stmt.setInt(2, user2);
+							stmt.setLong(2, now);
+							stmt.setInt(3, user2);
+							stmt.setLong(4, 0l);
 							stmt.executeUpdate();
 														
 						}
@@ -1655,7 +1668,7 @@ public class DerbyDatabase implements IDatabase {
 		});
 	}
 
-	public List<post> getpm(final int numposts ,final int pmid) {
+	public List<post> getpm(final int numposts ,final int pmid,final int retriverid) {
 
 		return executeTransaction(new Transaction<List<post>>() {
 			public List<post> execute(Connection conn) throws SQLException {
@@ -1669,7 +1682,7 @@ public class DerbyDatabase implements IDatabase {
 							"FROM pmchats "
 							+ "where pmid= ?"
 							
-					);//gets the largest(newest) post id
+					);//gets all the posts with this pm id
 					stmt.setInt(1, pmid);
 					
 					resultSet = stmt.executeQuery();
@@ -1706,7 +1719,6 @@ public class DerbyDatabase implements IDatabase {
 					stmt.setInt(1, topindexindb);
 					stmt.setInt(2, bottomindexindb);
 					stmt.setInt(3, pmid);
-					//System.out.println(pmid);
 					ArrayList<post> result=new ArrayList<post>();
 					
 					resultSet = stmt.executeQuery();
@@ -1733,6 +1745,8 @@ public class DerbyDatabase implements IDatabase {
 				} finally {
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
+					System.out.println(pmid);
+					//updatepmacesstime(retriverid,pmid);
 				}  
 			}
 		});
@@ -1780,7 +1794,7 @@ public class DerbyDatabase implements IDatabase {
 		
 		
 		
-		
+		 //updatepmacesstime(senderid,pmid);
 		return null;
 	}
 
@@ -1813,24 +1827,26 @@ public class DerbyDatabase implements IDatabase {
 				} finally {
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
+					
 				}
 			
 			}
 		});
 		
 	}
-
-	public List<Entry<String, Integer>> getpmlist(final int userid) {
+	
+	
+	public List<Triplet<String, Integer,Integer>> getpmlist(final int userid) {
 		// TODO Auto-generated method stub
-		return executeTransaction(new Transaction<List<Entry<String, Integer>>>() {
-			public List<Entry<String, Integer>> execute(Connection conn) throws SQLException {
+		return executeTransaction(new Transaction<List<Triplet<String, Integer,Integer>>>() {
+			public List<Triplet<String, Integer,Integer>> execute(Connection conn) throws SQLException {
 				
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
 				
 				try { 
 						stmt = conn.prepareStatement(//user1id   user2id
-								"select * from pmlist "
+								"select pmid, user1id, user2id, user1lastacess, user2lastacess from pmlist "
 								+ " where (user1id= ? ) or (user2id= ? )"
 						);
 						stmt.setInt(1, userid);
@@ -1838,39 +1854,44 @@ public class DerbyDatabase implements IDatabase {
 						
 						resultSet = stmt.executeQuery();
 
-						List<Map.Entry<String, Integer>> result=new ArrayList<Map.Entry<String, Integer>>();
+						List<Triplet<String, Integer,Integer>> result=new ArrayList<Triplet<String, Integer,Integer>>();
 						//List<Map.Entry<String, Integer>> result=new LinkedList(Map.entrySet());
 						
 						// for testing that a result was returned
 						
-						ArrayList<Entry<Integer, Integer>> otherusers=new ArrayList<Entry<Integer, Integer>>();
+						ArrayList<Triplet<Long, Integer,Integer>> otherusers=new ArrayList<Triplet<Long, Integer,Integer>>();
+						
 						//key pmchat id
 						//value other userid
 						int pmid,user1,user2,userf;
-						
+						long lastacess;
 						while(resultSet.next()) {
 							 pmid=resultSet.getInt(1);
 							 user1=resultSet.getInt(2);
 							 user2=resultSet.getInt(3);
 							if(user1!=userid) {
 								userf=user1;
+								lastacess=resultSet.getLong(4);
 							}
 							else  {
 								userf=user2;
+								lastacess=resultSet.getLong(5);
 							}
 							if(userf>0) {
-								Entry<Integer,Integer> tmp =new AbstractMap.SimpleEntry<Integer, Integer>(pmid, userf);
-								
+								//Entry<Integer,Integer> tmp =new AbstractMap.SimpleEntry<Integer, Integer>(pmid, userf);
+								Triplet<Long, Integer,Integer> tmp=new Triplet<Long, Integer,Integer>(lastacess,pmid,userf);
 								otherusers.add(tmp);
 							}
-							//key pmid
-							//value  final userid
+							//first last acessed
+							//key pmid    second
+							//value  final userid   third
 							
 						}
 						String username=null;
-						for (Entry<Integer,Integer> thing : otherusers) {
-							username=getusernamebyid(thing.getValue());
-							Entry<String,Integer> tmp =new AbstractMap.SimpleEntry<String, Integer>(username, thing.getKey());
+						for (Triplet<Long, Integer,Integer> thing : otherusers) {
+							username=getusernamebyid(thing.getThird());
+							int num=getunreadpms(userid,  thing.getThird(),thing.getFirst());
+							Triplet<String, Integer,Integer> tmp =new Triplet<String, Integer,Integer>(username, thing.getSecond(),num);
 
 							result.add(tmp);
 							
@@ -1925,6 +1946,127 @@ public class DerbyDatabase implements IDatabase {
 		
 		// TODO Auto-generated method stub
 	}
+
+	public void updatepmacesstime(final int userid,final int pmid) {
+		// TODO Auto-generated method stub
+		//System.out.println("    in db   ubdating pm acces time     "+pmid);
+		executeTransaction(new Transaction<post>() {
+			public post execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				PreparedStatement stmt2 = null;
+				ResultSet resultSet = null;
+				//System.out.println("eror");
+				Integer user1=null,user2=null ;
+				long now=Instant.now().toEpochMilli();
+				
+				try { 
+					stmt = conn.prepareStatement(//user1id   user2id
+							"select user1id, user2id  from pmlist "
+							+ " where pmid= ?"
+					);
+					stmt.setInt(1, pmid);
+					
+					
+					resultSet = stmt.executeQuery();
+					boolean found=false;
+					if (resultSet.next()) {
+						found=true;
+						user1=resultSet.getInt(1);
+						user2=resultSet.getInt(2);
+					}
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					System.out.println("    in db  user1  "+user1+"     "+user2+"   "+pmid);
+					if (found) {
+						if(userid==user1) {
+							System.out.println("    in db ubdating user1  ");
+							stmt2 = conn.prepareStatement(
+									"UPDATE pmlist "+
+									" set user1lastacess= ?  "
+									+ "where pmid = ? "
+							);
+
+							
+							
+							stmt2.setLong(1, now);
+							stmt2.setInt(2, pmid);
+							stmt2.executeUpdate();
+							
+						}
+						else if(userid==user2){
+							System.out.println("    in db ubdating user2  ");
+							stmt2 = conn.prepareStatement(
+									"UPDATE pmlist "+
+									" set user2lastacess= ?  "
+									+ "where pmid = ? "
+							);
+
+							
+							
+							stmt2.setLong(1, now);
+							stmt2.setInt(2, pmid);
+							stmt2.executeUpdate();
+						}
+					}
+					
+					
+						
+						
+						
+						// execute the query
+				
+						
+				
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(stmt2);
+				}
+				return null;
+			}
+		});
+		
+	}
+
+	public int getunreadpms(final int retriverid, final int pmid, final long lastacessed) {
+		return executeTransaction(new Transaction<Integer>() {
+			public Integer execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try { 
+						stmt = conn.prepareStatement(//user1id   user2id  timeposted 
+								"select postid from pmchats "
+								+ " where pmid= ? and timeposted < ? and userid <> ? "
+						);
+						stmt.setInt(1, pmid);
+						stmt.setLong(2, lastacessed);
+						stmt.setInt(3, retriverid);
+						resultSet = stmt.executeQuery();
+
+						int num=0;
+						
+						while (resultSet.next()) {
+							resultSet.getInt(1);
+							num++;
+						}
+						return  num;
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					
+				}
+			
+			}
+		});
+		
+	}
+
+	
 	
 }
 	
