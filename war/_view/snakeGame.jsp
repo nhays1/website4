@@ -282,6 +282,7 @@
 		}
 		<!-- end chat style -->
 		</style>
+		
 		<script type="text/javascript">
 		var score=0;
 		var gamescore;
@@ -537,11 +538,27 @@
 	
 	<div id ="allgames">
 	<ul>
-		<li>Coin Flip</li>
-		<li>Card Game</li>
-		<li>Shooter</li>
-		<li>Pong</li>
-		<li>Snake</li>
+	<li> 
+	<form action="${pageContext.servletContext.contextPath}/Gamewindow" method="get">
+		<input name="newuser" type="submit" value="Coin Flip" />
+	</form>
+</li>
+<li>
+<form action="${pageContext.servletContext.contextPath}/Game2window" method="get">
+		<input name="newuser" type="submit" value="Card Game" />
+	</form>
+</li>
+<li><form action="${pageContext.servletContext.contextPath}/Game3window" method="get">
+		<input name="newuser" type="submit" value="Shooter" />
+	</form>
+</li>
+<li><form action="${pageContext.servletContext.contextPath}/Game4window" method="get">
+		<input name="newuser" type="submit" value="3D Pong" />
+	</form>
+</li>
+<li><form action="${pageContext.servletContext.contextPath}/snakeGame" method="get">
+		<input name="newuser" type="submit" value="Snake Game" />
+	</form>
 	</ul>	
 	
 	
@@ -589,47 +606,56 @@ window.onload=function() {
 	canv=document.getElementById("content");
 	ctx=canv.getContext("2d");
 	document.addEventListener("keydown",keyPush);
-	setInterval(gameStart,75);
+	var interval = 75;
+	setInterval(gameStart,interval);
 }
 
 
 
-var snakeX = 10;
-var snakeY = 10;
+var snakeX = 10; //Snake starting X
+var snakeY = 10; //Snake starting Y
 var grid = 30;
 var tiles = 30;
-var foodX = 5
-var foodY = 5
-var xv = 0;
-var yv = 0;
+var foodX = Math.floor(Math.random()*20); //Initial Position of food X
+var foodY = Math.floor(Math.random()*20); //Initial Position of food Y
+var xv = 0; //X Velocity
+var yv = 0; //Y Velocity
 var trail=[];
 var tail = 5;
 var score = 0;
-var foodEaten = 0;
+var foodEaten = 0; //Tracks how amount of food eaten
 var gameOver;
+var r = false; //Right
+var l = false; //Left
+var d = false; //Down
+var u = false; //Up
+var c = Math.floor(Math.random() * 8); //Food Color
+var sc = 0;//Snake Color
 
 function gameStart() {
 	snakeX+=xv;
 	snakeY+=yv;
 	
 	if(snakeX<0) {
-		snakeX= 20-1;
+		snakeX= 19;
 	}
-	if(snakeX>20-1) {
+	if(snakeX>19) {
 		snakeX= 0;
 	}
 	if(snakeY<0) {
-		snakeY= 20-1;
+		snakeY= 19;
 	}
-	if(snakeY>20-1) {
+	if(snakeY>19) {
 		snakeY= 0;
 	}
 	
 	ctx.fillStyle="grey";
 	ctx.fillRect(0,0,canv.width,canv.height);
-	ctx.fillStyle="black";
+
 	
+	ctx.fillStyle="black";
 	for(var i=0;i<trail.length;i++) {
+		
 		ctx.fillRect(trail[i].x*grid,trail[i].y*grid,20,20);
 		if(trail[i].x==snakeX && trail[i].y==snakeY) {
 			tail = 5;
@@ -650,14 +676,45 @@ function gameStart() {
 		//Generates location of next food
 		foodX=Math.floor(Math.random()*20);
 		foodY=Math.floor(Math.random()*20);
+		c = Math.floor(Math.random() * 8);
 		
 	}
 	
 	
-	ctx.fillStyle="red";
+	//random color for food
+	if(c == 0){
+		ctx.fillStyle="red";
+	}
+	if(c == 1){
+		ctx.fillStyle="blue";
+	}
+	if(c == 2){
+		ctx.fillStyle="lime";
+	}
+	if(c == 3){
+		ctx.fillStyle="orange";
+	}
+	if(c == 4){
+		ctx.fillStyle="white";
+	}
+	if(c == 5){
+		ctx.fillStyle="purple";
+	}
+	if(c == 6){
+		ctx.fillStyle="pink";
+	}
+	if(c == 7){
+		ctx.fillStyle="gold";
+	}
+	
+	//draws food
 	ctx.fillRect(foodX*grid,foodY*grid,20,20);
 	
+	
+	
+	
 	//Draws Score
+	ctx.fillStyle="black";
 	ctx.font="30px Arial";
 	ctx.fillText("Score: "+ score, 5, 25);
 	
@@ -673,40 +730,89 @@ function gameStart() {
 function keyPush(event) {
 	switch(event.keyCode) {
 		case 37: //Left Arrow
+			//(r == false){
 			xv=-1;yv=0;
+			//l = true;
+			//r = false;
+			//d = false;
+			//u = false;
+			//}
 			break;
 			
 		case 38: //Down Arrow
+			//if(up == false){
 			xv=0;yv=-1;
+			//l = false;
+			//r = false;
+			//d = true;
+			//u = false;
+			//}
 			break;
 			
 		case 39: //Right Arrow
+			//if(l == false){
 			xv=1;yv=0;
+			//l = false;
+			//r = true;
+			//d = false;
+			//u = false;
+			//}
 			break;
 			
 		case 40: //Up Arrow
-			xv=0;yv=1;
+			//if(d == false){
+			xv=0; yv=1;
+			//l = false;
+			//r = false;
+			//d = false;
+			//u = true;
+			//}
 			break;
-		
-//		case 83 && 68:
-//			xv = 1; yv = 1;
-//			break;
 			
-		case 65: //A 
+		case 65: //A, left
+			//if(r == false){
 			xv=-1;yv=0;
+			//l = true;
+			//r = false;
+			//d = false;
+			//u = false;
+			//}
 			break;
 			
-		case 83: //W
+		case 83: //W, up
+			//if(d == false){
 			xv=0;yv=1;
+			//l = false;
+			//r = false;
+			//d = false;
+			//u = true;
+			//}
 			break;
 			
-		case 68: //D
+		case 68: //D, right
+		//	if(l == false){
 			xv=1;yv=0;
+			//l = false;
+			//r = true;
+			//d = false;
+			//u = false;
+		//	}
+			
 			break;
 			
-		case 87: //S
+		case 87: //S, down
+			//if(u = false){
 			xv=0;yv=-1;
+			//l = false;
+			//r = false;
+			//d = true;
+			//u = false;
+			//}
 			break;
+			
+		case 80: //p
+			
+			
 	}
 }
 </script>
