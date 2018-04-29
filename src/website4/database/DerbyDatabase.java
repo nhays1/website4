@@ -605,7 +605,7 @@ public class DerbyDatabase implements IDatabase {
 						}
 					}
 					*/
-					Collections.sort(result);
+					//Collections.sort(result);
 					
 					return result;
 				} finally {
@@ -1516,7 +1516,7 @@ public class DerbyDatabase implements IDatabase {
 						else {
 							stmt = conn.prepareStatement(
 
-									"insert into usercreatedchats (chatid,userid) values ( ?,?)"
+									"insert into usercreatedchats (chatid,userid) values ( ?,?) "
 
 							);
 					
@@ -1524,7 +1524,6 @@ public class DerbyDatabase implements IDatabase {
 							stmt.setInt(2, userid);
 							stmt.executeUpdate();
 							
-							stmt.executeUpdate();
 						}
 				
 						
@@ -1871,11 +1870,11 @@ public class DerbyDatabase implements IDatabase {
 							 user2=resultSet.getInt(3);
 							if(user1!=userid) {
 								userf=user1;
-								lastacess=resultSet.getLong(4);
+								lastacess=resultSet.getLong(5);
 							}
 							else  {
 								userf=user2;
-								lastacess=resultSet.getLong(5);
+								lastacess=resultSet.getLong(4);
 							}
 							if(userf>0) {
 								//Entry<Integer,Integer> tmp =new AbstractMap.SimpleEntry<Integer, Integer>(pmid, userf);
@@ -1890,7 +1889,7 @@ public class DerbyDatabase implements IDatabase {
 						String username=null;
 						for (Triplet<Long, Integer,Integer> thing : otherusers) {
 							username=getusernamebyid(thing.getThird());
-							int num=getunreadpms(userid,  thing.getThird(),thing.getFirst());
+							int num=getunreadpms(userid,  thing.getSecond(),thing.getFirst());
 							Triplet<String, Integer,Integer> tmp =new Triplet<String, Integer,Integer>(username, thing.getSecond(),num);
 
 							result.add(tmp);
@@ -2038,20 +2037,26 @@ public class DerbyDatabase implements IDatabase {
 				ResultSet resultSet = null;
 				
 				try { 
+						System.out.println("    getunreadpms    "+ pmid+"   "+retriverid);
 						stmt = conn.prepareStatement(//user1id   user2id  timeposted 
-								"select postid from pmchats "
-								+ " where pmid= ? and timeposted < ? and userid <> ? "
+								"select timeposted from pmchats "
+								+ " where pmid= ? and userid <> ? "
 						);
 						stmt.setInt(1, pmid);
-						stmt.setLong(2, lastacessed);
-						stmt.setInt(3, retriverid);
+						//stmt.setLong(2, lastacessed);
+						//stmt.setLong(2, 0l);
+						stmt.setInt(2, retriverid);
 						resultSet = stmt.executeQuery();
 
 						int num=0;
-						
+						long tmp;
+						//System.out.println("    getunreadpmsresuluy    "+ resultSet.getInt(1));
 						while (resultSet.next()) {
-							resultSet.getInt(1);
-							num++;
+							tmp=resultSet.getLong(1);
+							if (tmp>lastacessed) {
+								num++;
+								System.out.println("__--getunreadpms    "+ (tmp-lastacessed));
+							}
 						}
 						return  num;
 					
@@ -2063,6 +2068,41 @@ public class DerbyDatabase implements IDatabase {
 			
 			}
 		});
+		
+	}
+
+	public void addtoblacklist(final int blockerid, final int blockieid) {		
+		executeTransaction(new Transaction<post>() {
+			public post execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+
+				try { 
+				
+					stmt = conn.prepareStatement(
+
+							"insert into blacklist (blocker_id,blockee_id) values ( ?,?)"
+
+					);
+			
+					stmt.setInt(1, blockerid);
+					stmt.setInt(2, blockieid);
+					stmt.executeUpdate();
+					
+					stmt.executeUpdate();
+						
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+				return null;
+			}
+		});
+		
+		
+		
 		
 	}
 

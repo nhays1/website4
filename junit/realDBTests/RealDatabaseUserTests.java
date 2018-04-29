@@ -7,16 +7,17 @@ import java.util.List;
 
 import org.junit.*;
 
+import website4.controller.UserController;
 import website4.database.Triplet;
 
 public class RealDatabaseUserTests {
-	
+	UserController ctrl;
 	
 	
 
 	@Before
 	public void setup() throws Exception{
-		
+		ctrl=new UserController();
 		
 		
 		
@@ -29,7 +30,7 @@ public class RealDatabaseUserTests {
 	}
 	
 	@Test
-	public void testAddPost() {
+	public void testlogin() {
 		
 		
 		
@@ -40,7 +41,16 @@ public class RealDatabaseUserTests {
 	}
 	
 	
-	
+	@Test
+	public void testisguest() {
+		
+		
+		
+		
+		
+		
+		
+	}
 	
 	
 	

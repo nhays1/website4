@@ -195,6 +195,11 @@ public class FakeDatabase implements IDatabase {
 		return 0;
 	}
 
+	public void addtoblacklist(int blockerid, int blockieid) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	
 	

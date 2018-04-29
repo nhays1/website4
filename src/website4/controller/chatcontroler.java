@@ -151,5 +151,10 @@ public class chatcontroler {
 		IDatabase db = DatabaseProvider.getInstance();
 		return db.getpmlist(userid);
 	}
-	
+	public void addtoblacklist(int blockerid,int blockieeid) {
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		db.addtoblacklist(blockerid, blockieeid);
+	}
+			
 }

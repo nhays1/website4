@@ -60,6 +60,8 @@ public interface IDatabase {
 	
 	public int getunreadpms(int retriverid, int pmid, long lastacessed);
 	
+	public void addtoblacklist(int blockerid,int blockieid);
+	
 	/**intended for sesion verification returns usser specied by id
 	 * 
 	 * @param id
