@@ -4,7 +4,7 @@ package website4.controller;
 
 import java.io.IOException;
 import java.time.Instant;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -77,12 +77,12 @@ public class chatcontroler {
 	}
 	
 	
-	public List<post> Getchat(int chatindex,String chatname){
+	public List<post> Getchat(int chatindex,String chatname,int gettinguserid){
 		
 		
 		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();
-		return db.getposts_no_blacklist(0 ,chatindex+10,chatname,2);
+		return db.getposts_no_blacklist(0 ,chatindex+10,chatname,gettinguserid);
 	
 	}
 	/**the chat is specified outside the db by its name
@@ -155,6 +155,15 @@ public class chatcontroler {
 		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();
 		db.addtoblacklist(blockerid, blockieeid);
+	}
+	public int getunreadpms(int userid){
+		ArrayList<Triplet<String, Integer,Integer>> things=(ArrayList<Triplet<String, Integer, Integer>>) getpmlist(userid);
+		int total=0;
+		for(int i=0;i<things.size();i++) {
+			total+=things.get(i).getThird();
+		}
+		return total;
+		
 	}
 			
 }

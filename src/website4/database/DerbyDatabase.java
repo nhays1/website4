@@ -235,7 +235,9 @@ public class DerbyDatabase implements IDatabase {
 					
 					stmt7 = conn.prepareStatement(
 							"create table blacklist (" +
-									"	blocker_id integer primary key, " +
+									" id integer primary key "
+									+ " generated always as identity (start with 0, increment by 1),  " +
+									"	blocker_id integer, " +
 									"	blockee_id integer" +
 									")"
 					);	
@@ -461,18 +463,16 @@ public class DerbyDatabase implements IDatabase {
 					stmt = conn.prepareStatement(
 							"SELECT blockee_id " +
 							"FROM blacklist"
-							+ " where blocker_id =? "
+							+ " where blocker_id = ? "
 							
-					);//gets the largest(newest) post id
+					);//gets the largest(newest) post id 83214
 					stmt.setInt(1, gettinguserid);
 					
 					resultSet = stmt.executeQuery();
-
+					System.out.println("start blacklist for   "+ gettinguserid);
 					while (resultSet.next()) {
-
-						
-						//blacklist.add(resultSet.getInt(1));
-						
+						blacklist.add(resultSet.getInt(1));
+						System.out.println("   id blocked   "+resultSet.getInt(1) );
 					}
 					
 					
@@ -489,12 +489,10 @@ public class DerbyDatabase implements IDatabase {
 					stmt.setInt(1, chatindex);
 					
 					resultSet = stmt.executeQuery();
-
 						//int totalposts=0 ;
 						ArrayList<Integer> postids=new 	ArrayList<Integer>();
 						while (resultSet.next()) {
 							postids.add(resultSet.getInt(1));
-							
 						}
 							//totalposts =   (Integer) resultSet.getObject(1);//asumes the largest post index is also the number of posts
 						
@@ -525,7 +523,7 @@ public class DerbyDatabase implements IDatabase {
 					stmt.setInt(3, chatindex);
 					
 					ArrayList<post> result=new ArrayList<post>();
-					
+					//ArrayList<Integer> ids=new ArrayList<Integer>();
 					resultSet = stmt.executeQuery();
 					
 					// for testing that a result was returned 
@@ -534,77 +532,27 @@ public class DerbyDatabase implements IDatabase {
 						
 						post post = new post();
 						loadpost(post, resultSet, 1);
-						
-						
+						//post.setguest(isguest(resultSet.getInt(2)));
+						//ids.add(resultSet.getInt(2));
 						result.add(post);
 						
 					}
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
 					
-					/*
-					stmt = conn.prepareStatement(
-							"select posts.*,  wasguest.username  from wasguest , posts " 
-							+"where postid >= ? " + 
-							" and postid <= ? "
-							+ "and posts.userid = wasguest.userid"
-							+ " and chatname= ?"
-					);//selects everything between top and bottom
-					stmt.setInt(1, topindexindb);
-					stmt.setInt(2, bottomindexindb);
-					stmt.setInt(3, chatindex);
-					
-					
-					
-					
-					resultSet = stmt.executeQuery();
-					
-					// for testing that a result was returned
-					
-					
-					while (resultSet.next()) {
-						
-						post post = new post();
-						loadpost(post, resultSet, 1);
-						
-						
-						result.add(post);
-						
+					for(int i=0; i<result.size();i++ ) {
+						result.get(i).setguest(isguest(result.get(i).getuserid()));
+						//System.out.println(result.get(i).getguest());
 					}
 					
-					*/
-						for (int v=0;v<result.size();v++) {
-							if(blacklist.contains(result.get(v).getuserid())){
-								result.remove(v);
-								
-								System.out.println(" badd "+result.get(v).getuserid());
-								v--;
-							}
-						}
 					
-					
-					
-					
-					
-					/*
-					if(result.size()>100) {
-						System.out.println("-------hh  ");
-						if(result.size()>121) {
-							result.remove(120);
-						}
-						for(int i=90;i<result.size()-1;i++) {
-							//System.out.print(i+"__"+result.get(i).Getmils_time());
-							if(result.get(i).Getmils_time()>0L) {
-								
-							}
-							else {
-								result.remove(i);
-								i--;
-							}
-							System.out.print("__i s"+i+"__"+result.get(i).Getmils_time());
+					for (int v=0;v<result.size();v++) {
+						if(blacklist.contains(result.get(v).getuserid())){
+							System.out.println(" badd "+result.get(v).getuserid());
+							result.remove(v);
+							v--;
 						}
 					}
-					*/
 					//Collections.sort(result);
 					
 					return result;
@@ -1145,10 +1093,6 @@ public class DerbyDatabase implements IDatabase {
 						stmt.executeUpdate();
 						}
 						
-						
-						// execute the query
-					
-						stmt.executeUpdate();
 
 					} finally {
 						DBUtil.closeQuietly(resultSet);
@@ -1325,8 +1269,9 @@ public class DerbyDatabase implements IDatabase {
 						resultSet = stmt.executeQuery();
 						
 						boolean found=false;
-						
+						//System.out.println("   not guest "+userid );
 						if (resultSet.next()) {
+							//System.out.println("   not guest"+resultSet.getInt(1));
 							found=true;
 						}
 						return  found;
@@ -2088,8 +2033,6 @@ public class DerbyDatabase implements IDatabase {
 			
 					stmt.setInt(1, blockerid);
 					stmt.setInt(2, blockieid);
-					stmt.executeUpdate();
-					
 					stmt.executeUpdate();
 						
 					

@@ -55,8 +55,8 @@ public class pmservlet extends HttpServlet {
 		System.out.println("__________________________________________________________");
 		System.out.println("pm Servlet: doPost");
 		UserController control=new UserController();
-		boolean sync=true,morepots=false,getpmlist=false;
-		int pmid=-1,numpost=0,pmchatid=-1;
+		boolean sync=true,morepots=false,getpmlist=false,gettotalunread=false;
+		int pmid=-1,numpost=0,pmchatid=-1,unreadpms = 0;
 		chatcontroler chat=new chatcontroler();
 		Gson gson = new GsonBuilder().create();
 		ArrayList<post> pmposts = null;
@@ -106,7 +106,8 @@ public class pmservlet extends HttpServlet {
 			String async =req.getParameter("isasync");
 			
 			String pmlist=req.getParameter("getpmlist");
-			
+			String gettotalpbm=req.getParameter("gettotalpbm");
+				
 			
 			if(pmlist!=null)
 				getpmlist=Boolean.parseBoolean(pmlist);
@@ -129,6 +130,10 @@ public class pmservlet extends HttpServlet {
 					 numpost -=11;
 				}
 			}
+			if(gettotalpbm!=null) {
+				gettotalunread=Boolean.parseBoolean(gettotalpbm);
+			}
+			
 			
 			System.out.println("    pmid second user       _ "+pmid);
 			
@@ -154,7 +159,10 @@ public class pmservlet extends HttpServlet {
 			if(getpmlist) {
 				jsonpmlist=gson.toJson(chat.getpmlist(user.getuserid()));
 			}
-			
+			if(gettotalunread) {
+				unreadpms=chat.getunreadpms(user.getuserid());
+				
+			}
 		}
 		finally{
 				
@@ -172,6 +180,11 @@ public class pmservlet extends HttpServlet {
 			resp.setContentType("text/plain");
 			resp.getWriter().println("");
 			resp.getWriter().println(jsonpmlist);
+		}
+		else if(gettotalunread) {
+			resp.setContentType("text/plain");
+			resp.getWriter().println("");
+			resp.getWriter().println(unreadpms);
 		}
 		else {
 			resp.setContentType("text/plain");

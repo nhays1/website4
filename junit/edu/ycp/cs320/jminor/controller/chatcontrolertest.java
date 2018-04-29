@@ -38,7 +38,7 @@ public class chatcontrolertest {
 		//chat.makenewpost(now,2 , chatinput);
 		chat.makenewpost(incomingpost.Getmils_time(), 2, incomingpost.Getpost(),"general");
 		
-		posts=(ArrayList<post>) chat.Getchat(0,"general");
+		posts=(ArrayList<post>) chat.Getchat(0,"general",0);
 		Gson gson = new GsonBuilder().create();
 		System.out.println(gson.toJson(posts));
 		

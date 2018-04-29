@@ -671,7 +671,12 @@
 				   mybulets[i].newPos(i,true);
 				   mybulets[i].update();
 				   for(v=0;v<atacks.length; v++){ //also check if any of my bulets have colided with atacking bullets
-					   mybulets[i].crashWith(atacks[v],i,v);
+					   try{
+						   mybulets[i].crashWith(atacks[v],i,v);
+					   }
+				   	   catch(e){
+				   			console.log("bullets out of bounds")
+				   	   }
 					   
 				   }
 				   

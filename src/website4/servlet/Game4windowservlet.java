@@ -50,7 +50,6 @@ public class Game4windowservlet extends HttpServlet {
 		
 		
 		ArrayList<post> chatposts;
-		chatposts= (ArrayList<post>) chat.Getchat(0,"general");
 		
 		//
 		usser user = null;
@@ -65,6 +64,7 @@ public class Game4windowservlet extends HttpServlet {
 			user=usecontrol.createguestuser();
 			
 		}
+		chatposts= (ArrayList<post>) chat.Getchat(0,"general",user.getuserid());
 		String jsonuserscore=gson.toJson(scorectrl.getuserscores(gamename, user.getuserid()));
 		req.getSession().setAttribute("userid", user.getuserid());
 		//
@@ -150,7 +150,7 @@ public class Game4windowservlet extends HttpServlet {
 		
 		ArrayList<post> chatposts;
 		System.out.println("numpostsssss      _ "+numpost);
-		chatposts= (ArrayList<post>) chat.Getchat(numpost,"general");
+		chatposts= (ArrayList<post>) chat.Getchat(numpost,"general",user.getuserid());
 		System.out.println("numpostdddddd      _ "+chatposts.size());
 		
 		

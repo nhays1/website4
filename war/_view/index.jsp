@@ -151,12 +151,12 @@
 		
 		#login{
 		visibility: visible;
-		
-		
-		
+
+		}
+		#pmuseropt{
+		display: inline-block;
 		
 		}
-		
 		
 		
 		#pageoptions{
@@ -504,14 +504,49 @@
 			    };
 
 		}
-		 
+		 function gettotalunreadpm(){
+			 //gettotalpbm
+			 var urlEncodedData = "";
+			var urlEncodedDataPairs = [];
+			var chatedc;
+
+			urlEncodedDataPairs.push(encodeURIComponent("isasync") + '=' + encodeURIComponent(true));
+			urlEncodedDataPairs.push(encodeURIComponent("gettotalpbm") + '=' + encodeURIComponent(true));
+			
+			
+			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+			 
+			 
+			 
+			 var xmlreq = new XMLHttpRequest();
+			 xmlreq.open("post", "pmpage");
+			 xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			 xmlreq.send(urlEncodedData);
+			 
 		
+			xmlreq.onreadystatechange = function() {
+		        if (this.readyState == 4 && this.status == 200) {
+		        	chatedc= JSON.parse(this.responseText);
+		        	chatedc=this.responseText;
+					//console.log(document.getElementById('pmuseropt').value);
+					//refreshpm(chatedc);
+		        	//document.getElementById("chattext").scrollTo(0, document.getElementById('chattext').scrollHeight);pmuseropt
+					document.getElementById('pmuseropt').value +=" ("+chatedc+")";
+					
+		       }
+		    };
+
+		 }
+		function init(){
+			post();
+			gettotalunreadpm();
+		}
 		
 	</script>
 	<script src="_view/chat.js"></script>
 	</head>
 
-	<body onload="post()">
+	<body onload="init()">
 	
 	
 	
@@ -527,7 +562,7 @@
 			</a>
 		</div>
 		
-
+<!-- start user options -->
 			<div class="smallroundcorners" id= "acountoptions">
 			<img id="userphoto" onclick="toggleacountoptions()" src="img/largeloginicon.png"  />
 			
@@ -536,13 +571,17 @@
 				<form action="${pageContext.servletContext.contextPath}/userinfo" method="get">
 					<input type="Submit" name="submit" value="userinfo">
 				</form>
-			
+			<form action="${pageContext.servletContext.contextPath}/pmpage" method="post">
+				<!--  -->
+					
+					<input id="pmuseropt" name="newuser" type="submit" value="privatte mesage" />
+				</form>
 			
 			
 				
 			</div>
 		
-		
+<!-- end user options -->		
 		
 		<div id="pageoptions">
 		
@@ -634,10 +673,10 @@
 			<form action="${pageContext.servletContext.contextPath}/pmpage" method="post">
 				<!--  -->
 					
-					<input name="newuser" type="submit" value="privatte mesage" />
+					<input id="pmbutton" name="newuser" type="submit" value="privatte mesage" />
 					<input class="hide" id="pmid" type="text" name="pmid" value="0" >
 				</form>
-			<!--<button   onclick="" >blacklist (WIP)</button>-->
+			<button   onclick="addtoblacklist()" >blacklist (WIP)</button>
 		</div>
 		
 		
@@ -717,7 +756,7 @@
 			</div>
 			
 		</div>
-
+<!-- start user -->
         <div id="loginoverlay"  onclick="logclick()" >
         
         
@@ -750,6 +789,10 @@
 			
 			<button id="canclelog"  onclick="logclick()" >cancle</button>
 		</div>
+<!-- end user -->
+	<script>
+		//init();
+	</script>
 	</body>
 </html>
 
