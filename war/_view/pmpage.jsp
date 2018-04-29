@@ -529,6 +529,7 @@
 		}
 		function makepmlist(list){
 			document.getElementById("userchats").innerHTML = "";
+			document.getElementById("pm_other").innerHTML = "";
 			var toAdd = document.createDocumentFragment();
 
 			   
@@ -538,8 +539,9 @@
 			  			var newbutt = document.createElement('button');
 			   			newbutt.id='swithcuserchat';
 			   			newbutt.className = 'swithpm';
-			   			newbutt.value=list[i].value;
-			   			var chatnammm=list[i].key;
+			   			newbutt.value=list[i].second;
+			   			var chatnammm=list[i].first;
+			   			chatnammm+="   ("+list[i].third+")";
 			   			//newbutt.onclick="newchat(event,'general') ";
 			   			newbutt.onclick = function() { 
 			   				newpm(event, this.value);
@@ -552,7 +554,7 @@
 					}
 			   }
 			//toAdd.appendChild(previousposts);
-			document.getElementById("pmotheruser").appendChild(toAdd);
+			document.getElementById("pm_other").appendChild(toAdd);
 			
 			
 		}
@@ -565,6 +567,16 @@
 		    }
 		    //document.getElementById(chatname).style.display = "block";
 		    thisbut.currentTarget.className += "active";
+		    
+		    
+		    
+		    var tabname=thisbut.currentTarget.innerHTML;
+		   // console.log(tabname);
+		    var username=tabname.substring(0,tabname.length-5 );
+		    username+="  (0)"
+		    //console.log(username);
+		    thisbut.currentTarget.innerHTML=username;
+		    
 		    
 		    var urlEncodedData = "";
 			var urlEncodedDataPairs = [];
@@ -595,10 +607,10 @@
 						console.log(chatedc);
 						refreshpm(chatedc);
 			        	//document.getElementById("chattext").scrollTo(0, document.getElementById('chattext').scrollHeight);
-			        	
+						
 			       }
 			    };
-
+			    
 			console.log(pmid);
 			
 			
@@ -726,7 +738,10 @@
 	
 	<div id="pmcontainer">
 		<div id="pmotheruser">
-		<button id="refresfchatbut" onclick="postpm()  ">refresh</button>
+			<button id="refresfchatbut" onclick="postpm()  ">refresh</button>
+			<div id="pm_other">
+			
+			</div>
 		</div>
 		<div id="pmchats"></div>
 		<div id="pminput">

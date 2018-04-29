@@ -187,10 +187,17 @@
 			   //newDiv.id = 'r'+i;
 			   newDiv.className = 'chatentry';
 			   newP.className='chatheader';
+			   if(chat[i].guest){
+				   newP.onclick = function() { 
+					   otheruseroptions(event, true ,this.id,true);
+				   };
+			   }
+			   else{
+				   newP.onclick = function() { 
+					   otheruseroptions(event, true ,this.id,false);
+				   };
+			   }
 			   
-			   newP.onclick = function() { 
-				   otheruseroptions(event, true ,this.id);
-			   };
 			   newDiv.innerHTML = posttext;
 			   newP.innerHTML = username;
 			   toAdd.appendChild(newP);
@@ -416,7 +423,7 @@
 		}
 		
 		
-		function otheruseroptions(event,make,id){//make= boolean
+		function otheruseroptions(event,make,id,isguest){//make= boolean
 			//console.log(id);
 			//console.log(event.pageY);
 			var ypos=event.pageY;
@@ -427,7 +434,13 @@
 				document.getElementById("chatuseropt").style.visibility ="visible";
 				document.getElementById("chatuseropt").style.top=ypos+"px";
 				document.getElementById("pmid").value=id;
-				console.log(document.getElementById("pmid").value);
+				//console.log(document.getElementById("pmid").value);pmbutton
+				if(isguest==true){
+/////					document.getElementById("pmbutton").style.visibility ="hidden";
+				}
+				else{
+/////					document.getElementById("pmbutton").style.visibility ="visible";
+				}
 			}
 			else{
 				document.getElementById("chatuseroptionsoverlay").style.visibility ="hidden";
@@ -439,7 +452,37 @@
 			
 		}
 		
-		
+		function addtoblacklist(){
+			
+			var urlEncodedData = "";
+			var urlEncodedDataPairs = [];
+
+			
+			urlEncodedDataPairs.push(encodeURIComponent("toblock") + '=' + encodeURIComponent(document.getElementById("pmid").value));
+			urlEncodedDataPairs.push(encodeURIComponent("chatname") + '=' + encodeURIComponent(currentchat));
+			
+			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+			
+			
+			var xmlreq = new XMLHttpRequest();
+			xmlreq.open("post", "chat_async");
+			xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xmlreq.send(urlEncodedData);
+				
+			xmlreq.onload=function(){
+				if (this.status==200){
+					//console.log(this.response);
+					chatedc= JSON.parse(this.responseText);
+					console.log(chatedc)
+					refreshchat(chatedc);
+				}
+			}
+			otheruseroptions(event, false, -1,true);
+			
+			
+			
+			
+		}
 		
 		
 		//setInterval(refreshchat(null),1);

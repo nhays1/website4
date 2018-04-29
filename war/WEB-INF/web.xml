@@ -42,6 +42,10 @@
     <servlet-name>Game4windowservlet</servlet-name>
     <servlet-class>website4.servlet.Game4windowservlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>chatasyncservlet</servlet-name>
+    <servlet-class>website4.servlet.chatasyncservlet</servlet-class>
+  </servlet>
 
 
   <!-- Servlet mappings    user_asyinc -->
@@ -80,6 +84,10 @@
   <servlet-mapping>
     <servlet-name>Game4windowservlet</servlet-name>
     <url-pattern>/Game4window</url-pattern>
+  </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>chatasyncservlet</servlet-name>
+    <url-pattern>/chat_async</url-pattern>
   </servlet-mapping>
 
 
