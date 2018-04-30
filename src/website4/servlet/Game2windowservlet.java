@@ -55,6 +55,7 @@ public class Game2windowservlet extends HttpServlet {
 		Card userCard;
 		Card cpuCard;
 		
+		int cardIndex;
 		int userBet = 0;
 		int reward = 0;
 		
@@ -100,7 +101,9 @@ public class Game2windowservlet extends HttpServlet {
 		
 		req.setAttribute("userBet", req.getParameter("userBet"));
 		
-		if(userDeck.pullCard().compareTo(cpuDeck.pullCard()) == 1) {
+		if(userDeck.getTopCard().compareTo(cpuDeck.getTopCard()) == 1) {
+			userCard = userDeck.pullCard();
+			req.setAttribute("userCardIndex", userCard.getCardIndex());
 			result = "You have won the card game!";
 			currentUser.setcoins(currentUser.getcoins() + reward);
 			transactMsg = transactMsg.concat("User " + currentUser.getusername() + " has won " + reward + " Coins!");
