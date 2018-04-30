@@ -42,13 +42,18 @@
     <servlet-name>Game4windowservlet</servlet-name>
     <servlet-class>website4.servlet.Game4windowservlet</servlet-class>
   </servlet>
+
+<servlet>
+    <servlet-name>snakeGame</servlet-name>
+    <servlet-class>website4.servlet.snakeGame</servlet-class>
+  </servlet>
   <servlet>
     <servlet-name>chatasyncservlet</servlet-name>
     <servlet-class>website4.servlet.chatasyncservlet</servlet-class>
+
   </servlet>
 
-
-  <!-- Servlet mappings    user_asyinc -->
+	<!-- Servlet mappings    user_asyinc -->
   <servlet-mapping>
     <servlet-name>IndexServlet</servlet-name>
     <url-pattern>/index</url-pattern>
@@ -86,6 +91,10 @@
     <url-pattern>/Game4window</url-pattern>
   </servlet-mapping>
    <servlet-mapping>
+    <servlet-name>snakeGame</servlet-name>
+    <url-pattern>/snakeGame</url-pattern>
+  </servlet-mapping>
+ <servlet-mapping>
     <servlet-name>chatasyncservlet</servlet-name>
     <url-pattern>/chat_async</url-pattern>
   </servlet-mapping>

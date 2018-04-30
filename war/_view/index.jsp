@@ -689,16 +689,24 @@
 		<ul>
 			<li> 
 				<form action="${pageContext.servletContext.contextPath}/Gamewindow" method="get">
-					<input name="newuser" type="submit" value="game 1?!?!?!?!?" />
+					<input name="newuser" type="submit" value="Coin Flip" />
 				</form>
 			</li>
 			<li>
 			<form action="${pageContext.servletContext.contextPath}/Game2window" method="get">
-					<input name="newuser" type="submit" value="game 2!!!!!!!!" />
+					<input name="newuser" type="submit" value="Card Game" />
 				</form>
 			</li>
 			<li><form action="${pageContext.servletContext.contextPath}/Game3window" method="get">
-					<input name="newuser" type="submit" value="game 3¡¡¡¡¡iIi¡¡¡¡¡¡" />
+					<input name="newuser" type="submit" value="Shooter" />
+				</form>
+			</li>
+			<li><form action="${pageContext.servletContext.contextPath}/Game4window" method="get">
+					<input name="newuser" type="submit" value="3D Pong" />
+				</form>
+			</li>
+			<li><form action="${pageContext.servletContext.contextPath}/snakeGame" method="get">
+					<input name="newuser" type="submit" value="Snake Game" />
 				</form>
 			</li>
 		</ul>	
@@ -716,20 +724,21 @@
 			<div class= "gamedisplay">
 			<form action="${pageContext.servletContext.contextPath}/Gamewindow" method="get">
 				
-				<input type="image" src="img/giphy.gif" alt="Submit" > 
+					<input type="image" src="img/game3snap.PNG" alt="Submit" onmouseover="this.src='img/giphy.gif'" onmouseout="this.src='img/coinflip.PNG'"style="width:256px;height:256px;"  > 
 				<div class="gametitle">
-					<input name="newuser" type="submit" value="game 1?!?!?!?!?" />
+					<input name="newuser" type="submit" value="Coin Flip" />
 				</div>
 			</form>
 			</div>
 			
 			<div class= "gamedisplay">
-				<img src="img/giphy.gif" />
-	
+			<form action="${pageContext.servletContext.contextPath}/Game2window" method="get">
+				
+					<input type="image" src="img/game3snap.PNG" alt="Submit" onmouseover="this.src='img/giphy.gif'" onmouseout="this.src='cardgame.PNG'"style="width:256px;height:256px;"  > 
 				<div class="gametitle">
-					game2 
+					<input name="newuser" type="submit" value="Card Game" />
 				</div>
-	
+			</form>
 			</div>
 			
 			<div class= "gamedisplay">
@@ -737,7 +746,7 @@
 				
 					<input type="image" src="img/game3snap.PNG" alt="Submit" onmouseover="this.src='img/giphy.gif'" onmouseout="this.src='img/game3snap.PNG'"style="width:256px;height:256px;"  > 
 				<div class="gametitle">
-					<input name="newuser" type="submit" value="game 3¡¡¡¡¡iIi¡¡¡¡¡¡" />
+					<input name="newuser" type="submit" value="Yeet Shooter" />
 				</div>
 			</form>
 			</div>
@@ -748,10 +757,21 @@
 				
 					<input type="image" src="img/game3snap.PNG" alt="Submit" onmouseover="this.src='img/giphy.gif'" onmouseout="this.src='img/game3snap.PNG'"style="width:256px;height:256px;"  > 
 				<div class="gametitle">
-					<input name="newuser" type="submit" value="game 4¡¡¡¡¡iIi¡¡¡¡¡¡" />
+					<input name="newuser" type="submit" value="3D Pong" />
 				</div>
 			</form>
 			</div>
+
+			<div class= "gamedisplay">
+			<form action="${pageContext.servletContext.contextPath}/snakeGame" method="get">
+				
+					<input type="image" src="img/game3snap.PNG" alt="Submit" onmouseover="this.src='img/giphy.gif'" onmouseout="this.src='img/game5.PNG'"style="width:256px;height:256px;"  > 
+				<div class="gametitle">
+					<input name="newuser" type="submit" value="Snake Game" />
+				</div>
+			</form>
+			</div>
+
 
 			</div>
 			
