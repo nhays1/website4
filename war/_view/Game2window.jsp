@@ -245,7 +245,7 @@
 	<body onLoad = "changeImage()">
 	
 	
-	<!-- once the chat is flushed out it will go here -->
+	<!--once the chat is flushed out it will go here-->
 	
 		
 		
