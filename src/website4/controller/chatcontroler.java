@@ -4,7 +4,7 @@ package website4.controller;
 
 import java.io.IOException;
 import java.time.Instant;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -14,6 +14,7 @@ import com.google.gson.GsonBuilder;
 
 import website4.database.DatabaseProvider;
 import website4.database.IDatabase;
+import website4.database.Triplet;
 import website4.databsecontroler.InitDatabase;
 //	import website4.database.IDatabase;
 //	import website4.databsecontroler.InitDatabase;
@@ -36,13 +37,13 @@ public class chatcontroler {
 		System.out.println("aver er " );
 		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();
-		//long now=Instant.now().toEpochMilli();
+		long now=Instant.now().toEpochMilli();
 		//now+=86400000;
 		//db.updateguestlist(now);
 		System.out.println("aver er " );
 		
 		
-		System.out.println(gson.toJson(db.getpmlist(2)));
+		System.out.println(gson.toJson(db.getunreadpms(2, 1,now)));
 		//db.posttopm(now, "aerfe ser", 2, s);
 		//System.out.println(db.getpm(2, s));
 		
@@ -76,12 +77,12 @@ public class chatcontroler {
 	}
 	
 	
-	public List<post> Getchat(int chatindex,String chatname){
+	public List<post> Getchat(int chatindex,String chatname,int gettinguserid){
 		
 		
 		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();
-		return db.getposts_no_blacklist(0 ,chatindex+10,chatname,2);
+		return db.getposts_no_blacklist(0 ,chatindex+10,chatname,gettinguserid);
 	
 	}
 	/**the chat is specified outside the db by its name
@@ -124,27 +125,45 @@ public class chatcontroler {
 	}
 	
 	
-	public List<post> gotopm(int pmid){
+	public List<post> gotopm(int pmid, int retrivinguserid){
 		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();
-		return db.getpm(10, pmid);
+		System.out.println(pmid);
+		db.updatepmacesstime(retrivinguserid, pmid);
+		return db.getpm(10, pmid,retrivinguserid);
 
 	}
-	public List<post> morepm(int numposts, int pmid){
+	public List<post> morepm(int numposts, int pmid,int retrivinguserid){
 		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();
-		return db.getpm(numposts, pmid);
+		db.updatepmacesstime(retrivinguserid, pmid);
+		return db.getpm(numposts, pmid,retrivinguserid);
 	}
 	
 	public void posttopm(long mils_time ,int senderid,String posttext,int pmid) {
 		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();
 		db.posttopm(mils_time, posttext, senderid, pmid);
+		db.updatepmacesstime(senderid, pmid);
 	}
-	public List<Map.Entry<String, Integer>> getpmlist(int userid){
+	public List<Triplet<String, Integer,Integer>> getpmlist(int userid){
 		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();
 		return db.getpmlist(userid);
 	}
-	
+	public void addtoblacklist(int blockerid,int blockieeid) {
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		db.addtoblacklist(blockerid, blockieeid);
+	}
+	public int getunreadpms(int userid){
+		ArrayList<Triplet<String, Integer,Integer>> things=(ArrayList<Triplet<String, Integer, Integer>>) getpmlist(userid);
+		int total=0;
+		for(int i=0;i<things.size();i++) {
+			total+=things.get(i).getThird();
+		}
+		return total;
+		
+	}
+			
 }

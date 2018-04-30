@@ -37,7 +37,7 @@ public class IndexServlet extends HttpServlet {
 		
 		
 		ArrayList<post> chatposts;
-		chatposts= (ArrayList<post>) chat.Getchat(0,"general");
+
 		
 		//
 		usser user = null;
@@ -54,7 +54,7 @@ public class IndexServlet extends HttpServlet {
 		}
 		req.getSession().setAttribute("userid", user.getuserid());
 		//
-		
+		chatposts= (ArrayList<post>) chat.Getchat(0,"general",user.getuserid());
 		chatlength=chatposts.size();
 		
 		Gson gson = new GsonBuilder().create();
@@ -231,7 +231,7 @@ public class IndexServlet extends HttpServlet {
 		if(chatname==null) {
 			chatname="general";
 		}
-		chatposts= (ArrayList<post>) chat.Getchat(numpost,chatname);
+		chatposts= (ArrayList<post>) chat.Getchat(numpost,chatname,user.getuserid());
 		System.out.println("numpostdddddd      _ "+chatposts.size());
 		
 		

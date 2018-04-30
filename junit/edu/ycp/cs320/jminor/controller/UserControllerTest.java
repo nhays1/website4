@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import website4.controller.UserController;
-import website4.controller.createUser;
+
 import website4.model.usser;
 
 public class UserControllerTest {
@@ -24,11 +24,11 @@ public class UserControllerTest {
 	@Before
 	public void setup() throws Exception{
 		ArrayList<usser> userList = new ArrayList<usser>();
-		userList.add(new usser("user1", "pass1", "email1"));
-		userList.add(new usser("user2", "pass2", "email2"));
-		userList.add(new usser("user3", "pass3", "email3"));
-		userList.add(new usser("user4", "pass4", "email4"));
-		userList.add(new usser("user5", "pass5", "email5"));
+		userList.add(new usser("user123", "pass112", "email1"));
+		userList.add(new usser("user232", "pass221", "email2"));
+		userList.add(new usser("user323", "pass312", "email3"));
+		userList.add(new usser("user423", "pass412", "email4"));
+		userList.add(new usser("user523", "pass521", "email5"));
 		
 	}
 	
@@ -48,7 +48,7 @@ public class UserControllerTest {
 			userCrl.createUser(username, password, email);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		username = null;
@@ -58,7 +58,7 @@ public class UserControllerTest {
 			userCrl.createUser(username, password, email);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		assertFalse(userCrl.isValid(username, password, email));
@@ -70,7 +70,7 @@ public class UserControllerTest {
 			userCrl.createUser(username, password, email);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		userCrl.isValid(username, password, email);
 		
@@ -84,7 +84,7 @@ public class UserControllerTest {
 			userCrl.createUser(username, password, email);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		assertTrue(userCrl.isValid(username, password, email));
