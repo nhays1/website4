@@ -720,85 +720,128 @@ function gameStart() {
 
 function keyPush(event) {
 	switch(event.keyCode) {
-		case 37: //Left Arrow
-			//(r == false){
+//		case 37: //Left Arrow
+//			if(r == false){
+//			xv=-1;yv=0;
+//			l = true;
+//			r = false;
+//			d = false;
+//			u = false;
+//			}
+//			break;
+//			
+//		case 38: //Down Arrow
+//			if(up == false){
+//			xv=0;yv=-1;
+//			l = false;
+//			r = false;
+//			d = true;
+//			u = false;
+//			}
+//			break;
+//			
+//		case 39: //Right Arrow
+//			if(l == false){
+//			xv=1;yv=0;
+//			l = false;
+//			r = true;
+//			d = false;
+//			u = false;
+//			}
+//			break;
+//			
+//		case 40: //Up Arrow
+//			if(d == false){
+//			xv=0; yv=1;
+//			l = false;
+//			r = false;
+//			d = false;
+//			u = true;
+//			}
+//			break;
+			
+		//ARROW KEY CASES	
+		case 37: //A, left
+			if(r == false){
 			xv=-1;yv=0;
-			//l = true;
-			//r = false;
-			//d = false;
-			//u = false;
-			//}
+			l = true;
+			r = false;
+			d = false;
+			u = false;
+			}
 			break;
 			
-		case 38: //Down Arrow
-			//if(up == false){
-			xv=0;yv=-1;
-			//l = false;
-			//r = false;
-			//d = true;
-			//u = false;
-			//}
+		case 40: //W, up
+			if(d == false){
+			xv=0;yv=1;
+			l = false;
+			r = false;
+			d = false;
+			u = true;
+			}
 			break;
 			
-		case 39: //Right Arrow
-			//if(l == false){
+		case 39: //D, right
+			if(l == false){
 			xv=1;yv=0;
-			//l = false;
-			//r = true;
-			//d = false;
-			//u = false;
-			//}
+			l = false;
+			r = true;
+			d = false;
+			u = false;
+			}
+			
 			break;
 			
-		case 40: //Up Arrow
-			//if(d == false){
-			xv=0; yv=1;
-			//l = false;
-			//r = false;
-			//d = false;
-			//u = true;
-			//}
-			break;
-			
+		case 38: //S, down
+			if(u == false){
+			xv=0;yv=-1;
+			l = false;
+			r = false;
+			d = true;
+			u = false;
+			}
+			break;	
+		
+		//WASD CASES	
 		case 65: //A, left
-			//if(r == false){
+			if(r == false){
 			xv=-1;yv=0;
-			//l = true;
-			//r = false;
-			//d = false;
-			//u = false;
-			//}
+			l = true;
+			r = false;
+			d = false;
+			u = false;
+			}
 			break;
 			
 		case 83: //W, up
-			//if(d == false){
+			if(d == false){
 			xv=0;yv=1;
-			//l = false;
-			//r = false;
-			//d = false;
-			//u = true;
-			//}
+			l = false;
+			r = false;
+			d = false;
+			u = true;
+			}
 			break;
 			
 		case 68: //D, right
-		//	if(l == false){
+			if(l == false){
 			xv=1;yv=0;
-			//l = false;
-			//r = true;
-			//d = false;
-			//u = false;
-		//	}
+			l = false;
+			r = true;
+			d = false;
+			u = false;
+			}
 			
 			break;
 			
 		case 87: //S, down
-			//if(u = false){
+			if(u == false){
 			xv=0;yv=-1;
-			//l = false;
-			//r = false;
-			//d = true;
-			//u = false;
-			//}
+			l = false;
+			r = false;
+			d = true;
+			u = false;
+			}
 			break;
 			
 		case 80: //p
