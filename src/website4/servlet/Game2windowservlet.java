@@ -111,8 +111,10 @@ public class Game2windowservlet extends HttpServlet {
 			//add user updates here
 		}
 		else {
+			userCard = userDeck.pullCard();
 			result = "You have lost the card game...";
 			reward = 0 - userBet;
+			req.setAttribute("userCardIndex", userCard.getCardIndex());
 			currentUser.setcoins(currentUser.getcoins() + reward);
 			transactMsg = transactMsg.concat("User " + currentUser.getusername() + " has lost " + userBet + " Coins!");
 			//add user updates here
