@@ -125,8 +125,8 @@
 				
 				images = new Array();
 				images[0] = null;
-				images[1] = "img/CardImages/HeartA.png";
-				images[2] = "img/CardImages/Heart2.png";
+				images[1].src = "img/CardImages/HeartA.png";
+				images[2].src = "img/CardImages/Heart2.png";
 				images[3] = "img/CardImages/Heart3.png";
 				images[4] = "img/CardImages/Heart4.png";
 				images[5] = "img/CardImages/Heart5.png";
