@@ -228,19 +228,14 @@
 		images[51].src = "img/CardImages/ClubQ.png";
 		images[52] = new Image();
 		images[52].src = "img/CardImages/ClubK.png";
-		
-		
-			function getCardImage(index){
-				
-				
-				return image[index];
-				
-			}	
 			
 			function changeImage(){
-				var userCardIndex = "${userCardIndex}";
+				var userCardIndex = '${userCardIndex}';
+				var cpuCardIndex = '${cpuCardIndex}';
 				console.log(images[userCardIndex]);
-				//document.getElementById("userCard").src = images[userCardIndex].src;
+				console.log(images[cpuCardIndex]);
+				document.getElementById("userCard").src = images[userCardIndex].src;
+				document.getElementById("cpuCard").src = images[cpuCardIndex].src;
 			}
 			
 		</script>
@@ -304,20 +299,20 @@
 				</tr>
 				<div>
 					<tr>
-						<td class="label">User Flipped:</td>
-						<a id="userCard"></a><img width = "50" height="75">
+						<td class="label"> User Flipped: </td>
+						<img id="userCard" width = "50" height="75">
 					</tr>
 				</div>
 				<div>
 					<tr>
-						<td class="label">CPU's next Card:</td>
-						<td>${cpuCardResult}</td>
+						<td class="label"> CPU's next Card: </td>
+						<img id="cpuCard" width = "50" height="75">
 					</tr>
 				</div>
 				<div>
 					<tr>
 						<td class="label">User:</td>
-						<td>${transaction}</td>
+						<td>${transactMsg}</td>
 					</tr>
 				</div>
 			</table>

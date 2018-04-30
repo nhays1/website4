@@ -102,28 +102,27 @@ public class Game2windowservlet extends HttpServlet {
 		req.setAttribute("userBet", req.getParameter("userBet"));
 		
 		if(userDeck.getTopCard().compareTo(cpuDeck.getTopCard()) == 1) {
-			userCard = userDeck.pullCard();
-			req.setAttribute("userCardIndex", userCard.getCardIndex());
 			result = "You have won the card game!";
 			currentUser.setcoins(currentUser.getcoins() + reward);
-			transactMsg = transactMsg.concat("User " + currentUser.getusername() + " has won " + reward + " Coins!");
+			transactMsg = transactMsg.concat(currentUser.getusername() + " has won " + reward + " Coins!");
 			
 			//add user updates here
 		}
 		else {
-			userCard = userDeck.pullCard();
 			result = "You have lost the card game...";
 			reward = 0 - userBet;
-			req.setAttribute("userCardIndex", userCard.getCardIndex());
 			currentUser.setcoins(currentUser.getcoins() + reward);
-			transactMsg = transactMsg.concat("User " + currentUser.getusername() + " has lost " + userBet + " Coins!");
+			transactMsg = transactMsg.concat(currentUser.getusername() + " has lost " + userBet + " Coins!");
 			//add user updates here
 		}
 		
 		// Forward to view to render the result HTML document
 		req.getSession().setAttribute("userid", currentUser.getuserid());
 		req.setAttribute("userCardResult", userDeck.getTopCard().toString());
+		req.setAttribute("userCardIndex", userDeck.pullCard().getCardIndex());
+		req.setAttribute("cpuCardIndex", cpuDeck.pullCard().getCardIndex());
 		req.setAttribute("cpuCardResult", cpuDeck.getTopCard().toString());
+		req.setAttribute("transactMsg", transactMsg);
 		req.getRequestDispatcher("/_view/Game2window.jsp").forward(req, resp);
 		System.out.println(errorMessage);
 	}
