@@ -335,7 +335,7 @@ public class DerbyDatabase implements IDatabase {
 						insertuser.setInt(1, user.getuserid());
 						insertuser.setString(2, user.getusername());
 						insertuser.setString(3, user.getpassword());
-						insertuser.setInt(4, 0);
+						insertuser.setInt(4, user.getcoins());
 						insertuser.setString(5, user.getemail());
 						//insertuser.setBoolean(6, user.getisguest());
 						
@@ -568,13 +568,14 @@ public class DerbyDatabase implements IDatabase {
 		executeTransaction(new Transaction<post>() {
 			
 			private Connection conn2;
-
+			
 			public post execute(Connection conn) throws SQLException {
-		
+				System.out.println(" ______ email  "+email);
 		if (userName != null && password != null && email != null) {
 			boolean validInfo = isValid(userName, password, email);
 			PreparedStatement insertNewID = null;
 			conn = null;
+			System.out.println(" ______ email  "+email);
 			if (validInfo == true) {
 			
 				String newID = "insert into users(username, password, email, userid) values (?, ?, ?, ?)";
@@ -697,8 +698,8 @@ public class DerbyDatabase implements IDatabase {
 						if (resultSet.next()) {
 							found = true;
 							loaduser(user, resultSet, 1);
-
-	
+							user.setisguest(isguest(user.getuserid()));
+							
 						}
 						
 						if (!found) {
@@ -732,7 +733,7 @@ public class DerbyDatabase implements IDatabase {
 				ResultSet resultSet = null;
 				
 				try {
-
+					//System.out.println(" ______ email  "+email);
 						stmt = conn.prepareStatement(
 
 								"insert into users (userid, username, password, coins, email) values (?, ?, ?, ?, ?)"
@@ -1342,7 +1343,7 @@ public class DerbyDatabase implements IDatabase {
 							while (resultSet.next()) {
 								num++;
 								loaduser(user, resultSet, 1);
-								
+								System.out.println(resultSet.getInt(4));
 							}
 							if(num==1) {
 								return  user;

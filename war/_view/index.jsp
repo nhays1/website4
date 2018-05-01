@@ -724,7 +724,7 @@
 			<div class= "gamedisplay">
 			<form action="${pageContext.servletContext.contextPath}/Gamewindow" method="get">
 				
-					<input type="image" src="img/game3snap.PNG" alt="Submit" onmouseover="this.src='img/giphy.gif'" onmouseout="this.src='img/coinflip.PNG'"style="width:256px;height:256px;"  > 
+					<input type="image" src="img/coinflip.PNG" alt="Submit" onmouseover="this.src='img/giphy.gif'" onmouseout="this.src='img/coinflip.PNG'"style="width:256px;height:256px;"  > 
 				<div class="gametitle">
 					<input name="newuser" type="submit" value="Coin Flip" />
 				</div>
@@ -734,7 +734,7 @@
 			<div class= "gamedisplay">
 			<form action="${pageContext.servletContext.contextPath}/Game2window" method="get">
 				
-					<input type="image" src="img/game3snap.PNG" alt="Submit" onmouseover="this.src='img/giphy.gif'" onmouseout="this.src='cardgame.PNG'"style="width:256px;height:256px;"  > 
+					<input type="image" src="img/cardgame.png" alt="Submit" onmouseover="this.src='img/giphy.gif'" onmouseout="this.src='img/cardgame.png'"style="width:256px;height:256px;"  > 
 				<div class="gametitle">
 					<input name="newuser" type="submit" value="Card Game" />
 				</div>
@@ -765,7 +765,7 @@
 			<div class= "gamedisplay">
 			<form action="${pageContext.servletContext.contextPath}/snakeGame" method="get">
 				
-					<input type="image" src="img/game3snap.PNG" alt="Submit" onmouseover="this.src='img/giphy.gif'" onmouseout="this.src='img/game5.PNG'"style="width:256px;height:256px;"  > 
+					<input type="image" src="img/game5.png" alt="Submit" onmouseover="this.src='img/giphy.gif'" onmouseout="this.src='img/game5.png'"style="width:256px;height:256px;"  > 
 				<div class="gametitle">
 					<input name="newuser" type="submit" value="Snake Game" />
 				</div>
