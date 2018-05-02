@@ -49,7 +49,7 @@ public class Gamewindowservlet extends HttpServlet {
 		uc.getuserbyid(currentUser.getuserid());
 		
 		CoinGame cg = new CoinGame();
-		String choice = " ";
+		String choice = null;
 		int userBet = 0;
 		int reward = 0;
 		int coinFlip = 0;
@@ -61,6 +61,8 @@ public class Gamewindowservlet extends HttpServlet {
 		// holds the error message text, if there is any
 		String errorMessage = null;
 		
+		choice = req.getParameter("choice");
+		
 		try {
 			
 			userBet = getInteger(req, "userBet");
@@ -70,7 +72,7 @@ public class Gamewindowservlet extends HttpServlet {
 				
 				if (req.getParameter(choice) != null) {
 					
-					choice = getChoice(req, "choice");
+					choice = req.getParameter("choice");
 					
 				}
 				
@@ -80,11 +82,13 @@ public class Gamewindowservlet extends HttpServlet {
 				
 			}
 			
+			System.out.println(choice);
+			
 			if(choice.equals("heads")) {
-				userSelection = 0;
-			}
-			else {
 				userSelection = 1;
+			}
+			else{
+				userSelection = 0;
 			}
 			
 			
@@ -102,6 +106,9 @@ public class Gamewindowservlet extends HttpServlet {
 				cg.setSelection(userSelection);
 				cg.setBet(userBet);
 				coinFlip = cg.getFlip();
+				req.setAttribute("coinFlip", coinFlip);
+				System.out.println("user chose " + cg.getSelection());
+				System.out.println("coin flipped as " + cg.getFlip());
 				isWin = cg.getIsWin();
 				reward = cg.getReward();
 				
@@ -113,22 +120,69 @@ public class Gamewindowservlet extends HttpServlet {
 		req.setAttribute("userBet", req.getParameter("userBet"));
 		
 		if(isWin) {
-			result = "You have won the coin toss vs. CPU!";
+			result = "You have won the coin toss!";
 			currentUser.setcoins(currentUser.getcoins() + reward);
 			transactMsg = transactMsg.concat("User " + currentUser.getusername() + " has won " + reward + " Coins!");
+			if (cg.getSelection() == 1) {
+
+				System.out.println("user chose heads");
+				
+				if(cg.getFlip() == 1) {
+					System.out.println("coin flipped as heads");
+				}
+				else {
+					System.out.println("coin flipped as tails");
+				}
+				
+			}
+			else {
+				
+				System.out.println("user chose tails");
+				
+				if(cg.getFlip() == 1) {
+					System.out.println("coin flipped as heads");
+				}
+				else {
+					System.out.println("coin flipped as tails");
+				}
+			}
 			
+			System.out.println(" user should have won here");
 			//add user updates here
 		}
 		
 		else {
-			result = "You have lost the coin toss vs. CPU...";
+			result = "You have lost the coin toss...";
 			reward = 0 - userBet;
 			currentUser.setcoins(currentUser.getcoins() + reward);
 			transactMsg = transactMsg.concat("User " + currentUser.getusername() + " has lost " + userBet + " Coins!");
+			if (cg.getSelection() == 1) {
+
+				System.out.println("user chose heads");
+				
+				if(cg.getFlip() == 1) {
+					System.out.println("coin flipped as heads");
+				}
+				else {
+					System.out.println("coin flipped as tails");
+				}
+				
+			}
+			else {
+				
+				System.out.println("user chose tails");
+				
+				if(cg.getFlip() == 1) {
+					System.out.println("coin flipped as heads");
+				}
+				else {
+					System.out.println("coin flipped as tails");
+				}
+			}
+			System.out.println(" user should have lost here");
 			//add user updates here
 		}
 		
-		req.setAttribute("coinFlip", coinFlip);
         req.getSession().setAttribute("userid", currentUser.getuserid());
         req.setAttribute("choice", choice);
 		req.setAttribute("transaction", transactMsg);
@@ -141,7 +195,7 @@ public class Gamewindowservlet extends HttpServlet {
 		return Integer.parseInt(req.getParameter(name));
 	}
 	private String getChoice(HttpServletRequest req, String choice) {
-		return req.getParameter(choice);
+		return req.getParameter("choice");
 	}
 	
 }
