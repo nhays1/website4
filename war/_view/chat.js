@@ -107,16 +107,18 @@
 		function refreshchat(chats){
 			
 			previousheight=document.getElementById('chattext').scrollHeight;
-			scroleposition =document.getElementById('chattext').getScrollingPosition;
+			scroleposition =previousheight-document.getElementById('chattext').scrollTop;
+			//scroleposition =window.pageYOffset;
 			//chat=${chatposts};
 			
 			console.log(scroleposition);
 			
 			if(chats!=null){
 				chat=chats;
+				console.log(chat);
 			}
 			
-			console.log(chat);
+		
 		//	console.log("${ user.username    }");
 		
 			  count = Object.keys(chat).length;
@@ -215,7 +217,7 @@
 				element.scrollTo(0, currentscroleheight-previousheight);
 			else{
 				element.scrollTo(0, currentscroleheight-scroleposition);
-				element.scrollTo(0, currentscroleheight);
+				//element.scrollTo(0, scroleposition);
 			}
 			//element.scrollTop = element.scrollHeight;
 			document.getElementById("morepostsbutt").onclick = function(){
@@ -436,10 +438,10 @@
 				document.getElementById("pmid").value=id;
 				//console.log(document.getElementById("pmid").value);pmbutton
 				if(isguest==true){
-/////					document.getElementById("pmbutton").style.visibility ="hidden";
+					document.getElementById("pmbutton").style.display ="none";
 				}
 				else{
-/////					document.getElementById("pmbutton").style.visibility ="visible";
+					document.getElementById("pmbutton").style.display ="block";
 				}
 			}
 			else{
@@ -483,7 +485,47 @@
 			
 			
 		}
-		
+		//var myVar = setInterval(updatechat, 100);
+		this.interval = setInterval(updatechat,1000);
+		console.log(this.interval);
+		function updatechat(){
+			try{
+				gettotalunreadpm();
+			}
+			catch(e){
+				
+			}
+			
+			var urlEncodedData = "";
+			var urlEncodedDataPairs = [];
+
+			urlEncodedDataPairs.push(encodeURIComponent("numberofpost") + '=' + encodeURIComponent(count));
+			urlEncodedDataPairs.push(encodeURIComponent("lastposttim") + '=' + encodeURIComponent(chat[chat.length-1].mit));
+			urlEncodedDataPairs.push(encodeURIComponent("chatname") + '=' + encodeURIComponent(currentchat));
+			
+			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+			
+			
+			var xmlreq = new XMLHttpRequest();
+			xmlreq.open("post", "chat_async");
+			xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xmlreq.send(urlEncodedData);
+				
+			xmlreq.onload=function(){
+				if (this.status==200){
+					//console.log(this.response);
+					try{
+						chatedc= JSON.parse(this.responseText);
+						refreshchat(chatedc);
+					}
+					catch(e){
+						//
+						refreshchat();
+					}
+				
+				}
+			}
+		}
 		
 		//setInterval(refreshchat(null),1);
 		

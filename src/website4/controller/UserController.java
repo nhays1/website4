@@ -139,6 +139,7 @@ public class UserController {
 					int i=0;
 					
 					while(i<100) {
+						
 						uzer=new usser(userName,password,email);
 						if (!db.checkdbcontainsuserid(uzer.getuserid())) {
 								break;

@@ -34,6 +34,7 @@ public class usser {
 		Random rand = new Random();
 		this.username=username;
 		this.password=password;
+		this.email=email;
 		coins=0;
 		blacklist=new ArrayList<Integer>();
 		isguest=false;
@@ -122,10 +123,10 @@ public class usser {
 	   }
 
 	    this.password=rnadstring.toString();
-		System.out.println("random gen password "+this.password);
+		//System.out.println("random gen password "+this.password);
 		this.username="guest_";
 		this.username+=guestnum;
-		
+		this.email="none";
 		this.coins=0;
 		this.blacklist=new ArrayList<Integer>();
 		this.isguest=true;
@@ -141,6 +142,10 @@ public class usser {
 	
 	public boolean getisguest() {
 		return isguest;
+	}
+	
+	public void setisguest(boolean isguest) {
+		this.isguest=isguest;
 	}
 	
 	public int getcoins() {

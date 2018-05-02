@@ -62,6 +62,7 @@ public class InitialData {
 				user.setusername(i.next());
 				user.setpassword(i.next());
 				user.setcoins(Integer.parseInt(i.next()));
+				System.out.println(user.getcoins());
 				user.setemail(i.next());
 				
 				

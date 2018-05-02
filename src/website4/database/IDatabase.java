@@ -62,6 +62,8 @@ public interface IDatabase {
 	
 	public void addtoblacklist(int blockerid,int blockieid);
 	
+	public long getlastposttime(int chatid );
+	
 	/**intended for sesion verification returns usser specied by id
 	 * 
 	 * @param id
