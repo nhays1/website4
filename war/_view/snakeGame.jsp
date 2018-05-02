@@ -361,7 +361,7 @@
 		
 		
 		
-		function post(postscores){
+		function postscore(postscores){
 			
 			 var urlEncodedData = "";
 			var urlEncodedDataPairs = [];
@@ -423,99 +423,14 @@
 	</head>
 	
 	
-	<script>
+
 	
 	<!-- start chat html /////////////////////////-->
 	 
-	 
-	<div id="chatwindow">
-		<div id="chatoptions">
-		<button id="hidechatbutt" onclick="togglechat() ">__</button>
-		<!-- <button id="refresfchatbut" onclick="post() ">refresh</button> -->
-		<button id="refresfchatbut" onclick="post()  ">refresh</button>
-		
-		
-			
-		</div>
-	<div id="chattabs" >
-			<button class="swithchchatactive" onclick="newchat(event,'general')  ">general</button>
-			<button class="swithchchat" onclick="newchat(event,'towerdef1')  ">towerdef1</button>
-			<div id="usercahtscontainer" onmouseover="toggleuserchats(true);" onmouseout="toggleuserchats(false);">
-				<button class="swithchchat"  id ="showuserchats">your chats</button>
-				<div id="userchats">
-				<!-- <button id="swithcuserchat" class=" swithchchat" onclick="newchat(event,'general')  ">chat 1</button>-->
-				
-				</div>
-				
-			</div>
-			
-		</div>
-		
-		<div id="chattext">
-		
-	
-	
-		</div>
-		
-		
-		<div id="chatinput">
-			<p>add comment</p>
-			
-				<textarea class="smallroundcorners" name="chatinputtext" rows="5" cols="38" id="chattextarea" > </textarea>
-			
-			
-			
-			
-			<button onclick="post()">post</button>
-			
-			
-			
-			
-		</div>
-		
-	 </div><!-- end fixed chat window -->
-	  <div id="newchatoverlay"  onclick="newwuserchat(false)" >
-    
-    
-    </div>
-    
-    
-    <div class="medroundcorners" id="newchatwindow">
-		
-			<table>
-				<tr>
-					<td class="label">name of chat:</td>
-				<td><input id="inputchatname" type="text" placeholder="Enter chat name" name="spec_chatname" size="20" class="smallroundcorners"  /></td>
-				</tr>
-				
-            
-			</table>
-			<button   onclick="newwuserchat(false)" >cancle</button>
-
-		<button   onclick="createuserchat(false)" >create chat</button>
-		<button   onclick="createuserchat(true)" >add  chat</button>
-	</div>
-	
-	
-	 <div id="chatuseroptionsoverlay"  onclick="otheruseroptions(false)" >        </div>
-    
-    
-    <div class="medroundcorners" id="chatuseropt">
-		<button   onclick="otheruseroptions(false)" >cancle</button>
-		
-		<form action="${pageContext.servletContext.contextPath}/pmpage" method="post">
-			<!--  -->
-				
-				<input name="newuser" type="submit" value="privatte mesage" />
-				<input class="hide" id="pmid" type="text" name="pmid" value="0" >
-			</form>
-		<!--<button   onclick="" >blacklist (WIP)</button>-->
-	</div>
-	
 	
 	<!--end chat html -->
 	
-	</script>
+	
 	
 	
 	
@@ -573,7 +488,7 @@
 	 	<input type="Submit"  name="chatsubmit" value="home">
 	 </form>
 	
-
+	<button onclick="postscore(5)">post score</button>
 	 
  
 	 
