@@ -532,7 +532,7 @@
 	
 	</div>
 	<div id="banner" onclick="home()">
-		this is the title of our website (img)
+		Snake Game!
 	
 	</div>
 	
@@ -579,24 +579,25 @@
 	 
 	 
 <div id=gamecontent align = "center">	 
-<canvas id="content" width="600" height="600"></canvas>
+<canvas id="content" width="1200" height="600"></canvas>
 
 <script>
 window.onload=function() {
 	canv=document.getElementById("content");
 	ctx=canv.getContext("2d");
 	document.addEventListener("keydown",keyPush);
-	var interval = 75;
-	setInterval(gameStart,interval);
+	//var interval = 50;
+	
+	setInterval(gameStart,75);
 }
 
 
 
-var snakeX = 10; //Snake starting X
+var snakeX = 20; //Snake starting X
 var snakeY = 10; //Snake starting Y
 var grid = 30;
 var tiles = 30;
-var foodX = Math.floor(Math.random()*20); //Initial Position of food X
+var foodX = Math.floor(Math.random()*40); //Initial Position of food X
 var foodY = Math.floor(Math.random()*20); //Initial Position of food Y
 var xv = 0; //X Velocity
 var yv = 0; //Y Velocity
@@ -612,6 +613,7 @@ var u = false; //Up
 var c = Math.floor(Math.random() * 8); //Food Color
 var sc = 0;//Snake Color
 var pause = false;
+var gStart = false;
 
 function gameStart() {
 	if(pause == false){
@@ -620,9 +622,9 @@ function gameStart() {
 	}
 	
 	if(snakeX<0) {
-		snakeX= 19;
+		snakeX= 40;
 	}
-	if(snakeX>19) {
+	if(snakeX>40) {
 		snakeX= 0;
 	}
 	if(snakeY<0) {
@@ -645,7 +647,7 @@ function gameStart() {
 		if(pause == false){
 		if(trail[i].x==snakeX && trail[i].y==snakeY) {
 			tail = 5;
-			foodEaten = 0;
+			foodEaten = 0;			
 			score = 0;
 		}
 		}
@@ -662,13 +664,14 @@ function gameStart() {
 
 	//Snake eats food
 	if(foodX==snakeX && foodY==snakeY) {
-		tail++;
+		tail+=2;
 		score += (foodEaten * 10) + 100;
 		foodEaten++;
 		//Generates location of next food
-		foodX=Math.floor(Math.random()*20);
+		foodX=Math.floor(Math.random()*40);
 		foodY=Math.floor(Math.random()*20);
 		c = Math.floor( Math.random() * 8);
+	
 		
 	}
 	
@@ -698,67 +701,33 @@ function gameStart() {
 	if(c == 7){
 		ctx.fillStyle="gold";
 	}
-	
-	//draws food
+
+	//Draws food
 	ctx.fillRect(foodX*grid,foodY*grid,20,20);
 	
 	//Draws Score
 	ctx.fillStyle="black";
 	ctx.font="30px Arial";
 	ctx.fillText("Score: "+ score, 5, 25);
-	
+	ctx.fillText("Food Consumed: "+foodEaten, 540, 25);
+	//Draws pause in the middle of the screen when the game is paused
 	if(pause == true){
-		ctx.fillText("PAUSE", 260, 290);
+		ctx.font=("50px Arial");
+		ctx.fillText("PAUSE", 540, 290);
+	}	
+	
+	//Starting message
+	if(gStart == false){
+		ctx.fillText("Press W, A, S, D, or any Arrow Key to start", 330, 200);
 	}
-	
-	
-
-	
-	
 }
+
+
+
 
 
 function keyPush(event) {
 	switch(event.keyCode) {
-//		case 37: //Left Arrow
-//			if(r == false){
-//			xv=-1;yv=0;
-//			l = true;
-//			r = false;
-//			d = false;
-//			u = false;
-//			}
-//			break;
-//			
-//		case 38: //Down Arrow
-//			if(up == false){
-//			xv=0;yv=-1;
-//			l = false;
-//			r = false;
-//			d = true;
-//			u = false;
-//			}
-//			break;
-//			
-//		case 39: //Right Arrow
-//			if(l == false){
-//			xv=1;yv=0;
-//			l = false;
-//			r = true;
-//			d = false;
-//			u = false;
-//			}
-//			break;
-//			
-//		case 40: //Up Arrow
-//			if(d == false){
-//			xv=0; yv=1;
-//			l = false;
-//			r = false;
-//			d = false;
-//			u = true;
-//			}
-//			break;
 			
 		//ARROW KEY CASES	
 		case 37: //A, left
@@ -768,6 +737,7 @@ function keyPush(event) {
 			r = false;
 			d = false;
 			u = false;
+			gStart = true;
 			}
 			break;
 			
@@ -778,6 +748,7 @@ function keyPush(event) {
 			r = false;
 			d = false;
 			u = true;
+			gStart = true;
 			}
 			break;
 			
@@ -788,6 +759,7 @@ function keyPush(event) {
 			r = true;
 			d = false;
 			u = false;
+			gStart = true;
 			}
 			
 			break;
@@ -799,6 +771,7 @@ function keyPush(event) {
 			r = false;
 			d = true;
 			u = false;
+			gStart = true;
 			}
 			break;	
 		
@@ -810,6 +783,7 @@ function keyPush(event) {
 			r = false;
 			d = false;
 			u = false;
+			gStart = true;
 			}
 			break;
 			
@@ -820,6 +794,7 @@ function keyPush(event) {
 			r = false;
 			d = false;
 			u = true;
+			gStart = true;
 			}
 			break;
 			
@@ -830,6 +805,7 @@ function keyPush(event) {
 			r = true;
 			d = false;
 			u = false;
+			gStart = true;
 			}
 			
 			break;
@@ -841,10 +817,11 @@ function keyPush(event) {
 			r = false;
 			d = true;
 			u = false;
+			gStart = true;
 			}
 			break;
 			
-		case 80: //p
+		case 80: //p, Pause
 			
 			if(pause == false){
 				
@@ -864,13 +841,13 @@ function keyPush(event) {
 
 <div id="gamescores" class="highscorecontainer">
 
-asd
+
 
 </div>
 
 <div id="userscores" class="highscorecontainer">
 
-asd
+
 
 </div>
 

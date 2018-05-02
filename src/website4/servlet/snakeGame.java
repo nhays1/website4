@@ -32,7 +32,7 @@ public class snakeGame extends HttpServlet {
 		
 		
 		System.out.println("__________________________________________________________");
-		System.out.println("game5 Servlet: DOGET");
+		System.out.println("Snake Game Servlet: DOGET");
 		System.out.println("__________________________________________________________");
 		int chatlength;
 		chatcontroler chat =new chatcontroler();
