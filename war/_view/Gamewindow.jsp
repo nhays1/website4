@@ -101,11 +101,26 @@
 		
 		</style>
 		
+		<script type="text/javascript">
+		
+			images = new Array();
+			images[0] = new Image();
+			images[0].src = "img/tails.png";
+			images[1] = new Image();
+			images[1].src = "img/heads.png";
+			
+			function changeImage(){
+				var coinFlip = '${coinFlip}';
+				console.log(images[coinFlip]);
+				document.getElementById("coinFlip").src = images[coinFlip].src;
+			}
+			
+		</script>
 		
 		
 	</head>
 
-	<body>
+	<body onLoad = "changeImage()">
 	
 	
 	
@@ -164,11 +179,12 @@
 					<td><input type="submit" class="buttonHigher" name="flip" size="12" value="FLIP" /></td>
 				</tr>
 				<tr>
-					<td class="label">User Chose:</td>
+					<td class="label">Coin Result: </td>
 					<td class="label">${choice}</td>
+					<img id="coinFlip" width = "100" height="100">
 				</tr>
 				<tr>
-					<td class="label">Result:</td>
+					<td class="label">Outcome: </td>
 					<td class="label">${result}</td>
 				</tr>
 				<tr>

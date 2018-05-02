@@ -52,6 +52,7 @@ public class Gamewindowservlet extends HttpServlet {
 		String choice = " ";
 		int userBet = 0;
 		int reward = 0;
+		int coinFlip = 0;
 		boolean isWin = false;
 		String result = " ";
 		int userSelection = 0;
@@ -80,10 +81,10 @@ public class Gamewindowservlet extends HttpServlet {
 			}
 			
 			if(choice.equals("heads")) {
-				userSelection = 1;
+				userSelection = 0;
 			}
 			else {
-				userSelection = 0;
+				userSelection = 1;
 			}
 			
 			
@@ -97,9 +98,10 @@ public class Gamewindowservlet extends HttpServlet {
 			// the view does not alter data, only controller methods should be used for that
 			// thus, always call a controller method to operate on the data
 			else {
+				cg.flip();
 				cg.setSelection(userSelection);
 				cg.setBet(userBet);
-				cg.flip();
+				coinFlip = cg.getFlip();
 				isWin = cg.getIsWin();
 				reward = cg.getReward();
 				
@@ -117,6 +119,7 @@ public class Gamewindowservlet extends HttpServlet {
 			
 			//add user updates here
 		}
+		
 		else {
 			result = "You have lost the coin toss vs. CPU...";
 			reward = 0 - userBet;
@@ -125,6 +128,7 @@ public class Gamewindowservlet extends HttpServlet {
 			//add user updates here
 		}
 		
+		req.setAttribute("coinFlip", coinFlip);
         req.getSession().setAttribute("userid", currentUser.getuserid());
         req.setAttribute("choice", choice);
 		req.setAttribute("transaction", transactMsg);

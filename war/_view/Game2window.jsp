@@ -298,17 +298,17 @@
   					<input  type="submit" class="buttonHigher" name="choice" value="higher"><br>
   					<input  type="submit" class="buttonLower"name="choice" value="lower"><br>
 				</tr>
-				<div>
+				<div align="left">
 					<tr>
 						<td class="label"> User Flipped: </td>
-						<img id="userCard" width = "50" height="75">
 					</tr>
+					<img id="userCard" width = "50" height="75">
 				</div>
-				<div>
+				<div align="right">
 					<tr>
 						<td class="label"> CPU's next Card: </td>
-						<img id="cpuCard" width = "50" height="75">
 					</tr>
+					<img id="cpuCard" width = "50" height="75">
 				</div>
 				<div>
 					<tr>

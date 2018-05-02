@@ -44,10 +44,11 @@ public class CoinGame{
 	}
 	
 	public int getReward() {		//gets reward based on result
-		if(getIsWin() == true) {
 			return (int)(betAmnt * betMultiplier);
-		}
-		return 0;
+	}
+	
+	public int getFlip() {
+		return flip;
 	}
 	
 	//get this from form submission
