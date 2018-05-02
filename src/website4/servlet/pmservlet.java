@@ -132,35 +132,34 @@ public class pmservlet extends HttpServlet {
 			}
 			if(gettotalpbm!=null) {
 				gettotalunread=Boolean.parseBoolean(gettotalpbm);
-			}
-			
-			
-			System.out.println("    pmid second user       _ "+pmid);
-			
-			if(pmchatid==-1) {
-				//pmposts= (ArrayList<post>)chat.gotopm(user.getuserid(), pmid);
-				pmchatid= chat.getpmid(user.getuserid(), pmid);
-			}
-			System.out.println("   pm chad   id fin     "+pmchatid);
-			
-			if(pminput!=null) {
-				if(pminput.trim().length()>0) {
-					long now=Instant.now().toEpochMilli();
-					chat.posttopm(now, user.getuserid(), pminput, pmchatid);
-					sync=false;
-				
-					System.out.println("   pmchatpassed      _ "+pminput);
-					
-				
-				
-				}
-			}
-			pmposts= (ArrayList<post>)chat.gotopm(pmchatid,user.getuserid());
-			if(getpmlist) {
-				jsonpmlist=gson.toJson(chat.getpmlist(user.getuserid()));
-			}
-			if(gettotalunread) {
 				unreadpms=chat.getunreadpms(user.getuserid());
+			}
+			if(!gettotalunread) {
+			
+				System.out.println("    pmid second user       _ "+pmid);
+				
+				if(pmchatid==-1) {
+					//pmposts= (ArrayList<post>)chat.gotopm(user.getuserid(), pmid);
+					pmchatid= chat.getpmid(user.getuserid(), pmid);
+				}
+				System.out.println("   pm chad   id fin     "+pmchatid);
+				
+				if(pminput!=null) {
+					if(pminput.trim().length()>0) {
+						long now=Instant.now().toEpochMilli();
+						chat.posttopm(now, user.getuserid(), pminput, pmchatid);
+						sync=false;
+					
+						System.out.println("   pmchatpassed      _ "+pminput);
+						
+					
+					
+					}
+				}
+				pmposts= (ArrayList<post>)chat.gotopm(pmchatid,user.getuserid());
+				if(getpmlist) {
+					jsonpmlist=gson.toJson(chat.getpmlist(user.getuserid()));
+				}
 				
 			}
 		}
@@ -170,13 +169,11 @@ public class pmservlet extends HttpServlet {
 		
 
 		req.getSession().setAttribute("userid", user.getuserid());
-		req.setAttribute("pmchaid", pmchatid);
+
 		
-		System.out.println("    pmusername      _ "+user.getusername());
-		req.setAttribute("user", user);
-		String jsonpmpost= gson.toJson(pmposts);
 		
 		if(getpmlist) {
+			
 			resp.setContentType("text/plain");
 			resp.getWriter().println("");
 			resp.getWriter().println(jsonpmlist);
@@ -187,6 +184,7 @@ public class pmservlet extends HttpServlet {
 			resp.getWriter().println(unreadpms);
 		}
 		else {
+			String jsonpmpost= gson.toJson(pmposts);
 			resp.setContentType("text/plain");
 			resp.getWriter().println("");
 			resp.getWriter().println(jsonpmpost);
@@ -194,9 +192,15 @@ public class pmservlet extends HttpServlet {
 		
 		
 		
-		if(sync)
+		if(sync) {
+			req.setAttribute("pmchaid", pmchatid);
+			
+			System.out.println("    pmusername      _ "+user.getusername());
+			req.setAttribute("user", user);
 			req.getRequestDispatcher("/_view/pmpage.jsp").forward(req, resp);
-		
+			
+		}
+			
 		
 		
 	}//End of doPost//

@@ -478,15 +478,25 @@ public class DerbyDatabase implements IDatabase {
 					
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
-					
+					String stt="";
+					for(int i=0;i<blacklist.size();i++) {
+						stt+=" and userid <> ? ";
+						
+						
+					}
 					
 					stmt = conn.prepareStatement(
 							"SELECT postid " + 
 							"FROM posts "
-							+ "where chatname= ?"
+							+ "where chatname= ? "+stt
 							
 					);//gets the largest(newest) post id
 					stmt.setInt(1, chatindex);
+					for(int i=0;i<blacklist.size();i++) {
+						stmt.setInt(2+i, blacklist.get(i));
+						
+						
+					}
 					
 					resultSet = stmt.executeQuery();
 						//int totalposts=0 ;
@@ -510,17 +520,28 @@ public class DerbyDatabase implements IDatabase {
 					DBUtil.closeQuietly(resultSet);
 					DBUtil.closeQuietly(stmt);
 			
-					
+					stt="";
+					for(int i=0;i<blacklist.size();i++) {
+						stt+=" and posts.userid <> ? ";
+						
+						
+					}
 					stmt = conn.prepareStatement(
 							"select posts.postid , posts.userid , posts.timeposted, posts.posttext, users.username  from users , posts " 
 							+"where postid >= ? " + 
 							" and postid <= ? "
 							+ "and posts.userid = users.userid "
-							+ " and chatname= ?"
+							+ " and chatname= ? "+stt
 					);//selects everything between top and bottom
 					stmt.setInt(1, topindexindb);
 					stmt.setInt(2, bottomindexindb);
 					stmt.setInt(3, chatindex);
+					for(int i=0;i<blacklist.size();i++) {
+						stmt.setInt(4+i, blacklist.get(i));
+						
+						
+					}
+					
 					
 					ArrayList<post> result=new ArrayList<post>();
 					//ArrayList<Integer> ids=new ArrayList<Integer>();
@@ -546,13 +567,7 @@ public class DerbyDatabase implements IDatabase {
 					}
 					
 					
-					for (int v=0;v<result.size();v++) {
-						if(blacklist.contains(result.get(v).getuserid())){
-							System.out.println(" badd "+result.get(v).getuserid());
-							result.remove(v);
-							v--;
-						}
-					}
+					
 					//Collections.sort(result);
 					
 					return result;
@@ -1983,7 +1998,7 @@ public class DerbyDatabase implements IDatabase {
 				ResultSet resultSet = null;
 				
 				try { 
-						System.out.println("    getunreadpms    "+ pmid+"   "+retriverid);
+						//System.out.println("    getunreadpms    "+ pmid+"   "+retriverid);
 						stmt = conn.prepareStatement(//user1id   user2id  timeposted 
 								"select timeposted from pmchats "
 								+ " where pmid= ? and userid <> ? "
@@ -2001,7 +2016,7 @@ public class DerbyDatabase implements IDatabase {
 							tmp=resultSet.getLong(1);
 							if (tmp>lastacessed) {
 								num++;
-								System.out.println("__--getunreadpms    "+ (tmp-lastacessed));
+								//System.out.println("__--getunreadpms    "+ (tmp-lastacessed));
 							}
 						}
 						return  num;
@@ -2048,6 +2063,65 @@ public class DerbyDatabase implements IDatabase {
 		
 		
 		
+	}
+
+	public long getlastposttime(final int chatid) {
+
+		return executeTransaction(new Transaction<Long>() {
+			public Long execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					int lastindex = 0;
+					Long lasttime = null;
+					
+					stmt = conn.prepareStatement(
+							"SELECT MAX (postid) " + 
+							"FROM posts "
+							+ "where chatname= ? "
+							
+					);//gets the largest(newest) post id
+					stmt.setInt(1, chatid);
+				
+					
+					resultSet = stmt.executeQuery();
+						
+						if (resultSet.next()) {
+							lastindex=resultSet.getInt(1);
+						}
+					
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+			
+					
+					stmt = conn.prepareStatement(
+							"select timeposted from posts " 
+							+"where postid = ? " 
+							+ " and chatname= ? "
+					);//selects everything between top and bottom
+					stmt.setInt(1, lastindex);
+					stmt.setInt(2, chatid);
+
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned 
+				
+					if (resultSet.next()) {
+						
+						lasttime=resultSet.getLong(1);
+						
+					}
+					
+					//Collections.sort(result);
+					
+					return lasttime;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}  
+			}
+		});
 	}
 
 	
