@@ -253,7 +253,8 @@
 		<!-- end chat -->	
 		<div id="bannerholder" onclick="home()">
 			
-			
+		
+		
 		</div>
 		<div id="banner" onclick="home()">
 		
