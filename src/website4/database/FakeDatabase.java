@@ -200,6 +200,11 @@ public class FakeDatabase implements IDatabase {
 		
 	}
 
+	public long getlastposttime(int chatid) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 	
 	

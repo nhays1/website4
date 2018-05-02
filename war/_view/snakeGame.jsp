@@ -573,27 +573,7 @@
 	 	<input type="Submit"  name="chatsubmit" value="home">
 	 </form>
 	
-	<div id="gamescores" class="highscorecontainer">
-	
-	
-	
-	</div>
-	
-	<div id="userscores" class="highscorecontainer">
-	
-	
-	
-	</div>
-	
-		<script>
-		var gamescore=${gemescores};
-		var userscores=${userscores};
-		
-		updatescores();
-	
-		</script>
-	 
-	 
+
 	 
  
 	 
@@ -631,10 +611,13 @@ var d = false; //Down
 var u = false; //Up
 var c = Math.floor(Math.random() * 8); //Food Color
 var sc = 0;//Snake Color
+var pause = false;
 
 function gameStart() {
+	if(pause == false){
 	snakeX+=xv;
 	snakeY+=yv;
+	}
 	
 	if(snakeX<0) {
 		snakeX= 19;
@@ -654,18 +637,27 @@ function gameStart() {
 
 	
 	ctx.fillStyle="black";
+	
 	for(var i=0;i<trail.length;i++) {
 		
 		ctx.fillRect(trail[i].x*grid,trail[i].y*grid,20,20);
+		
+		if(pause == false){
 		if(trail[i].x==snakeX && trail[i].y==snakeY) {
 			tail = 5;
 			foodEaten = 0;
 			score = 0;
 		}
+		}
 	}
+	
+	if(pause == false){
 	trail.push({x:snakeX,y:snakeY});
+	}
+	if(pause == false){
 	while(trail.length>tail) {
 	trail.shift();
+	}
 	}
 
 	//Snake eats food
@@ -676,7 +668,7 @@ function gameStart() {
 		//Generates location of next food
 		foodX=Math.floor(Math.random()*20);
 		foodY=Math.floor(Math.random()*20);
-		c = Math.floor(Math.random() * 8);
+		c = Math.floor( Math.random() * 8);
 		
 	}
 	
@@ -710,15 +702,14 @@ function gameStart() {
 	//draws food
 	ctx.fillRect(foodX*grid,foodY*grid,20,20);
 	
-	
-	
-	
 	//Draws Score
 	ctx.fillStyle="black";
 	ctx.font="30px Arial";
 	ctx.fillText("Score: "+ score, 5, 25);
 	
-	
+	if(pause == true){
+		ctx.fillText("PAUSE", 260, 290);
+	}
 	
 	
 
@@ -812,8 +803,38 @@ function keyPush(event) {
 			
 		case 80: //p
 			
+			if(pause == false){
+				
+				pause = true;
+			}
+			else{
+				
+				pause = false;
+			}				
+			break;
 			
 	}
 }
 </script>
 </div>
+
+
+<div id="gamescores" class="highscorecontainer">
+
+asd
+
+</div>
+
+<div id="userscores" class="highscorecontainer">
+
+asd
+
+</div>
+
+	<script>
+	var gamescore=${gemescores};
+	var userscores=${userscores};
+	
+	updatescores();
+
+	</script>

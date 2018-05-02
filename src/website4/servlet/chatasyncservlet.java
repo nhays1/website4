@@ -31,7 +31,8 @@ public class chatasyncservlet extends HttpServlet {
 		System.out.println("__________________________________________________________");
 		System.out.println("chatasyncservlet Servlet: doPost");
 		Integer numpost = 0 ;
-		String chatname = null;
+		boolean needupdate = false;
+		String chatname = null, jsonchstpost=null;
 		chatcontroler chat =new chatcontroler();
 		UserController usecontrol=new UserController();
 		Gson gson = new GsonBuilder().create();
@@ -61,15 +62,40 @@ public class chatasyncservlet extends HttpServlet {
 			
 		}
 		
-		try {
-			int toblock;
+		try {//lastposttim
+			int toblock,numposts;
+			long lastknown;
 			String blok = req.getParameter("toblock");
+			String last = req.getParameter("lastposttim");
+			String numberofposts = req.getParameter("numberofpost");
+			if(numberofposts!=null) {
+				System.out.println("    numposts  "+numberofposts);
+				numpost=Integer.parseInt(numberofposts);
+				numpost-=11;
+			}
 			if(blok!=null) {
 				toblock=Integer.parseInt(blok);
 				chat.addtoblacklist(user.getuserid(), toblock);
 			}
 			chatname=req.getParameter("chatname");
 			
+			
+			System.out.println("     lastknown  "+last);
+			if(chatname==null) {
+				chatname="general";
+			}
+			if(last!=null) {
+				lastknown=Long.parseLong(last);
+				needupdate=chat.checkchatneedupdate(chatname, lastknown);
+				System.out.println("    "+user.getusername()+" needs update  "+needupdate);
+			}
+			
+			if(last==null||needupdate) {
+				System.out.println("    numposts  "+numberofposts);
+				System.out.println("    numposts  "+numpost);
+				ArrayList<post> chatposts= (ArrayList<post>) chat.Getchat(numpost,chatname,user.getuserid());
+				jsonchstpost = gson.toJson(chatposts);
+			}
 	
 		}
 		finally{
@@ -78,20 +104,13 @@ public class chatasyncservlet extends HttpServlet {
 		
 
 		
-		ArrayList<post> chatposts;
-		if(chatname==null) {
-			chatname="general";
-		}
-		chatposts= (ArrayList<post>) chat.Getchat(numpost,chatname,user.getuserid());
-
 		
-		String jsonchstpost = gson.toJson(chatposts);
-
+		if(jsonchstpost!=null) {
 			resp.setContentType("text/plain");
 			resp.getWriter().println("");
 			resp.getWriter().println(jsonchstpost);
 			System.out.println("----------------------------------------  _");
-		
+		}
 	
 	}//End of doPost//
 	

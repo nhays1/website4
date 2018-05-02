@@ -165,5 +165,21 @@ public class chatcontroler {
 		return total;
 		
 	}
+	public boolean checkchatneedupdate(String chatname,long lastknown) {
+		InitDatabase.init(1);
+		IDatabase db = DatabaseProvider.getInstance();
+		int chatid=db.chatnametoid(chatname);
+		long current = db.getlastposttime(chatid);
+		System.out.println("     timedif  "+(lastknown-current));
+		if(current>lastknown) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
+	
+	
 			
 }

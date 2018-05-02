@@ -200,7 +200,7 @@ public class IndexServlet extends HttpServlet {
 							chatname="general";
 						}
 						chat.makenewpost(now,user.getuserid() , chatinput,chatname);
-					
+						 numpost -=0;
 						sync=false;
 					
 						System.out.println("chatpassed      _ "+chatinput);
