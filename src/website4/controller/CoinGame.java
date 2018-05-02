@@ -37,17 +37,22 @@ public class CoinGame{
 	}
 	
 	public boolean getIsWin() {
-		if(headsOrTails == flip) {	//if headsOrTails (user submitted selection) == flip, they won
+		if(headsOrTails == this.flip) {	//if headsOrTails (user submitted selection) == flip, they won
 			return true;
 		}	
 		return false;				//if not, they lost, and should lose what they bet
 	}
 	
 	public int getReward() {		//gets reward based on result
-		if(getIsWin() == true) {
 			return (int)(betAmnt * betMultiplier);
-		}
-		return 0;
+	}
+	
+	public int getFlip() {
+		return flip;
+	}
+	
+	public int getSelection() {
+		return headsOrTails;
 	}
 	
 	//get this from form submission

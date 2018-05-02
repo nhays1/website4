@@ -119,80 +119,133 @@
 		
 		<script> 
 			
-			function getCardImage(int index){
-				
-				var img = document.createElement("img");
-				
-				images = new Array();
-				images[0] = null;
-				images[1].src = "img/CardImages/HeartA.png";
-				images[2].src = "img/CardImages/Heart2.png";
-				images[3] = "img/CardImages/Heart3.png";
-				images[4] = "img/CardImages/Heart4.png";
-				images[5] = "img/CardImages/Heart5.png";
-				images[6] = "img/CardImages/Heart6.png";
-				images[7] = "img/CardImages/Heart7.png";
-				images[8] = "img/CardImages/Heart8.png";
-				images[9] = "img/CardImages/Heart9.png";
-				images[10] = "img/CardImages/Heart10.png";
-				images[11] = "img/CardImages/HeartJ.png";
-				images[12] = "img/CardImages/HeartQ.png";
-				images[13] = "img/CardImages/HeartK.png";
-				
-				images[14] = "img/CardImages/DiamondA.png";
-				images[15] = "img/CardImages/Diamond2.png";
-				images[16] = "img/CardImages/Diamond3.png";
-				images[17] = "img/CardImages/Diamond4.png";
-				images[18] = "img/CardImages/Diamond5.png";
-				images[19] = "img/CardImages/Diamond6.png";
-				images[20] = "img/CardImages/Diamond7.png";
-				images[21] = "img/CardImages/Diamond8.png";
-				images[22] = "img/CardImages/Diamond9.png";
-				images[23] = "img/CardImages/Diamond10.png";
-				images[24] = "img/CardImages/DiamondJ.png";
-				images[25] = "img/CardImages/DiamondQ.png";
-				images[26] = "img/CardImages/DiamondK.png";
-				
-				images[27] = "img/CardImages/SpadeA.png";
-				images[28] = "img/CardImages/Spade2.png";
-				images[29] = "img/CardImages/Spade3.png";
-				images[30] = "img/CardImages/Spade4.png";
-				images[31] = "img/CardImages/Spade5.png";
-				images[32] = "img/CardImages/Spade6.png";
-				images[33] = "img/CardImages/Spade7.png";
-				images[34] = "img/CardImages/Spade8.png";
-				images[35] = "img/CardImages/Spade9.png";
-				images[36] = "img/CardImages/Spade10.png";
-				images[37] = "img/CardImages/SpadeJ.png";
-				images[38] = "img/CardImages/SpadeQ.png";
-				images[39] = "img/CardImages/SpadeK.png";
-				
-				images[40] = "img/CardImages/ClubA.png";
-				images[41] = "img/CardImages/Club2.png";
-				images[42] = "img/CardImages/Club3.png";
-				images[43] = "img/CardImages/Club4.png";
-				images[44] = "img/CardImages/Club5.png";
-				images[45] = "img/CardImages/Club6.png";
-				images[46] = "img/CardImages/Club7.png";
-				images[47] = "img/CardImages/Club8.png";
-				images[48] = "img/CardImages/Club9.png";
-				images[49] = "img/CardImages/Club10.png";
-				images[50] = "img/CardImages/ClubJ.png";
-				images[51] = "img/CardImages/ClubQ.png";
-				images[52] = "img/CardImages/ClubK.png";
-				
-				img.setAttribute('src', images[index]);
-				
-			}	
+		images = new Array();
+		images[0] = null;
+		images[1] = new Image();
+		images[1].src = "img/CardImages/HeartA.png";
+		images[2] = new Image();
+		images[2].src = "img/CardImages/Heart2.png";
+		images[3] = new Image();
+		images[3].src = "img/CardImages/Heart3.png";
+		images[4] = new Image();
+		images[4].src = "img/CardImages/Heart4.png";
+		images[5] = new Image();
+		images[5].src = "img/CardImages/Heart5.png";
+		images[6] = new Image();
+		images[6].src = "img/CardImages/Heart6.png";
+		images[7] = new Image();
+		images[7].src = "img/CardImages/Heart7.png";
+		images[8] = new Image();
+		images[8].src = "img/CardImages/Heart8.png";
+		images[9] = new Image();
+		images[9].src = "img/CardImages/Heart9.png";
+		images[10] = new Image();
+		images[10].src = "img/CardImages/Heart10.png";
+		images[11] = new Image();
+		images[11].src = "img/CardImages/HeartJ.png";
+		images[12] = new Image();
+		images[12].src = "img/CardImages/HeartQ.png";
+		images[13] = new Image();
+		images[13].src = "img/CardImages/HeartK.png";
+		
+		images[14] = new Image();
+		images[14].src = "img/CardImages/DiamondA.png";
+		images[15] = new Image();
+		images[15].src = "img/CardImages/Diamond2.png";
+		images[16] = new Image();
+		images[16].src = "img/CardImages/Diamond3.png";
+		images[17] = new Image();
+		images[17].src = "img/CardImages/Diamond4.png";
+		images[18] = new Image();
+		images[18].src = "img/CardImages/Diamond5.png";
+		images[19] = new Image();
+		images[19].src = "img/CardImages/Diamond6.png";
+		images[20] = new Image();
+		images[20].src = "img/CardImages/Diamond7.png";
+		images[21] = new Image();
+		images[21].src = "img/CardImages/Diamond8.png";
+		images[22] = new Image();
+		images[22].src = "img/CardImages/Diamond9.png";
+		images[23] = new Image();
+		images[23].src = "img/CardImages/Diamond10.png";
+		images[24] = new Image();
+		images[24].src = "img/CardImages/DiamondJ.png";
+		images[25] = new Image();
+		images[25].src = "img/CardImages/DiamondQ.png";
+		images[26] = new Image();
+		images[26].src = "img/CardImages/DiamondK.png";
+		
+		images[27] = new Image();
+		images[27].src = "img/CardImages/SpadeA.png";
+		images[28] = new Image();
+		images[28].src = "img/CardImages/Spade2.png";
+		images[29] = new Image();
+		images[29].src = "img/CardImages/Spade3.png";
+		images[30] = new Image();
+		images[30].src = "img/CardImages/Spade4.png";
+		images[31] = new Image();
+		images[31].src = "img/CardImages/Spade5.png";
+		images[32] = new Image();
+		images[32].src = "img/CardImages/Spade6.png";
+		images[33] = new Image();
+		images[33].src = "img/CardImages/Spade7.png";
+		images[34] = new Image();
+		images[34].src = "img/CardImages/Spade8.png";
+		images[35] = new Image();
+		images[35].src = "img/CardImages/Spade9.png";
+		images[36] = new Image();
+		images[36].src = "img/CardImages/Spade10.png";
+		images[37] = new Image();
+		images[37].src = "img/CardImages/SpadeJ.png";
+		images[38] = new Image();
+		images[38].src = "img/CardImages/SpadeQ.png";
+		images[39] = new Image();
+		images[39].src = "img/CardImages/SpadeK.png";
+		
+		images[40] = new Image();
+		images[40].src = "img/CardImages/ClubA.png";
+		images[41] = new Image();
+		images[41].src = "img/CardImages/Club2.png";
+		images[42] = new Image();
+		images[42].src = "img/CardImages/Club3.png";
+		images[43] = new Image();
+		images[43].src = "img/CardImages/Club4.png";
+		images[44] = new Image();
+		images[44].src = "img/CardImages/Club5.png";
+		images[45] = new Image();
+		images[45].src = "img/CardImages/Club6.png";
+		images[46] = new Image();
+		images[46].src = "img/CardImages/Club7.png";
+		images[47] = new Image();
+		images[47].src = "img/CardImages/Club8.png";
+		images[48] = new Image();
+		images[48].src = "img/CardImages/Club9.png";
+		images[49] = new Image();
+		images[49].src = "img/CardImages/Club10.png";
+		images[50] = new Image();
+		images[50].src = "img/CardImages/ClubJ.png";
+		images[51] = new Image();
+		images[51].src = "img/CardImages/ClubQ.png";
+		images[52] = new Image();
+		images[52].src = "img/CardImages/ClubK.png";
+			
+			function changeImage(){
+				var userCardIndex = '${userCardIndex}';
+				var cpuCardIndex = '${cpuCardIndex}';
+				console.log(images[userCardIndex]);
+				console.log(images[cpuCardIndex]);
+				document.getElementById("userCard").src = images[userCardIndex].src;
+				document.getElementById("cpuCard").src = images[cpuCardIndex].src;
+			}
 			
 		</script>
 		
 	</head>
 
-	<body onLoad = "javascript:getCardImage()">
+	<body onLoad = "changeImage()">
 	
 	
-	<!-- once the chat is flushed out it will go here -->
+	<!--once the chat is flushed out it will go here-->
 	
 		
 		
@@ -200,7 +253,8 @@
 		<!-- end chat -->	
 		<div id="bannerholder" onclick="home()">
 			
-			
+		
+		
 		</div>
 		<div id="banner" onclick="home()">
 		
@@ -220,7 +274,8 @@
 					<input name="newuser" class="buttonHigher" type="submit" value="What's your guess?" />
 				</form>
 			</li>
-			<li><form action="${pageContext.servletContext.contextPath}/Game3window" method="get">
+			<li>
+				<form action="${pageContext.servletContext.contextPath}/Game3window" method="get">
 					<input name="newuser" class="buttonHigher" type="submit" value="Yeet shooter" />
 				</form>
 			</li>
@@ -241,24 +296,24 @@
 					<tr>
 					<form action="choice">
   					<input  type="submit" class="buttonHigher" name="choice" value="higher"><br>
-  					 <input  type="submit" class="buttonLower"name="choice" value="lower"><br>
+  					<input  type="submit" class="buttonLower"name="choice" value="lower"><br>
 				</tr>
-				<div>
+				<div align="left">
 					<tr>
-						<td class="label">User Flipped:</td>
-						<img width = "50" height="75">
+						<td class="label"> User Flipped: </td>
 					</tr>
+					<img id="userCard" width = "50" height="75">
 				</div>
-				<div>
+				<div align="right">
 					<tr>
-						<td class="label">CPU's next Card:</td>
-						<td>${cpuCardResult}</td>
+						<td class="label"> CPU's next Card: </td>
 					</tr>
+					<img id="cpuCard" width = "50" height="75">
 				</div>
 				<div>
 					<tr>
 						<td class="label">User:</td>
-						<td>${transaction}</td>
+						<td>${transactMsg}</td>
 					</tr>
 				</div>
 			</table>

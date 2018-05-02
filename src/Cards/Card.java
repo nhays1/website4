@@ -51,9 +51,13 @@ public class Card implements Comparable<Card> {
 	}
 	
 	public int compareTo(Card o) {
-		int cmp = this.suit.compareTo(o.suit);
-		if (cmp != 0) {
-			return cmp;
+		int cmp1 = this.rank.compareTo(o.rank);
+		int cmp2 = this.suit.compareTo(o.suit);
+		if(cmp1 == 0) {
+			return cmp1;
+		}
+		else if (cmp2 == 0) {
+			return cmp2;
 		}
 		return this.rank.compareTo(o.rank);
 	}

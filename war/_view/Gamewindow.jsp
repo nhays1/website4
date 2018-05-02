@@ -101,16 +101,31 @@
 		
 		</style>
 		
+		<script type="text/javascript">
+		
+			images = new Array();
+			images[0] = new Image();
+			images[0].src = "img/tails.png";
+			images[1] = new Image();
+			images[1].src = "img/heads.png";
+			
+			function changeImage(){
+				var coinFlip = '${coinFlip}';
+				console.log(images[coinFlip]);
+				document.getElementById("coinFlip").src = images[coinFlip].src;
+			}
+			
+		</script>
 		
 		
 	</head>
 
-	<body>
+	<body onLoad = "changeImage()" onLoad = "getCheckedRadio()">
 	
 	
 	
 	<!-- once the chat is flushed out it will go here -->
-	
+		
 		
 		
 		
@@ -155,8 +170,8 @@
 				</tr>
 				<tr>
 					<form action="choice">
-	  					<input type="radio" class="radButton" name="choice" value="heads"> Heads<br>
-	  					<input type="radio" class="radButton" name="choice" value="tails"> Tails<br>
+	  					<input type="checkbox" class="checkbox" name="choice" value="heads"> Heads <br>
+	  					<input type="checkbox" class="checkbox" name="choice" value="tails"> Tails <br>
   					</form>
 				</tr>
 				</tr>
@@ -164,11 +179,12 @@
 					<td><input type="submit" class="buttonHigher" name="flip" size="12" value="FLIP" /></td>
 				</tr>
 				<tr>
-					<td class="label">User Chose:</td>
+					<td class="label">User Chose: </td>
 					<td class="label">${choice}</td>
+					<img id="coinFlip" width = "100" height="100">
 				</tr>
 				<tr>
-					<td class="label">Result:</td>
+					<td class="label">Outcome: </td>
 					<td class="label">${result}</td>
 				</tr>
 				<tr>
@@ -185,13 +201,6 @@
 		 <form action="${pageContext.servletContext.contextPath}/index" method="get">
 	 	<input type="Submit" name="chatsubmit" value="home">
 	 </form>
-	
-	
-	
-	
-	
-	
-	
 	
 	</body>
 </html>
