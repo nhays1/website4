@@ -106,12 +106,17 @@
 		float: right;
 		height: 50px;
 		width:50px;
+		padding:5px;
+		//background-color: grey;
 		}
 		#userphoto{
-		padding-left:25px;
-		padding-right:25px;
-		height:150px;
-		width: 150px;
+		padding:3px;
+		padding-left:40px;
+		padding-right:40px;
+		height:117px;
+		width: 120px;
+		//background-color: grey;
+		
 		
 		}
 		#acountoptions{
@@ -123,7 +128,12 @@
 		background-color: black;
 		transition: ease-in-out, top .4s  ease-in-out;
 		}
-		
+		#usernamedisplay{
+			color: white;
+			 font-size: 20px;
+			 height:27px;
+			
+		}
 		#loginwindow{
 		padding: 20px;
 		heiht: 300px;
@@ -368,6 +378,7 @@
 		var chakvisable= true;
 		var acountoptionsvisible = false;
 		var loginvisable = false;
+		var usernname;
 		//var ussing  = "${ user.username    }";
 		var isguest='${user.isguest}';
 		
@@ -483,7 +494,7 @@
 	
 		function toggleacountoptions(){
 			checkisguest();
-			console.log(isguest);
+			//console.log(isguest);
 		}
 		
 		
@@ -498,9 +509,16 @@
 			 
 				xmlreq.onreadystatechange = function() {
 			        if (this.readyState == 4 && this.status == 200) {
-			        	//console.log(this.responseText);
-			        	isguest= JSON.parse(this.responseText);
-						//console.log(isguest)
+			        	var ress=this.responseText;
+			        	console.log(ress);
+			        	console.log(JSON.parse(ress.substring(0,7)));
+			        	isguest= JSON.parse(ress.substring(0,7));
+			        	if(isguest)
+							usernname=ress.substring(8,ress.lenght);
+			        	else
+			        		usernname=ress.substring(8,ress.lenght);
+						console.log(usernname);
+						document.getElementById("usernamedisplay").innerHTML =usernname;
 			        	switchlogbutton();
 			        	
 			       }
@@ -606,7 +624,9 @@
 <!-- start user options -->
 			<div class="smallroundcorners" id= "acountoptions">
 			<img id="userphoto" onclick="toggleacountoptions()" src="img/largeloginicon.png"  />
-			
+			<div id="usernamedisplay">
+				placeholdery
+			</div>
 				<button id="login"  onclick="logclick()" >login</button>
 				
 				<form action="${pageContext.servletContext.contextPath}/userinfo" method="get">

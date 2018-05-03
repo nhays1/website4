@@ -995,7 +995,7 @@ public class DerbyDatabase implements IDatabase {
 		return getper_game_scores(nameofthegame);
 	}
 
-	public List<Integer> getperuserscores(String nameofthegame, final int userid) {
+	public List<Integer> getperuserscores(final String nameofthegame, final int userid) {
 		// TODO Auto-generated method stub
 
 		//final usser user=getuser_by_id(userid);
@@ -1009,10 +1009,10 @@ public class DerbyDatabase implements IDatabase {
 					stmt = conn.prepareStatement(
 							"SELECT hs0 , hs1, hs2, hs3, hs4, hs5, hs6, hs7, hs8, hs9 " +
 							"FROM per_user_hs  "+
-							"where  per_user_hs.userid= ?"
+							"where  per_user_hs.userid= ? and nameofthegame= ?"
 					);
 					stmt.setInt(1,userid);
-					
+					stmt.setString(2, nameofthegame);
 					
 					resultSet = stmt.executeQuery();
 					List<Integer> result= new ArrayList<Integer>();
@@ -1069,11 +1069,11 @@ public class DerbyDatabase implements IDatabase {
 						stmt = conn.prepareStatement(
 								"select hs0   "
 								+"FROM per_user_hs  "+
-								" where  per_user_hs.userid= ?"
+								" where  per_user_hs.userid= ? and nameofthegame= ? "
 						);
 
 						stmt.setInt(1, userid);
-						
+						stmt.setString(2, nameofthegame);
 						
 						resultSet = stmt.executeQuery();
 						
@@ -1088,7 +1088,8 @@ public class DerbyDatabase implements IDatabase {
 							stmt = conn.prepareStatement(
 									
 									"insert into per_user_hs (userid, nameofthegame,  "
-											+ "hs0 , hs1, hs2, hs3, hs4, hs5, hs6, hs7, hs8, hs9) values (?, ?,    ?,?,?,?,?,?,?,?,?,?)"
+									+ "hs0 , hs1, hs2, hs3, hs4, hs5, hs6, hs7, hs8, hs9) values (?, ?,    ?,?,?,?,?,?,?,?,?,?) "
+									
 											
 							);
 							stmt.setInt(1, userid);

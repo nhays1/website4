@@ -33,7 +33,6 @@ public class Userinfoservlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		System.out.println("userinfo Servlet: doGet");	
-		
 		usser user = null;
 		Integer userid = (Integer) req.getSession().getAttribute("userid");
 		if(userid!=null) {
@@ -77,18 +76,22 @@ public class Userinfoservlet extends HttpServlet {
 		}
 		//req.getSession().setAttribute("userid", user.getuserid());
 		//
-		
-		
+		String error = null;
+		boolean sync = false;
+		//1.40957  1.390  278 113
 		try {
 			
+			String username = null,password = null;
 			
+			try {
+				 username =  req.getParameter("username");
+				 password =  req.getParameter("password");
+			}
+			catch (Exception e) {
+				error="file to large max size is 130Kb";
+			}
 			
-			
-			String username =  req.getParameter("username");
-			String password =  req.getParameter("password");
-			
-			
-			
+			System.out.println(error);
 			
 			
 			System.out.println("username      _ "+username);
@@ -98,7 +101,7 @@ public class Userinfoservlet extends HttpServlet {
 			if(username!=null&&password!=null) {
 				if(username.trim().length()>0&&password.trim().length()>0) {
 						usser temp=control.loguserin(username, password);
-						
+						sync=true;
 					if(temp!=null) {
 						user=temp;
 					}
@@ -107,13 +110,16 @@ public class Userinfoservlet extends HttpServlet {
 			
 			
 			
-			//InputStream in;
+			
+			InputStream content =  req.getInputStream();
+			
 			
 			String img = req.getParameter("img");
 			//System.out.println(img);
 			//System.out.println(img.getBytes());
 			//in= req.getInputStream();
 			if(img!=null) {
+				sync=false;
 				byte[] bytes = img.getBytes();
 				
 				//im.setBytes(pos, bytes)
@@ -128,8 +134,8 @@ public class Userinfoservlet extends HttpServlet {
 					Blob im = conn.createBlob(); 
 					im.setBytes(1, bytes);
 					control.addimg(user.getuserid(),im);
-					System.out.println(im.getBytes(1, (int) im.length()).toString());
-					System.out.println(new String(im.getBytes(1, (int) im.length()), "UTF-8"));
+					//System.out.println(im.getBytes(1, (int) im.length()).toString());
+					//System.out.println(new String(im.getBytes(1, (int) im.length()), "UTF-8"));
 				} 
 				catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -156,10 +162,14 @@ public class Userinfoservlet extends HttpServlet {
 		req.getSession().setAttribute("userid", user.getuserid());
 		
 		System.out.println("username      _ "+user.getusername());
-		req.setAttribute("user", user);
-		req.getRequestDispatcher("/_view/userinfo.jsp").forward(req, resp);
-		
-		
+		if(sync) {
+			req.setAttribute("user", user);
+			req.getRequestDispatcher("/_view/userinfo.jsp").forward(req, resp);
+		}
+		else {
+			resp.setContentType("text/plain");
+			resp.getWriter().print(error);
+		}
 		
 	}//End of doPost//
 }

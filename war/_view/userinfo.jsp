@@ -264,7 +264,10 @@
 			xmlreq.onload=function(){
 				if (this.status==200){
 					//isguest= JSON.parse(this.responseText);
-					
+					console.log(this);
+					if (this.responseText!='null'){
+						window.alert(this.responseText);
+					}
 				}
 			}
 		
