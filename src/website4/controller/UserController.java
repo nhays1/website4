@@ -1,6 +1,7 @@
 package website4.controller;
 
 import java.io.IOException;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.Instant;
 
@@ -301,7 +302,18 @@ public class UserController {
 			
 		}
 
-
+		public void addimg(int userid,Blob img) {
+			InitDatabase.init(1);
+			IDatabase db = DatabaseProvider.getInstance();
+			db.storeimg(userid, img);
+			
+		}
+		
+		public String getuserimg(int userid) {
+			InitDatabase.init(1);
+			IDatabase db = DatabaseProvider.getInstance();
+			return db.getimg(userid);
+		}
 
 
 }

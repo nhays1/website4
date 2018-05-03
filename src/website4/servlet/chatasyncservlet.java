@@ -28,8 +28,8 @@ public class chatasyncservlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		System.out.println("__________________________________________________________");
-		System.out.println("chatasyncservlet Servlet: doPost");
+		//System.out.println("__________________________________________________________");
+		//System.out.println("chatasyncservlet Servlet: doPost");
 		Integer numpost = 0 ;
 		boolean needupdate = false;
 		String chatname = null, jsonchstpost=null;
@@ -47,8 +47,9 @@ public class chatasyncservlet extends HttpServlet {
 			
 				
 				user=usecontrol.getuserbyid(userid);
-				if(user!=null)
-					System.out.println("sesion usser     "+user.getusername());
+				if(user!=null) {
+					//System.out.println("sesion usser     "+user.getusername());
+				}
 			}
 	
 			if(user==null) {//if user id was not found creates a new guest 
@@ -69,7 +70,7 @@ public class chatasyncservlet extends HttpServlet {
 			String last = req.getParameter("lastposttim");
 			String numberofposts = req.getParameter("numberofpost");
 			if(numberofposts!=null) {
-				System.out.println("    numposts  "+numberofposts);
+				//System.out.println("    numposts  "+numberofposts);
 				numpost=Integer.parseInt(numberofposts);
 				numpost-=11;
 			}
@@ -77,22 +78,23 @@ public class chatasyncservlet extends HttpServlet {
 				toblock=Integer.parseInt(blok);
 				chat.addtoblacklist(user.getuserid(), toblock);
 			}
-			chatname=req.getParameter("chatname");
+			//chatname=req.getParameter("chatname");
 			
 			
-			System.out.println("     lastknown  "+last);
+			//System.out.println("     lastknown  "+last);
 			if(chatname==null) {
 				chatname="general";
 			}
 			if(last!=null) {
 				lastknown=Long.parseLong(last);
 				needupdate=chat.checkchatneedupdate(chatname, lastknown);
-				System.out.println("    "+user.getusername()+" needs update  "+needupdate);
 			}
 			
 			if(last==null||needupdate) {
-				System.out.println("    numposts  "+numberofposts);
-				System.out.println("    numposts  "+numpost);
+				System.out.println("    "+user.getusername()+" needs update  "+needupdate);
+			
+			//	System.out.println("    numposts  "+numberofposts);
+			//	System.out.println("    numposts  "+numpost);
 				ArrayList<post> chatposts= (ArrayList<post>) chat.Getchat(numpost,chatname,user.getuserid());
 				jsonchstpost = gson.toJson(chatposts);
 			}
@@ -109,7 +111,7 @@ public class chatasyncservlet extends HttpServlet {
 			resp.setContentType("text/plain");
 			resp.getWriter().println("");
 			resp.getWriter().println(jsonchstpost);
-			System.out.println("----------------------------------------  _");
+		//	System.out.println("----------------------------------------  _");
 		}
 	
 	}//End of doPost//

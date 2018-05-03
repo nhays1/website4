@@ -52,8 +52,8 @@ public class pmservlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		System.out.println("__________________________________________________________");
-		System.out.println("pm Servlet: doPost");
+		//System.out.println("__________________________________________________________");
+		//System.out.println("pm Servlet: doPost");
 		UserController control=new UserController();
 		boolean sync=true,morepots=false,getpmlist=false,gettotalunread=false;
 		int pmid=-1,numpost=0,pmchatid=-1,unreadpms = 0;
@@ -69,7 +69,7 @@ public class pmservlet extends HttpServlet {
 		
 		
 		try {
-			System.out.println("     pm is async   "+req.getParameter("isasync"));
+		//	System.out.println("     pm is async   "+req.getParameter("isasync"));
 			
 			
 			Integer userid = (Integer) req.getSession().getAttribute("userid");
@@ -82,7 +82,7 @@ public class pmservlet extends HttpServlet {
 			if(user==null) {//if user id was not found creates a new guest 
 				user= new usser();
 			}
-			System.out.println("   pm first   id  "+user.getuserid());
+			//System.out.println("   pm first   id  "+user.getuserid());
 		
 			
 			
@@ -90,9 +90,9 @@ public class pmservlet extends HttpServlet {
 			if (pmi!=null) {
 				pmid=Integer.parseInt(pmi);
 			}
-			System.out.println("   pm second   id  "+pmid);
+			//System.out.println("   pm second   id  "+pmid);
 			String pmir =  req.getParameter("pmcahtid");
-			System.out.println("   pm chad   id  "+req.getParameter("pmcahtid"));
+			//System.out.println("   pm chad   id  "+req.getParameter("pmcahtid"));
 			if (pmir!=null&&pmir!="") {
 				pmchatid=Integer.parseInt(pmir);
 			}
@@ -136,13 +136,13 @@ public class pmservlet extends HttpServlet {
 			}
 			if(!gettotalunread) {
 			
-				System.out.println("    pmid second user       _ "+pmid);
+				//System.out.println("    pmid second user       _ "+pmid);
 				
 				if(pmchatid==-1) {
 					//pmposts= (ArrayList<post>)chat.gotopm(user.getuserid(), pmid);
 					pmchatid= chat.getpmid(user.getuserid(), pmid);
 				}
-				System.out.println("   pm chad   id fin     "+pmchatid);
+				//System.out.println("   pm chad   id fin     "+pmchatid);
 				
 				if(pminput!=null) {
 					if(pminput.trim().length()>0) {

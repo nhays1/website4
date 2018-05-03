@@ -170,7 +170,7 @@ public class chatcontroler {
 		IDatabase db = DatabaseProvider.getInstance();
 		int chatid=db.chatnametoid(chatname);
 		long current = db.getlastposttime(chatid);
-		System.out.println("     timedif  "+(lastknown-current));
+		//System.out.println("     timedif  "+(lastknown-current));
 		if(current>lastknown) {
 			return true;
 		}

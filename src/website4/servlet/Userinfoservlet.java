@@ -1,6 +1,11 @@
 package website4.servlet;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
 
@@ -58,12 +63,11 @@ public class Userinfoservlet extends HttpServlet {
 		
 		
 		System.out.println("__________________________________________________________");
-	
+		UserController control=new UserController();
 		
 		usser user = null;
 		Integer userid = (Integer) req.getSession().getAttribute("userid");
 		if(userid!=null) {
-			UserController control=new UserController();
 			user=control.getuserbyid(userid);
 			
 		}
@@ -93,13 +97,54 @@ public class Userinfoservlet extends HttpServlet {
 			
 			if(username!=null&&password!=null) {
 				if(username.trim().length()>0&&password.trim().length()>0) {
-					UserController loger=new UserController();
-						usser temp=loger.loguserin(username, password);
+						usser temp=control.loguserin(username, password);
 						
 					if(temp!=null) {
 						user=temp;
 					}
 				}
+			}
+			
+			
+			
+			//InputStream in;
+			
+			String img = req.getParameter("img");
+			//System.out.println(img);
+			//System.out.println(img.getBytes());
+			//in= req.getInputStream();
+			if(img!=null) {
+				byte[] bytes = img.getBytes();
+				
+				//im.setBytes(pos, bytes)
+				try {
+					Connection conn = DriverManager.getConnection("jdbc:derby:test.db;create=true");
+					
+					// Set autocommit to false to allow execution of
+					// multiple queries/statements as part of the same transaction.
+					conn.setAutoCommit(false);
+					
+					//System.out.println(new String(bytes, "UTF-8"));
+					Blob im = conn.createBlob(); 
+					im.setBytes(1, bytes);
+					control.addimg(user.getuserid(),im);
+					System.out.println(im.getBytes(1, (int) im.length()).toString());
+					System.out.println(new String(im.getBytes(1, (int) im.length()), "UTF-8"));
+				} 
+				catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				
+				
+				
+				
+				
+				//System.out.println(im);
+				//System.out.println(img.length());
+				//control.addimg(user.getuserid(),im);
 			}
 			
 		}

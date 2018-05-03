@@ -2,6 +2,7 @@ package website4.database;
 
 
 
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +64,10 @@ public interface IDatabase {
 	public void addtoblacklist(int blockerid,int blockieid);
 	
 	public long getlastposttime(int chatid );
+	
+	public void storeimg(int userid, Blob ingfile);
+	
+	public String getimg(int userid);
 	
 	/**intended for sesion verification returns usser specied by id
 	 * 

@@ -110,6 +110,8 @@
 		#userphoto{
 		padding-left:25px;
 		padding-right:25px;
+		height:150px;
+		width: 150px;
 		
 		}
 		#acountoptions{
@@ -431,6 +433,7 @@
 								console.log(isguest);
 								newchat(event,'general');
 								getusechats();
+								getimg();
 							}
 						}
 					 
@@ -537,9 +540,47 @@
 		    };
 
 		 }
+		 
+		 function getimg(){
+				var urlEncodedData = "";
+				var urlEncodedDataPairs = [];
+				var logout = true;
+				
+				
+				urlEncodedDataPairs.push(encodeURIComponent("getimg") + '=' + encodeURIComponent(true));
+				
+				
+				 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+				
+				
+				var xmlreq = new XMLHttpRequest();
+				xmlreq.open("post", "user_asyinc");
+				xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				xmlreq.send(urlEncodedData);
+				
+				xmlreq.onload=function(){
+					if (this.status==200){
+						//isguest= JSON.parse(this.responseText);userphoto    acountopt
+						console.log(this.responseText);
+						var res=this.responseText
+						if(res.length>100){
+							//console.log(res);
+							document.getElementById("userphoto").src=this.responseText;
+							document.getElementById("acountopt").src=this.responseText;
+						}
+						else{
+							document.getElementById("userphoto").src="img/largeloginicon.png" ;
+							document.getElementById("acountopt").src="img/largeloginicon.png" ;
+						}
+					}
+				}
+				
+				
+			}
 		function init(){
 			post();
 			gettotalunreadpm();
+			 getimg();
 		}
 		
 	</script>
