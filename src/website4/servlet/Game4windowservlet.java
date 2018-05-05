@@ -55,14 +55,10 @@ public class Game4windowservlet extends HttpServlet {
 		usser user = null;
 		Integer userid = (Integer) req.getSession().getAttribute("userid");
 		if(userid!=null) {
-		
 			user=usecontrol.getuserbyid(userid);
-			
 		}
-	
 		if(user==null) {//if user id was not found creates a new guest 
 			user=usecontrol.createguestuser();
-			
 		}
 		chatposts= (ArrayList<post>) chat.Getchat(0,"general",user.getuserid());
 		String jsonuserscore=gson.toJson(scorectrl.getuserscores(gamename, user.getuserid()));

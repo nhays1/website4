@@ -240,6 +240,32 @@
 
 		}
 		
+		var connection = new WebSocket('ws://localhost:8080/website/Game4scocket');
+		connection.onopen = function () {
+			  connection.send('Ping'); // Send the message 'Ping' to the server
+			  connection.send('pong');
+			};
+
+			// Log errors
+			connection.onerror = function (error) {
+			  console.log('WebSocket Error ' + error);
+			};
+
+			// Log messages from the server
+			connection.onmessage = function (e) {
+			  console.log('Server: '+e.data);
+			
+			};
+		function gamestateup(){
+			
+			connection.send('ping');
+			
+			
+			//var socket=new WebSocket("ws://localhost:8080/website/Game4scocket");
+			
+			
+			
+		}
 		
 		
 		</script>
@@ -276,6 +302,7 @@
 	
 		<div id=gamecontent>
 			<div id="container"><br /><br /><br /><br /><br />Generating world...</div>
+	<!--
 			<script type="text/javascript" src="threejs-master/build/three.js"></script>
 
 		
@@ -283,7 +310,7 @@
 			<script type="text/javascript" src="threejs-master/mygame/js/Detector.js"></script>
 			<script type="text/javascript" src="threejs-master/mygame/js/libs/stats.min.js"></script>
 			<script type="text/javascript" src="threejs-master/mygame/3djspong.js"> </script>
-						
+	-->
 			<button id="restart" onclick="restart()">restart</button>
 		</div>
 		
@@ -301,7 +328,7 @@
 	
 	
 	
-	
+		<button onclick="gamestateup()">host</button>
 	
 	
 	

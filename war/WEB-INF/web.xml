@@ -50,8 +50,14 @@
   <servlet>
     <servlet-name>chatasyncservlet</servlet-name>
     <servlet-class>website4.servlet.chatasyncservlet</servlet-class>
-
   </servlet>
+  
+  
+  <socket>
+    <socket-name>Game4scocket</socket-name>
+    <socket-class>website4.servlet.Game4scocket</socket-class>
+  </socket>
+  
 
 	<!-- Servlet mappings    user_asyinc -->
   <servlet-mapping>
@@ -98,6 +104,11 @@
     <servlet-name>chatasyncservlet</servlet-name>
     <url-pattern>/chat_async</url-pattern>
   </servlet-mapping>
+ <socket-mapping>
+    <socket-name>Game4scocket</socket-name>
+    <url-pattern>/Game4scocket</url-pattern>
+  </socket-mapping>
+
 
 
   <welcome-file-list>
