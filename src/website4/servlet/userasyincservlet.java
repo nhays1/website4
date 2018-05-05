@@ -1,6 +1,10 @@
 package website4.servlet;
 
 import java.io.IOException;
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
 
@@ -55,14 +59,16 @@ public class userasyincservlet extends HttpServlet {
 		System.out.println("__________________________________________________________");
 		System.out.println("____userasinc Servlet: doPost");
 		UserController control=new UserController();
-		boolean isguest=true;
+		boolean isguest=true,getimg=false;
+		Gson gson = new GsonBuilder().create();
 		
 		usser user = null;
-	
+		String imgstr=null;
 		
 		
 		try {
-						
+			
+			
 			
 			Integer userid = (Integer) req.getSession().getAttribute("userid");
 			if(userid!=null) {
@@ -75,31 +81,54 @@ public class userasyincservlet extends HttpServlet {
 				user= new usser();
 			}
 			System.out.println("____userasinc first   id  "+user.getuserid());
-		
-			
-		
 			isguest=control.isguest(user.getuserid());
 			
 					
+			
+			
+			String getim = req.getParameter("getimg");
+			if(getim!=null) {
+				getimg=Boolean.parseBoolean(getim);
+				if(getimg) {
+					
+					imgstr=control.getuserimg(user.getuserid());
+					//control.getuserbyid(user.getuserid());
+					
+					//System.out.println("dddddddddddddddd");
+					
+					
+			
+				}
 				
-				
+			}
 				
 			
 			
 			
 		}
 		finally{
-				
+			
 		}
 		
 
-		
-	
+		req.getSession().setAttribute("userid", user.getuserid());
+		if(getimg) {
+			resp.setContentType("text/plain");
+			//resp.getWriter().println("");
+			resp.getWriter().println(imgstr);
+		}
+		else {
 			resp.setContentType("text/plain");
 			resp.getWriter().println("");
-			resp.getWriter().println(isguest);
+			String obj;
+			obj=isguest+" ";
+			if(isguest) {
+				obj+=" ";
+			}
+			obj+=user.getusername();
+			resp.getWriter().println(obj);
 		
-		
+		}
 		
 		
 		

@@ -80,7 +80,6 @@
 				xmlreq.onreadystatechange = function() {
 			        if (this.readyState == 4 && this.status == 200) {
 			        	chatedc= JSON.parse(this.responseText);
-						console.log(chatedc)
 			        	refreshchat(chatedc);
 			        	
 			       }
@@ -111,18 +110,18 @@
 			//scroleposition =window.pageYOffset;
 			//chat=${chatposts};
 			
-			console.log(scroleposition);
+			//console.log(scroleposition);
 			
 			if(chats!=null){
 				chat=chats;
-				console.log(chat);
+				//console.log(chat);
 			}
 			
 		
 		//	console.log("${ user.username    }");
 		
 			  count = Object.keys(chat).length;
-			  console.log(count);
+			  //console.log(count);
 			
 			
 			

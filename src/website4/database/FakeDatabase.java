@@ -1,6 +1,7 @@
 package website4.database;
 
 import java.io.IOException;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -203,6 +204,16 @@ public class FakeDatabase implements IDatabase {
 	public long getlastposttime(int chatid) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public void storeimg(int userid, Blob ingfile) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getimg(int userid) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

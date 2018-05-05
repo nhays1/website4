@@ -69,6 +69,8 @@
 		#userphoto{
 		padding-left:25px;
 		padding-right:25px;
+		height:150px;
+		width: 150px;
 		
 		}
 		#acountoptions{
@@ -214,9 +216,89 @@
 			}
 			document.getElementById("loginpost").method = "post";
 		}
+		function sendimg(){
+			//file reader taken from https://stackoverflow.com/questions/22087076/how-to-make-a-simple-image-upload-using-javascript-html
+			console.log(document.getElementById("fileimg").value);
+			var pre= document.querySelector('img');
+			var file= document.querySelector('input[type=file]').files[0];
+			var reader=new FileReader();
+			reader.onloadend=function(){
+				try{
+					//console.log(reader.result);
+					pre.src=reader.result;
+					postimg(reader.result);
+				}
+				catch(e){
+					alert("file not compatable");
+				}
+			}
+			
+			//console.log(reader);
+			//console.log(file);
+			console.log(pre);
+			try{
+				reader.readAsDataURL(file);
+			}
+			catch(e){
+				alert("file not compatable");
+			}
+		}
+		function postimg(img){
+			//console.log(img);
+			 var urlEncodedData = "";
+			var urlEncodedDataPairs = [];
+			var logout = true;
 			
 			
+			urlEncodedDataPairs.push(encodeURIComponent("img") + '=' + encodeURIComponent(img));
+			
+			
+			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+			
+			
+			var xmlreq = new XMLHttpRequest();
+			xmlreq.open("post", "userinfo");
+			xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xmlreq.send(urlEncodedData);
+			
+			xmlreq.onload=function(){
+				if (this.status==200){
+					//isguest= JSON.parse(this.responseText);
+					console.log(this);
+					if (this.responseText!='null'){
+						window.alert(this.responseText);
+					}
+				}
+			}
 		
+		}
+		function getimg(){
+			var urlEncodedData = "";
+			var urlEncodedDataPairs = [];
+			var logout = true;
+			
+			
+			urlEncodedDataPairs.push(encodeURIComponent("getimg") + '=' + encodeURIComponent(true));
+			
+			
+			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+			
+			
+			var xmlreq = new XMLHttpRequest();
+			xmlreq.open("post", "user_asyinc");
+			xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xmlreq.send(urlEncodedData);
+			
+			xmlreq.onload=function(){
+				if (this.status==200){
+					//isguest= JSON.parse(this.responseText);userphoto
+					console.log(this.responseText);
+					document.getElementById("userphoto").src=this.responseText;
+				}
+			}
+			
+			
+		}
 		
 		</script>
 		
@@ -345,10 +427,10 @@
 			<button id="canclelog"  onclick="logclick()" >cancle</button>
 		</div>
 	
+		 <input id="fileimg" type="file" value="file">
+		<button onclick="sendimg()"> send</button>
 	
-	
-	
-	
+		<button onclick="getimg()"> get img</button>
 	
 	
 	

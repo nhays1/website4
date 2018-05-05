@@ -1,7 +1,9 @@
 package website4.database;
 
 import java.io.IOException;
-
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -134,6 +136,7 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement stmt9 = null;
 				PreparedStatement stmt0 = null;
 				PreparedStatement stmt10 = null;
+				PreparedStatement stmt11 = null;
 				
 				try {
 					stmt1 = conn.prepareStatement(
@@ -278,7 +281,13 @@ public class DerbyDatabase implements IDatabase {
 					);	
 					stmt10.executeUpdate();
 					
-					
+					stmt11 = conn.prepareStatement(
+							"create table userimg (" +
+									"	userid integer  primary key, " +	
+									"	imgbolb blob "+
+									")"
+					);	
+					stmt11.executeUpdate();
 					
 					
 					
@@ -295,6 +304,7 @@ public class DerbyDatabase implements IDatabase {
 					DBUtil.closeQuietly(stmt9);
 					DBUtil.closeQuietly(stmt0);
 					DBUtil.closeQuietly(stmt10);
+					DBUtil.closeQuietly(stmt11);
 				}
 			}
 		});
@@ -985,7 +995,7 @@ public class DerbyDatabase implements IDatabase {
 		return getper_game_scores(nameofthegame);
 	}
 
-	public List<Integer> getperuserscores(String nameofthegame, final int userid) {
+	public List<Integer> getperuserscores(final String nameofthegame, final int userid) {
 		// TODO Auto-generated method stub
 
 		//final usser user=getuser_by_id(userid);
@@ -999,10 +1009,10 @@ public class DerbyDatabase implements IDatabase {
 					stmt = conn.prepareStatement(
 							"SELECT hs0 , hs1, hs2, hs3, hs4, hs5, hs6, hs7, hs8, hs9 " +
 							"FROM per_user_hs  "+
-							"where  per_user_hs.userid= ?"
+							"where  per_user_hs.userid= ? and nameofthegame= ?"
 					);
 					stmt.setInt(1,userid);
-					
+					stmt.setString(2, nameofthegame);
 					
 					resultSet = stmt.executeQuery();
 					List<Integer> result= new ArrayList<Integer>();
@@ -1059,11 +1069,11 @@ public class DerbyDatabase implements IDatabase {
 						stmt = conn.prepareStatement(
 								"select hs0   "
 								+"FROM per_user_hs  "+
-								" where  per_user_hs.userid= ?"
+								" where  per_user_hs.userid= ? and nameofthegame= ? "
 						);
 
 						stmt.setInt(1, userid);
-						
+						stmt.setString(2, nameofthegame);
 						
 						resultSet = stmt.executeQuery();
 						
@@ -1078,7 +1088,8 @@ public class DerbyDatabase implements IDatabase {
 							stmt = conn.prepareStatement(
 									
 									"insert into per_user_hs (userid, nameofthegame,  "
-											+ "hs0 , hs1, hs2, hs3, hs4, hs5, hs6, hs7, hs8, hs9) values (?, ?,    ?,?,?,?,?,?,?,?,?,?)"
+									+ "hs0 , hs1, hs2, hs3, hs4, hs5, hs6, hs7, hs8, hs9) values (?, ?,    ?,?,?,?,?,?,?,?,?,?) "
+									
 											
 							);
 							stmt.setInt(1, userid);
@@ -2122,6 +2133,131 @@ public class DerbyDatabase implements IDatabase {
 				}  
 			}
 		});
+	}
+
+	public void storeimg(final int userid, final Blob ingfile) {
+		// TODO Auto-generated method stub
+		executeTransaction(new Transaction<post>() {
+			public post execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				Integer dbusid=null;
+				try { 
+					stmt = conn.prepareStatement(
+
+							"select userid from userimg where userid=? "
+
+					);
+					stmt.setInt(1, userid);
+					
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned 
+				
+					if (resultSet.next()) {
+						
+						dbusid=resultSet.getInt(1);
+						
+					}
+					
+					
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					
+					if(dbusid==null) {
+						stmt = conn.prepareStatement(
+	
+								"insert into userimg (userid , imgbolb) values ( ? , ?)"
+	
+						);
+				
+						stmt.setInt(1, userid);
+						stmt.setBlob(2, ingfile);
+						
+						stmt.executeUpdate();
+					}	
+					else {
+						stmt = conn.prepareStatement(
+								
+								"update userimg  set imgbolb =? where userid=?"
+	
+						);
+				
+						stmt.setInt(2, userid);
+						stmt.setBlob(1, ingfile);
+						
+						stmt.executeUpdate();
+					}
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+				return null;
+			}
+		});
+		
+		
+	}
+	/*
+	 * 
+					stmt11 = conn.prepareStatement(
+							"create table userimg (" +
+									"	userid integer  primary key, " +	
+									"	imgbolb LONGBLOB "+
+									")"
+					);	
+					stmt11.executeUpdate();
+					
+	 * 
+	 * (non-Javadoc)
+	 * @see website4.database.IDatabase#getimg(int)
+	 */
+	public String getimg(final int userid) {
+		// TODO Auto-generated method stub
+		return executeTransaction(new Transaction<String>() {
+			public String execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				Blob img;
+				String out = null;
+				img=conn.createBlob();
+				
+				try { 
+					stmt = conn.prepareStatement(
+
+							"select imgbolb from userimg where userid=? "
+
+					);
+					stmt.setInt(1, userid);
+					
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned 
+					
+					if (resultSet.next()) {
+						
+						img=resultSet.getBlob(1);
+						System.out.println("ayayayaya");
+						out =new String(img.getBytes(1, (int) img.length()), "UTF-8");
+					}
+					
+					
+					
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+				return out;
+			}
+		});
+		
+	
 	}
 
 	
