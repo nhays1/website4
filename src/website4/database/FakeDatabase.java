@@ -216,6 +216,31 @@ public class FakeDatabase implements IDatabase {
 		return null;
 	}
 
+	public void gotomultiplayer(int userid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void leavemultyplayer(int userid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void chalangeuser(int from, int to) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public List<Triplet<String, Integer, Boolean>> getmultyplayerlist(int gettingid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void updatemultyplayertimes() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	
 	

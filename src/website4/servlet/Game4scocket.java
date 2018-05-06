@@ -37,15 +37,18 @@ import website4.controller.UserController;
 @ServerEndpoint("/Game4scocket")
 public class Game4scocket {
     private javax.websocket.Session session;
-    //private UserController usecontrol=new UserController();
+    private UserController usecontrol=new UserController();
+    private int messagecont;
     
-    public void update(){
-    	try {
-			session.getBasicRemote().sendText("update");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    
+    
+    
+    
+    
+    public void handshake(String message){
+    	
+    	
+    	
     }
     
     
@@ -53,17 +56,20 @@ public class Game4scocket {
     @OnOpen
     public void onWebSocketConnect(javax.websocket.Session session) throws Exception {
     	System.out.println("WebSocket opened: " + session.getId());
-    	 //System.out.println("WebSocket opened: " + session);
-        //logger.info("WebSocket connection attempt: " + session);
         this.session = session;
-        update();
+        messagecont=0;
+      
      
     }
     
     @OnMessage
     public void onWebSocketText(String message){
-    	 System.out.println("Received TEXT message: " + message);
-    	 
+    	 if (messagecont<5) {
+    		 messagecont++;
+    		 System.out.println("Received TEXT message: " + message+ " from scocket "+session.getId());
+    		 handshake(message);
+    		 
+    	 	
     	 try {
 			session.getBasicRemote().sendText("pong");
 		} 
@@ -71,6 +77,7 @@ public class Game4scocket {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	 }
     }
 
     @OnClose

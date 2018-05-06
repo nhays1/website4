@@ -42,7 +42,6 @@
     <servlet-name>Game4windowservlet</servlet-name>
     <servlet-class>website4.servlet.Game4windowservlet</servlet-class>
   </servlet>
-
 <servlet>
     <servlet-name>snakeGame</servlet-name>
     <servlet-class>website4.servlet.snakeGame</servlet-class>
@@ -51,7 +50,14 @@
     <servlet-name>chatasyncservlet</servlet-name>
     <servlet-class>website4.servlet.chatasyncservlet</servlet-class>
   </servlet>
-  
+  <servlet>
+    <servlet-name>pongmultyplayersetupsservlet</servlet-name>
+    <servlet-class>website4.servlet.pongmultyplayersetupsservlet</servlet-class>
+  </servlet>
+ <servlet>
+    <servlet-name>pongmultyplayerservlet</servlet-name>
+    <servlet-class>website4.servlet.pongmultyplayerservlet</servlet-class>
+  </servlet>
   
   <socket>
     <socket-name>Game4scocket</socket-name>
@@ -104,6 +110,15 @@
     <servlet-name>chatasyncservlet</servlet-name>
     <url-pattern>/chat_async</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>pongmultyplayersetupsservlet</servlet-name>
+    <url-pattern>/multysetup</url-pattern>
+  </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>pongmultyplayerservlet</servlet-name>
+    <url-pattern>/pongplay</url-pattern>
+  </servlet-mapping>
+
  <socket-mapping>
     <socket-name>Game4scocket</socket-name>
     <url-pattern>/Game4scocket</url-pattern>

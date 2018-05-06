@@ -815,13 +815,19 @@
 			
 			
 			<div class= "gamedisplay">
-			<form action="${pageContext.servletContext.contextPath}/Game4window" method="get">
+				<form action="${pageContext.servletContext.contextPath}/Game4window" method="get">
 				
 					<input type="image" src="img/game3snap.png" alt="Submit" onmouseover="this.src='img/giphy.gif'" onmouseout="this.src='img/game3snap.png'"style="width:256px;height:256px;"  > 
+				</form>
 				<div class="gametitle">
-					<input name="newuser" type="submit" value="3D Pong" />
+					<form action="${pageContext.servletContext.contextPath}/Game4window" method="get">
+						<input name="newuser" type="submit" value="3D Pong" />
+					</form>
+					<form action="${pageContext.servletContext.contextPath}/multysetup" method="get">
+						<input name="newuser" type="submit" value=" multyplayer" />
+					</form>
 				</div>
-			</form>
+			
 			</div>
 
 			<div class= "gamedisplay">

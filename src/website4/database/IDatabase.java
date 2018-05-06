@@ -6,7 +6,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Map.Entry;
 
 import website4.model.post;
 import website4.model.usser;
@@ -69,6 +69,24 @@ public interface IDatabase {
 	
 	public String getimg(int userid);
 	
+	public void gotomultiplayer(int userid);
+	
+	public void leavemultyplayer(int userid);
+	
+	public void chalangeuser(int from, int to);
+	
+	public void updatemultyplayertimes();
+	/**
+	 * string user name
+	 * int userid
+	 * boolean this user is challenging  @param gettingid
+	 * 
+	 * @param gettingid
+	 * @return
+	 */
+	public  List<Triplet<String, Integer,Boolean>> getmultyplayerlist(int gettingid);
+	
+	
 	/**intended for sesion verification returns usser specied by id
 	 * 
 	 * @param id
@@ -94,7 +112,7 @@ public interface IDatabase {
 	 * 
 	 * @return
 	 */
-	public List<Map.Entry<Integer, Long>> getguestlist();
+	public List<Entry<Integer, Long>> getguestlist();
 	/**!!!! WIP !!!!
 	 * runs through guest list and sees if any of the guests have been loged in for a certian amount of time since long now
 	 * 
@@ -119,7 +137,7 @@ public interface IDatabase {
 	 * @param nameofthegame
 	 * @return
 	 */
-	public List<Map.Entry<String, Integer>> getper_game_scores(String nameofthegame);
+	public List<Entry<String, Integer>> getper_game_scores(String nameofthegame);
 	/**
 	 * this method will add the score specified to the per_game db along with the userid who scored it
 	 * for convienence it also returns the updated score list for this game
@@ -131,7 +149,7 @@ public interface IDatabase {
 	 * @param username
 	 * @return
 	 */
-	public List<Map.Entry<String, Integer>> addscoretogmaedb(String nameofthegame,int userid,int score,String username );
+	public List<Entry<String, Integer>> addscoretogmaedb(String nameofthegame,int userid,int score,String username );
 	/**returns the user scores for this game scores 
 	 * 
 	 * @param nameofthegame
