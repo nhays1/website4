@@ -5,7 +5,7 @@ public class Card implements Comparable<Card> {
 	private Rank rank;
 	private Suit suit;
 	private int cardIndex;
-	
+	//
 	/**
 	 * Constructor.
 	 * 
