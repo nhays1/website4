@@ -4,6 +4,7 @@ package website4.database;
 
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -76,6 +77,8 @@ public interface IDatabase {
 	public void chalangeuser(int from, int to);
 	
 	public void updatemultyplayertimes();
+	
+	public void acceptchalange(int acceptedfrom,int acceptedby);
 	/**
 	 * string user name
 	 * int userid
@@ -86,6 +89,23 @@ public interface IDatabase {
 	 */
 	public  List<Triplet<String, Integer,Boolean>> getmultyplayerlist(int gettingid);
 	
+	public void createmultiplayer(int player1,int player2);
+	
+	public Integer getmultiplayerid(int player1,int player2);
+	
+	public int getplayernumber(int playerid,int gameid);
+	
+	public void setp1state(String p1paddle,int gameid);
+	
+	public String getp1state(int gameid);
+	
+	public void setp2state(String p2paddle,int gameid);
+	
+	public String getp2state(int gameid);
+	
+	public void setballstate(String ball,int gameid);
+	
+	public String getballstate(int gameid);
 	
 	/**intended for sesion verification returns usser specied by id
 	 * 

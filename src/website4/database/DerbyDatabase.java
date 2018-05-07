@@ -138,6 +138,7 @@ public class DerbyDatabase implements IDatabase {
 				PreparedStatement stmt10 = null;
 				PreparedStatement stmt11 = null;
 				PreparedStatement stmt12 = null;
+				PreparedStatement stmt13 = null;
 				
 				try {
 					stmt1 = conn.prepareStatement(
@@ -294,12 +295,25 @@ public class DerbyDatabase implements IDatabase {
 							"create table wantsmatch (" +
 									"	userid integer , " +	
 									"	chalanging integer,"
-									+ " lastacess bigint "
+									+ " lastacess bigint, "
+									+ " accepted integer"
 									+")"
 					);	
 					stmt12.executeUpdate();
 					
-					
+					stmt13 = conn.prepareStatement(
+							"create table multigamestate ("
+									+ "	gameid integer primary key " + 
+									"	generated always as identity (start with 1, increment by 1), " +
+									"	p1id integer , " +	
+									"	p2id integer,"
+									+ "	ballstate varchar(512),"
+									+ "	p1pstate  varchar(512),"
+									+ " p2pstate  varchar(512),"
+									+ " lastacess bigint "
+									+")"
+					);	
+					stmt13.executeUpdate();
 					
 					return true;
 				} finally {
@@ -2258,16 +2272,6 @@ public class DerbyDatabase implements IDatabase {
 	
 	}
 	
-	/*
-	 * 
-	 * stmt12 = conn.prepareStatement(
-							"create table wantsmatch (" +
-									"	userid integer , " +	
-									"	chalanging integer"
-									+")"
-					);	
-					stmt12.executeUpdate();
-	 */
 
 	public void gotomultiplayer(final int userid) {
 		// TODO Auto-generated method stub
@@ -2298,24 +2302,25 @@ public class DerbyDatabase implements IDatabase {
 					long now=Instant.now().toEpochMilli();
 					if(dbusid==null) {
 						stmt = conn.prepareStatement(
-								"insert into wantsmatch (userid , chalanging,lastacess) values ( ? , ?,?)"
+								"insert into wantsmatch (userid , chalanging,lastacess,accepted) values ( ? , ?,?,?)"
 						);
 				
 						stmt.setInt(1, userid);
 						stmt.setInt(2, -1);
 						stmt.setLong(3, now);
-						
+						stmt.setInt(4, 0);
 						stmt.executeUpdate();
 					}	
 					else {
 						stmt = conn.prepareStatement(
-								"update wantsmatch  set chalanging = ? , lastacess = ?  where userid=? "
+								"update wantsmatch  set chalanging = ? , lastacess = ?, accepted=?  where userid=? "
 						);
 				
-						stmt.setInt(3, userid);
+						
 						stmt.setInt(1, -1);
 						stmt.setLong(2, now);
-						
+						stmt.setInt(3, 0);
+						stmt.setInt(4, userid);
 						stmt.executeUpdate();
 						
 					}
@@ -2364,13 +2369,13 @@ public class DerbyDatabase implements IDatabase {
 					if(dbusid==null) {
 						stmt = conn.prepareStatement(
 	
-								"insert into wantsmatch (userid , chalanging) values ( ? , ?)"
+								"insert into wantsmatch (userid , chalanging,accepted) values ( ? , ?,?)"
 	
 						);
 				
 						stmt.setInt(1, from);
 						stmt.setInt(2, to);
-						
+						stmt.setInt(3, 0);
 						stmt.executeUpdate();
 					}	
 					else {
@@ -2407,7 +2412,7 @@ public class DerbyDatabase implements IDatabase {
 				try { 
 					long now=Instant.now().toEpochMilli();
 						stmt = conn.prepareStatement(// lastacess
-								"select userid , chalanging from wantsmatch "
+								"select userid , chalanging, accepted from wantsmatch "
 								
 						);
 						
@@ -2417,6 +2422,7 @@ public class DerbyDatabase implements IDatabase {
 						while(resultSet.next()) {
 							 user=resultSet.getInt(1);
 							 chalanging=resultSet.getInt(2);
+							 //System.out.println(resultSet.getInt(3));
 							 String username=getusernamebyid(user);
 							if(user!=gettingid) {
 								Boolean ischalenging =false;
@@ -2426,6 +2432,22 @@ public class DerbyDatabase implements IDatabase {
 								
 								Triplet<String, Integer, Boolean> tmp=new Triplet<String, Integer, Boolean>(username,user,ischalenging);
 								result.add(tmp);
+								//System.out.println("      nnnnnot      aaaaacccccepted");
+							}
+							else if (resultSet.getInt(3)==1) {
+								//System.out.println("            aaaaacccccepted");
+								DBUtil.closeQuietly(resultSet);
+								DBUtil.closeQuietly(stmt);
+								//System.out.println("            aaaaacccccepted");
+								ArrayList<Triplet<String, Integer,Boolean>> tor= new ArrayList<Triplet<String, Integer,Boolean>>();
+								Triplet<String, Integer, Boolean> tmp=new Triplet<String, Integer, Boolean>(null,chalanging,null);
+								tor.add(tmp);
+								tor.add(tmp);
+								//tor.add(null);
+								//tor.add(null);
+								DBUtil.closeQuietly(resultSet);
+								DBUtil.closeQuietly(stmt);
+								return tor;
 							}
 							
 						}
@@ -2570,6 +2592,375 @@ public class DerbyDatabase implements IDatabase {
 				return null;
 			}
 		});
+	}
+
+	public void acceptchalange(final int acceptedfrom, final int acceptedby) {
+		// TODO Auto-generated method stub
+		executeTransaction(new Transaction<post>() {
+			public post execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				
+				try { 
+					stmt = conn.prepareStatement(// lastacess
+							"select * from wantsmatch "
+							+ "where  userid= ? and chalanging= ? "
+							
+					);
+					stmt.setInt(1, acceptedfrom);
+					stmt.setInt(2, acceptedby);
+					resultSet = stmt.executeQuery();
+	
+					boolean found=false;
+					if(resultSet.next()) {
+						found=true;						
+					}
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					
+					if(found) {
+						DBUtil.closeQuietly(stmt);
+						stmt = conn.prepareStatement(
+								"update wantsmatch  set  accepted = ?  where  userid= ? and chalanging= ?  "
+						);
+						System.out.println("    in db set accept to 1");
+						stmt.setInt(1, 1);
+						stmt.setInt(2, acceptedfrom);
+						stmt.setInt(3, acceptedby);
+						
+						stmt.executeUpdate();
+					}
+					
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+				return null;
+			}
+		});
+
+		
+	}
+
+	public void createmultiplayer(final int player1, final int player2) {
+		// TODO Auto-generated method stub
+		executeTransaction(new Transaction<Integer>() {
+			public Integer execute(Connection conn) throws SQLException {
+				
+				if (player2==-1) {
+					return null;
+				}
+				PreparedStatement stmt = null;
+			//	ResultSet resultSet = null;
+				Integer pmid=null;
+				try { //chatnames
+						pmid=getmultiplayerid(player1,player2);
+						
+						if(pmid==null||pmid==-1) {
+							stmt = conn.prepareStatement(
+
+									"insert into multigamestate (p1id ,p2id) values ( ?,?) "
+
+							);
+							
+							stmt.setInt(1, player1);
+							stmt.setInt(2, player2);
+							stmt.executeUpdate();
+														
+						}
+						else {
+							//String eror="the chat ";
+							//eror+=" already exsits ";
+							//throw new NoSuchElementException(eror);
+							
+						}
+						// execute the query
+				
+					
+				
+					
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+				
+				return pmid;
+			}
+		});
+	}
+
+	public Integer getmultiplayerid(final int player1, final int player2) {
+		// TODO Auto-generated method stub
+		return executeTransaction(new Transaction<Integer>() {
+			public Integer execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try { 
+						stmt = conn.prepareStatement(//user1id   user2id
+								"select gameid from multigamestate "
+								+ " where (p1id= ? and p2id= ? ) or (p1id= ? and p2id= ? )"
+						);
+						stmt.setInt(1, player1);
+						stmt.setInt(2, player2);
+						stmt.setInt(3, player2);
+						stmt.setInt(4, player1);
+						resultSet = stmt.executeQuery();
+
+						Integer chatid=null;
+						
+						if (resultSet.next()) {
+							chatid=resultSet.getInt(1);
+						}
+						return  chatid;
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					
+				}
+			
+			}
+		});
+	}
+	/*
+	 * stmt13 = conn.prepareStatement(
+							"create table multigamestate ("
+									+ "	gameid integer primary key " + 
+									"	generated always as identity (start with 1, increment by 1), " +
+									"	p1id integer , " +	
+									"	p2id integer,"
+									+ "	ballstate varchar(512),"
+									+ "	p1pstate  varchar(512),"
+									+ " p2pstate  varchar(512),"
+									+ " lastacess bigint "
+									+")"
+					);	
+					stmt13.executeUpdate();
+	 * 
+	 * (non-Javadoc)
+	 * @see website4.database.IDatabase#setp1state(java.lang.String, int)
+	 */
+	public void setp1state(final String p1paddle, final int gameid) {
+		// TODO Auto-generated method stub
+		executeTransaction(new Transaction<Integer>() {
+			public Integer execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				
+				try { 
+						stmt = conn.prepareStatement(//user1id   user2id
+								"update multigamestate set p1pstate = ?  where  gameid= ? "
+						);
+						stmt.setInt(2, gameid);
+						stmt.setString(1, p1paddle);
+						stmt.executeUpdate();
+
+						
+				} finally {
+					
+					DBUtil.closeQuietly(stmt);
+					
+				}
+				return null;
+			}
+		});
+		
+	}
+
+	public String getp1state(final int gameid) {
+		// TODO Auto-generated method stub
+		return executeTransaction(new Transaction<String>() {
+			public String execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				String result = null;
+				try { 
+						stmt = conn.prepareStatement(//user1id   user2id
+								"select p1pstate from multigamestate "
+								+ " where  gameid= ? "
+						);
+						stmt.setInt(1, gameid);
+						resultSet = stmt.executeQuery();
+
+						
+						
+						if (resultSet.next()) {
+							result=resultSet.getString(1);
+						}
+						
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					
+				}
+				return  result;
+			}
+		});
+	}
+
+	public void setp2state(final String p2paddle, final int gameid) {
+		// TODO Auto-generated method stub
+		executeTransaction(new Transaction<Integer>() {
+			public Integer execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				
+				try { 
+						stmt = conn.prepareStatement(//user1id   user2id
+								"update multigamestate set p2pstate = ?  where  gameid= ? "
+						);
+						stmt.setInt(2, gameid);
+						stmt.setString(1, p2paddle);
+						stmt.executeUpdate();
+
+						
+				} finally {
+					
+					DBUtil.closeQuietly(stmt);
+					
+				}
+				return null;
+			}
+		});
+	}
+
+	public String getp2state(final int gameid) {
+		// TODO Auto-generated method stub
+		return executeTransaction(new Transaction<String>() {
+			public String execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				String result = null;
+				try { 
+						stmt = conn.prepareStatement(//user1id   user2id
+								"select p2pstate from multigamestate "
+								+ " where  gameid= ? "
+						);
+						stmt.setInt(1, gameid);
+						resultSet = stmt.executeQuery();
+
+						
+						
+						if (resultSet.next()) {
+							result=resultSet.getString(1);
+						}
+						
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					
+				}
+				return  result;
+			}
+		});
+	}
+
+	public void setballstate(final String ball, final int gameid) {
+		// TODO Auto-generated method stub
+		executeTransaction(new Transaction<Integer>() {
+			public Integer execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				
+				try { 
+						stmt = conn.prepareStatement(//user1id   user2id
+								"update multigamestate set ballstate = ?  where  gameid= ? "
+						);
+						stmt.setInt(2, gameid);
+						stmt.setString(1, ball);
+						stmt.executeUpdate();
+
+						
+				} finally {
+					
+					DBUtil.closeQuietly(stmt);
+					
+				}
+				return null;
+			}
+		});
+	}
+
+	public String getballstate(final int gameid) {
+		// TODO Auto-generated method stub
+		return executeTransaction(new Transaction<String>() {
+			public String execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				String result = null;
+				try { 
+						stmt = conn.prepareStatement(//user1id   user2id
+								"select ballstate from multigamestate "
+								+ " where  gameid= ? "
+						);
+						stmt.setInt(1, gameid);
+						resultSet = stmt.executeQuery();
+
+						
+						
+						if (resultSet.next()) {
+							result=resultSet.getString(1);
+						}
+						
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					
+				}
+				return  result;
+			}
+		});
+	}
+
+	public int getplayernumber(final int playerid, final int gameid) {
+		// TODO Auto-generated method stub
+		return executeTransaction(new Transaction<Integer>() {
+			public Integer execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				int playernumber=-1;
+				try { 
+						stmt = conn.prepareStatement(//user1id   user2id
+								"select p1id from multigamestate "
+								+ " where gameid= ? "
+						);
+						stmt.setInt(1, gameid);
+						resultSet = stmt.executeQuery();
+
+						Integer p1=-1;
+						if (resultSet.next()) {
+							p1=resultSet.getInt(1);
+							if(p1==playerid) {
+								playernumber= 1;
+							}
+							else {
+								playernumber= 2;
+							}
+							
+							
+						}
+						
+					
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					
+				}
+				return  playernumber;
+			}
+		});
+
 	}	
 	
 	

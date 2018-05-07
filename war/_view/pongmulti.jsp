@@ -114,148 +114,65 @@
 		}
 		</style>
 		<script type="text/javascript">
-		var score=0;
-		var gamescore;
-		var userscores;
+		var myid,mynumber;
+		var otherid;
+		var connection;
+		try{
+			otherid=${otherid};
+			//myid=&{mine};
+		}
+		catch(e){
+			console.log(e);
+		}
+		var urlEncodedData = "";
+		var urlEncodedDataPairs = [];
+
+		urlEncodedDataPairs.push(encodeURIComponent("gtmyid") + '=' + encodeURIComponent(true));
 		
+		urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
 		
-		
-		function updatescores(){
-			document.getElementById("gamescores").innerHTML = "";
-			document.getElementById("userscores").innerHTML = "";
+		var xmlreq = new XMLHttpRequest();
+		xmlreq.open("post", "pongplay");
+		xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		xmlreq.send(urlEncodedData);
 			
-			var toAdd = document.createDocumentFragment();
-			 var newDiv = document.createElement('div');
-			 var newHr = document.createElement('hr');
-			 newDiv.className = 'gamescoreentry';
-			 newDiv.innerHTML ="overall high scores";
-			 toAdd.appendChild(newDiv);
-			 toAdd.appendChild(newHr);
-			
-			for(var i=0; i < gamescore.length; i++){
-					newDiv = document.createElement('div');
-				  	newHr = document.createElement('hr');
-				   
-				   var score=gamescore[i].value;
-				   var username=gamescore[i].key;
-				   username+=" |-| ";
-				   username+=score;
-				  
-				   //newDiv.id = 'r'+i;
-				   newDiv.className = 'gamescoreentry';
-				  
-				   newDiv.innerHTML = username;
-				  
-				   toAdd.appendChild(newDiv);
-				   toAdd.appendChild(newHr);
-				}
-				//toAdd.appendChild(previousposts);
-				document.getElementById("gamescores").appendChild(toAdd);
-				
-				// start user score
-				
-				var toAdd = document.createDocumentFragment();
-				var toAdd = document.createDocumentFragment();
-				 var newDiv = document.createElement('div');
-				 var newHr = document.createElement('hr');
-				 newDiv.className = 'gamescoreentry';
-				 newDiv.innerHTML ="your high scores";
-				 toAdd.appendChild(newDiv);
-				 toAdd.appendChild(newHr);
-				 var x=1;
-				for(var i=1; i < userscores.length+1; i++){
-					if (userscores[i-1]!=0){
-						var newDiv = document.createElement('div');
-						   var newHr = document.createElement('hr');
-						 
-						   var score=""+x+" |-| "
-						   
-						   score+=userscores[i-1];
-						 
-						 
-						  
-						   //newDiv.id = 'r'+i;
-						   newDiv.className = 'gamescoreentry';
-						  
-						   newDiv.innerHTML = score;
-						  
-						   toAdd.appendChild(newDiv);
-						   toAdd.appendChild(newHr);
-						   x++;
-					}
-				  
-				}
-				//toAdd.appendChild(previousposts);
-				document.getElementById("userscores").appendChild(toAdd);
+		xmlreq.onload=function(){
+			if (this.status==200){
+				myid=JSON.parse(this.responseText);
+				console.log(myid);
+				console.log(this.responseText);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				connection = new WebSocket('ws://192.168.43.86:8080/website/Game4scocket');//!!!!! CHANGE THIS FOR DEMNSTRATION !!!!!!!!!!!!!!!!
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				connection.onopen = function () {
+					  connection.send("myid :"+myid); // Send the message 'Ping' to the server
+					  connection.send("othr :"+otherid);
+					};
+
+					// Log errors
+					connection.onerror = function (error) {
+					  console.log('WebSocket Error ' + error);
+					};
+
+					// Log messages from the server
+					connection.onmessage = function (e) {
+						var message=e.data;
+						if(message.substring(0, 5)=="plnum"){
+							mynumber=JSON.parse(message.substring(6));
+						}
+						if(message.substring(0, 5)=="ball "){
+							tochangeball=JSON.parse(message.substring(6));
+						}
+						if(message.substring(0, 5)=="otpad"){
+							tochangeotherpad=JSON.parse(message.substring(6));
+						}
+					  //console.log('Server: '+message);
+					
+					};
+			}
 		}
 		
 		
-		
-		function post(postscores){
-			
-			 var urlEncodedData = "";
-			var urlEncodedDataPairs = [];
-			//var text = document.getElementById("chattextarea").value;
-			var chatedc;
-			//document.getElementById("chattextarea").value='';
-			
-			//urlEncodedDataPairs.push(encodeURIComponent("chatinputtext") + '=' + encodeURIComponent(text));
-			//urlEncodedDataPairs.push(encodeURIComponent("numberofpost") + '=' + encodeURIComponent(count));
-			urlEncodedDataPairs.push(encodeURIComponent("score") + '=' + encodeURIComponent(score));
-			urlEncodedDataPairs.push(encodeURIComponent("forscores") + '=' + encodeURIComponent(postscores));
-			urlEncodedDataPairs.push(encodeURIComponent("getmoreposts") + '=' + encodeURIComponent(false));
-			urlEncodedDataPairs.push(encodeURIComponent("isasync") + '=' + encodeURIComponent(true));
-			
-			 urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
-			 
-			 
-			 
-			 var xmlreq = new XMLHttpRequest();
-			 xmlreq.open("post", "Game3window");
-				xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-				xmlreq.send(urlEncodedData);
-			 
-			 
-				xmlreq.onreadystatechange = function() {
-			        if (this.readyState == 4 && this.status == 200) {
-			        //	console.log(this.responseText);
-			        	var resp=this.responseText;
-			        	var objstr1,objstr2;
-			        	for(var i=0;i<resp.length;i++){
-			        		if(resp.charAt(i)==']'){
-			        			objstr1=resp.substring(0, i+1);
-			        			objstr2=resp.substring(i+2,resp.length-1 );
-			        			//console.log(objstr1);
-			        			//console.log(objstr2);
-			        			break;
-			        		}
-			        			
-			        	}
-			        	gamescore=JSON.parse(objstr1);
-			    		userscores= JSON.parse(objstr2);
-			    		updatescores();
-			        	
-			       }
-			    };
-
-		}
-		
-		var connection = new WebSocket('ws://localhost:8080/website/Game4scocket');
-		connection.onopen = function () {
-			  connection.send(" "); // Send the message 'Ping' to the server
-			  connection.send('pong');
-			};
-
-			// Log errors
-			connection.onerror = function (error) {
-			  console.log('WebSocket Error ' + error);
-			};
-
-			// Log messages from the server
-			connection.onmessage = function (e) {
-			  console.log('Server: '+e.data);
-			
-			};
 		function gamestateup(){
 			
 			connection.send('ping');
@@ -309,22 +226,12 @@
 			<script type="text/javascript" src="threejs-master/mygame/js/controls/FlyControls.js"></script>
 			<script type="text/javascript" src="threejs-master/mygame/js/Detector.js"></script>
 			<script type="text/javascript" src="threejs-master/mygame/js/libs/stats.min.js"></script>
-			<script type="text/javascript" src="threejs-master/mygame/3djspong.js"> </script>
+			<script type="text/javascript" src="threejs-master/mygame/3djspongmulty.js"> </script>
 	
 			<button id="restart" onclick="restart()">restart</button>
 		</div>
 		
 	
-	   		<!-- C:\Users\jacob minor\Documents\eclipse\website4\externaljres
-	   		<script type="text/javascript" src="file:///C:Users/jacob minor/Documents/build/three.js-master/build/three.js"></script>
-
-		
-			<script type="text/javascript" src="file:///C:Users/jacob minor/Documents/build/three.js-master/mygame/js/controls/FlyControls.js"></script>
-
-			<script type="text/javascript" src="file:///C:Users/jacob minor/Documents/build/three.js-master/mygame/js/Detector.js"></script>
-			<script type="text/javascript" src="file:///C:Users/jacob minor/Documents/build/three.js-master/mygame/js/libs/stats.min.js"></script>
-			<script type="text/javascript" src="file:///C:Users/jacob minor/Documents/build/three.js-master/mygame/3djsgame.js"> </script>
-			 -->
 	
 	
 	
@@ -348,14 +255,6 @@
 	
 	
 	</div>
-	
-		<script>
-		var gamescore=${gemescores};
-		var userscores=${userscores};
-		
-		updatescores();
-	
-		</script>
 	
 	
 	

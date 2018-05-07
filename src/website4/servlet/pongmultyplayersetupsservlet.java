@@ -82,8 +82,13 @@ public class pongmultyplayersetupsservlet extends HttpServlet {
 		
 		try {
 			int chalangeid;
+			String accetfromstr=req.getParameter("acceptfrom");
 			String leavestr= req.getParameter("leavemultiplayer");
-			if (leavestr!=null) {
+			if (accetfromstr!=null) {
+				int acceptedfrom=Integer.parseInt(accetfromstr);
+				multictrl.acceptchalange(user.getuserid(), acceptedfrom);
+			}
+			else if (leavestr!=null) {
 				multictrl.leavemultiplayer(user.getuserid());
 				System.out.println("    __________________            usser     "+user.getusername()+"  is leaving");
 			}

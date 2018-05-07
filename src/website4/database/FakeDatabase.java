@@ -154,8 +154,6 @@ public class FakeDatabase implements IDatabase {
 		
 	}
 
-	
-
 	public List<post> posttopm(long mils_time, String posttext, int senderid, int pmid) {
 		// TODO Auto-generated method stub
 		return null;
@@ -239,6 +237,56 @@ public class FakeDatabase implements IDatabase {
 	public void updatemultyplayertimes() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void acceptchalange(int acceptedfrom, int acceptedby) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void createmultiplayer(int player1, int player2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setp1state(String p1paddle, int gameid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getp1state(int gameid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setp2state(String p2paddle, int gameid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getp2state(int gameid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setballstate(String ball, int gameid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getballstate(int gameid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Integer getmultiplayerid(int player1, int player2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int getplayernumber(int playerid, int gameid) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 

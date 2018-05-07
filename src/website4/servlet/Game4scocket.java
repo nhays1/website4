@@ -28,27 +28,47 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 
 import website4.controller.UserController;
+import website4.controller.pongwebscocketctrl;
 
 
 
 
 
-
+// scocket example from   https://stackoverflow.com/questions/46009847/how-to-properly-report-an-error-to-client-through-websockets
 @ServerEndpoint("/Game4scocket")
 public class Game4scocket {
+	private static final int startupmessages=2;
+	private static final int identificatinobits=5;
     private javax.websocket.Session session;
-    private UserController usecontrol=new UserController();
-    private int messagecont;
-    
+    private int messagecont,myid,otherid,gameid,myplayernum;
+    private pongwebscocketctrl multictrl= new pongwebscocketctrl();
     
     
     
     
     
     public void handshake(String message){
-    	
-    	
-    	
+    	System.out.println(message+"   "+message.substring(0, identificatinobits)+"    "+message.substring(identificatinobits+1));
+    	if(message.substring(0, identificatinobits).equals("othr ")) {
+    		otherid=Integer.parseInt(message.substring(identificatinobits+1));
+    		System.out.println(otherid);
+    	}
+    	if(message.substring(0, identificatinobits).equals("myid ")) {
+    		myid=Integer.parseInt(message.substring(identificatinobits+1));
+    		System.out.println(myid);
+    	}
+    	if(messagecont==startupmessages) {
+    		gameid=multictrl.gotomultiplayer(myid, otherid);
+    		myplayernum=multictrl.getplayernumber(myid, gameid);
+    		System.out.println("   "+myid+" is player "+myplayernum+" in game number "+gameid);
+    		 try {
+ 				session.getBasicRemote().sendText("plnum:"+myplayernum);
+ 	    	 } 
+ 	    	 catch (IOException e) {
+ 				// TODO Auto-generated catch block
+ 				e.printStackTrace();
+ 	    	 }
+    	}
     }
     
     
@@ -64,31 +84,56 @@ public class Game4scocket {
     
     @OnMessage
     public void onWebSocketText(String message){
-    	 if (messagecont<5) {
+    	 if (messagecont<startupmessages) {
     		 messagecont++;
     		 System.out.println("Received TEXT message: " + message+ " from scocket "+session.getId());
     		 handshake(message);
-    		 
-    	 	
-    	 try {
-			session.getBasicRemote().sendText("pong");
-		} 
-    	 catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
     	 }
+    	 else if(message.substring(0, identificatinobits).equals("ball ")) {
+    		 multictrl.setballstate(gameid, message.substring(identificatinobits+1));
+    		 messagecont++;
+    		 if( messagecont<5)
+    			 System.out.println("Received TEXT message: " + message+ " from scocket "+session.getId());
+     	}
+    	 else if(message.substring(0, identificatinobits).equals("mypad")) {
+    		 multictrl.setmypaddle(gameid, myplayernum, message.substring(identificatinobits+1));
+    		 messagecont++;
+    		 if( messagecont<5)
+    			 System.out.println("Received TEXT message: " + message+ " from scocket "+session.getId());
+      	}
+    	
+    	
+    	
+    	if(myplayernum==2) {
+    		try {
+ 				session.getBasicRemote().sendText("ball :"+multictrl.getballstate(gameid));
+ 				session.getBasicRemote().sendText("otpad:"+multictrl.getotherpaddle(gameid, myplayernum));
+ 	    	 } 
+ 	    	 catch (IOException e) {
+ 				// TODO Auto-generated catch block
+ 				e.printStackTrace();
+ 	    	 }
+    	}
+    	else if(myplayernum==1) {
+    		try {
+ 				session.getBasicRemote().sendText("otpad:"+multictrl.getotherpaddle(gameid, myplayernum));
+ 	    	 } 
+ 	    	 catch (IOException e) {
+ 				// TODO Auto-generated catch block
+ 				e.printStackTrace();
+ 	    	 }
+    	}
     }
 
     @OnClose
     public void onWebSocketClose(CloseReason reason) {
-    	System.out.println("Socket Closed: " + reason);
+    	System.out.println("Socket "+ session.getId()+" Closed: " + reason);
        // logger.info("WebSocket Closed: " + reason);
     }
 
     @OnError
     public void onWebSocketError(Throwable t){
-    	System.out.println("WebSocket Error: ");
+    	System.out.println("WebSocket "+ session.getId()+" Error: ");
         t.printStackTrace();
     	
        // logger.debug(t, t);

@@ -109,8 +109,15 @@
 						//console.log(this.response);
 						try{
 							var obj= JSON.parse(this.responseText);
-							//console.log(obj);
-							makeplayerlist(obj)
+							console.log(obj);
+							if(obj[0].first!=null){
+								makeplayerlist(obj);
+							}
+							else{
+								console.log("errrrror!!!");//otheruser
+								document.getElementById("otheruser").value=obj[0].second;
+								leavemultiplayer("play");
+							}
 						}
 						catch(e){
 							console.log(this.responseText);
@@ -158,7 +165,8 @@
 					   if(players[i].third){
 						   newbut.innerHTML = " accept chalange ";
 						   newbut.onclick = function() { 
-							   leavemultiplayer("play")
+							   acceptchalenge(this.id);
+							  
 								
 						   };
 					   }
@@ -193,7 +201,28 @@
 				
 				
 			}
-			
+			function acceptchalenge(idfrom){
+				var urlEncodedData = "";
+				var urlEncodedDataPairs = [];
+				document.getElementById("otheruser").value=idfrom;
+					
+				urlEncodedDataPairs.push(encodeURIComponent("acceptfrom") + '=' + encodeURIComponent(idfrom));
+				
+				urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+				
+				var xmlreq = new XMLHttpRequest();
+				xmlreq.open("post", "multysetup");
+				xmlreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				xmlreq.send(urlEncodedData);
+					
+				xmlreq.onload=function(){
+					if (this.status==200){
+						leavemultiplayer("play");
+						
+					}
+				}
+
+			}
 			
 			
 			
@@ -246,8 +275,9 @@
 	 </form>
 		<button onclick="home()">home</button>
 	
-	 <form action="${pageContext.servletContext.contextPath}/pongplay" method="get" id="goplay">
-	 
+	 <form action="${pageContext.servletContext.contextPath}/pongplay" method="post" id="goplay">
+	 		<input id="thisuser" type="text" name="thisuser" size="12" value="" />
+	 		<input id="otheruser" type="text" name="otheruser" size="12" value="" />
 	 </form>
 	</body>
 </html>
