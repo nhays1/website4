@@ -86,9 +86,9 @@
 			left:160px;
 			top:270;
 		
-		margin-right:300px;
+		margin-right:678px;
 	
-		height: 600px;
+		height: 602px;
 		min-width: 600px;
 		border: 3px solid blue;
 		}
@@ -501,6 +501,7 @@ window.onload=function() {
 	canv=document.getElementById("content");
 	ctx=canv.getContext("2d");
 	document.addEventListener("keydown",keyPush);
+	document.addEventListener("keyup",keyRelease);
 	//var interval = 50;
 	
 	setInterval(gameStart,75);
@@ -520,7 +521,7 @@ var trail=[];
 var tail = 5;
 var score = 0;
 var foodEaten = 0; //Tracks how amount of food eaten
-var gameOver;
+var gameOver = false;
 var r = false; //Right
 var l = false; //Left
 var d = false; //Down
@@ -529,6 +530,7 @@ var c = Math.floor(Math.random() * 8); //Food Color
 var sc = 0;//Snake Color
 var pause = false;
 var gStart = false;
+var walls = false;
 
 function gameStart() {
 	if(pause == false){
@@ -536,18 +538,39 @@ function gameStart() {
 	snakeY+=yv;
 	}
 	
-	if(snakeX<0) {
+	if(snakeX<0 && walls == true) {
 		snakeX= 40;
 	}
-	if(snakeX>40) {
+	
+	if(snakeX<0 && walls == false) {
+		gameOver = true;
+	}
+	
+	/////
+	if(snakeX>40 && walls == true) {
 		snakeX= 0;
 	}
-	if(snakeY<0) {
+	
+	if(snakeX>40 && walls == false) {
+		gameOver = true;
+	}
+	/////
+	if(snakeY<0 && walls == true) {
 		snakeY= 19;
 	}
-	if(snakeY>19) {
+	
+	if(snakeY<0 && walls == false) {
+		gameOver = true;
+	}
+	/////
+	if(snakeY>19 && walls == true) {
 		snakeY= 0;
 	}
+	
+	if(snakeY>19 && walls == false) {
+		gameOver = true;
+	}
+	
 	
 	ctx.fillStyle="grey";
 	ctx.fillRect(0,0,canv.width,canv.height);
@@ -563,7 +586,9 @@ function gameStart() {
 		if(trail[i].x==snakeX && trail[i].y==snakeY) {
 			tail = 5;
 			foodEaten = 0;			
-			score = 0;
+			score = 0;			
+			
+			
 		}
 		}
 	}
@@ -626,7 +651,7 @@ function gameStart() {
 	ctx.fillText("Score: "+ score, 5, 25);
 	ctx.fillText("Food Consumed: "+foodEaten, 540, 25);
 	//Draws pause in the middle of the screen when the game is paused
-	if(pause == true){
+	if(pause == true && gameOver == false){
 		ctx.font=("50px Arial");
 		ctx.fillText("PAUSE", 540, 290);
 	}	
@@ -634,6 +659,13 @@ function gameStart() {
 	//Starting message
 	if(gStart == false){
 		ctx.fillText("Press W, A, S, D, or any Arrow Key to start", 330, 200);
+		ctx.fillText("Use V to move through walls, P to toggle Pause", 300, 250);
+	}
+	if(gameOver == true){
+		xv = 0; yv = 0;
+		trail = [];
+		ctx.fillText("Game Over!",540, 290);
+		ctx.fillText("Press R to Restart", 500, 320);
 	}
 }
 
@@ -748,8 +780,52 @@ function keyPush(event) {
 			}				
 			break;
 			
+		case 86: //v
+			walls = true;
+			
+			break;
+			
+		case 82: //r
+			if(gameOver == true){
+			gameOver = false;
+			snakeX = 20; //Snake starting X
+			snakeY = 10; //Snake starting Y
+			grid = 30;
+			tiles = 30;
+			foodX = Math.floor(Math.random()*40); //Initial Position of food X
+			foodY = Math.floor(Math.random()*20); //Initial Position of food Y
+			xv = 0; //X Velocity
+			yv = 0; //Y Velocity
+			trail=[];
+			tail = 5;
+			score = 0;
+			foodEaten = 0; //Tracks how amount of food eaten
+			gameOver = false;
+			r = false; //Right
+			l = false; //Left
+			d = false; //Down
+			u = false; //Up
+			c = Math.floor(Math.random() * 8); //Food Color
+			sc = 0;//Snake Color
+			pause = false;
+			gStart = false;
+			walls = false;
+			}
+			break;
+			
 	}
 }
+
+function keyRelease(event) {
+	
+	switch(event.keyCode)  {
+	
+	case 86: //v
+		walls = false;
+		break;
+	}
+}
+
 </script>
 </div>
 
