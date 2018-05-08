@@ -33,7 +33,7 @@ public class CardDeckTest {
 		assertEquals(testNum, cd1.getCard(0));
 		assertEquals(testNum2, cd1.getCard(1));
 	}
-	/*
+	
 	@Test
 	public void testShuffle(){
 		cd1.createDeck();
@@ -54,7 +54,7 @@ public class CardDeckTest {
 		assertNotEquals(test6, cd1.getCard(5));
 		assertNotEquals(test7, cd1.getCard(6));
 	}
-	*/
+	
 	@Test
 	public void testGetTopCard(){
 		cd1.createDeck();

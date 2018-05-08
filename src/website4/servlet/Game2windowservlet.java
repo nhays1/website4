@@ -41,7 +41,7 @@ public class Game2windowservlet extends HttpServlet {
             currentUser=uc.getuserbyid(userid);
 
         }
-
+        
         if(currentUser==null) {//if user id was not found creates a new guest 
             currentUser= uc.createguestuser() ;
         }
@@ -66,21 +66,15 @@ public class Game2windowservlet extends HttpServlet {
 		String transactMsg = "";
 		
 		try {
-			
 			userBet = getInteger(req, "userBet");
-			
 			try {
 				
 				if (req.getParameter(choice) != null) {
-					
 					choice = getChoice(req, "choice");
-					
 				}
 				
 			}catch(NullPointerException e) {
-				
 				errorMessage = "Please select an option";
-				
 			}
 			
 
@@ -89,20 +83,17 @@ public class Game2windowservlet extends HttpServlet {
 			}
 			
 			else {
-				
 				//calculations with decks and cards, and comparisons
 				reward = userBet * 3;
 			}
 			
 		} catch (NumberFormatException e) {
-			
 			errorMessage = "Invalid Input";
-			
 		}
 		
 		req.setAttribute("userBet", req.getParameter("userBet"));
 		
-		if(userDeck.getTopCard().compareTo(cpuDeck.getTopCard()) == 0) {
+		if(userDeck.pullCard().getRankToCompare() > cpuDeck.pullCard().getRankToCompare()) {
 			result = "You have won the card game!";
 			currentUser.setcoins(currentUser.getcoins() + reward);
 			transactMsg = transactMsg.concat(currentUser.getusername() + " has won " + reward + " Coins!");

@@ -5,7 +5,6 @@ public class Card implements Comparable<Card> {
 	private Rank rank;
 	private Suit suit;
 	private int cardIndex;
-	//
 	/**
 	 * Constructor.
 	 * 
@@ -50,15 +49,56 @@ public class Card implements Comparable<Card> {
 		return this.compareTo(other) == 0;
 	}
 	
-	public int compareTo(Card o) {
-		int cmp1 = this.rank.compareTo(o.rank);
-		int cmp2 = this.suit.compareTo(o.suit);
-		if(cmp1 == 0) {
-			return cmp1;
+	public int getRankToCompare() {
+		
+		if(this.getRank() == Rank.ACE) {
+			return 1;
 		}
-		else if (cmp2 == 0) {
-			return cmp2;
+		else if(this.getRank() == Rank.TWO) {
+			return 2;
 		}
-		return this.rank.compareTo(o.rank);
+		else if(this.getRank() == Rank.THREE) {
+			return 3;
+		}
+		else if(this.getRank() == Rank.FOUR) {
+			return 4;
+		}
+		else if(this.getRank() == Rank.FIVE) {
+			return 5;
+		}
+		else if(this.getRank() == Rank.SIX) {
+			return 6;
+		}
+		else if(this.getRank() == Rank.SEVEN) {
+			return 7;
+		}
+		else if(this.getRank() == Rank.EIGHT) {
+			return 8;
+		}
+		else if(this.getRank() == Rank.NINE) {
+			return 9;
+		}
+		else if(this.getRank() == Rank.TEN) {
+			return 10;
+		}
+		else if(this.getRank() == Rank.JACK) {
+			return 11;
+		}
+		else if(this.getRank() == Rank.QUEEN) {
+			return 12;
+		}
+		else if(this.getRank() == Rank.KING) {
+			return 13;
+		}
+		else {
+			return 0;
+		}
+		
 	}
+
+	public int compareTo(Card o) {
+		return 0;
+	}
+
+	
 }

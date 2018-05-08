@@ -140,8 +140,5 @@ public class CardDeck {
 	public void setBet(int userBet) {
 		this.userBet = userBet;
 	}
-	
-	public void flip(ArrayList<Card> cardArrayList) {
-		
-	}
+
 }
