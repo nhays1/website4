@@ -279,6 +279,14 @@
 					<input name="newuser" class="buttonHigher" type="submit" value="Yeet shooter" />
 				</form>
 			</li>
+			<li><form action="${pageContext.servletContext.contextPath}/Game4window" method="get">
+					<input name="newuser" class="buttonHigher" type="submit" value="3d Pong" />
+				</form>
+			</li>
+			<li><form action="${pageContext.servletContext.contextPath}/snakeGame" method="get">
+					<input name="newuser" class="buttonHigher" type="submit" value="snakeGame" />
+				</form>
+			</li>
 		</ul>	
 		<%= session.getAttribute( "userid" ) %>
 		
@@ -289,10 +297,6 @@
 		<form action="${pageContext.servletContext.contextPath}/Game2window" method="post">
 			<table>
 				<tr>
-					<td class="label">Bet Amount:</td>
-					<td><input type="text" class="betInput" name="userBet" size="12" value="${userBet}" /></td>
-				</tr>
-				<tr>
 					<tr>
 					<form action="choice">
   					<input  type="submit" class="buttonHigher" name="choice" value="higher"><br>
@@ -300,20 +304,27 @@
 				</tr>
 				<div align="left">
 					<tr>
-						<td class="label"> User Flipped: </td>
+						<td class="label"> (User's card on top) </td>
+						<img id="userCard" width = "50" height="75">
 					</tr>
-					<img id="userCard" width = "50" height="75">
 				</div>
-				<div align="right">
+				<div align = "right">
 					<tr>
-						<td class="label"> CPU's next Card: </td>
+						<td class = "label"> (CPU's card on bottom) </td>
+						<img id = "cpuCard" width = "50" height="75">
 					</tr>
-					<img id="cpuCard" width = "50" height="75">
 				</div>
+				<tr>
+					<td class="label">Bet Amount:</td>
+					<td><input type="text" class="betInput" name="userBet" size="12" value="${userBet}" /></td>
+				</tr>
 				<div>
 					<tr>
-						<td class="label">User:</td>
-						<td>${transactMsg}</td>
+						<td class = "label">User:</td>
+						<td class = "label">${transactMsg}</td>
+					</tr>
+					<tr>
+						<td class = "label">${errorMessage}</td>
 					</tr>
 				</div>
 			</table>
@@ -329,10 +340,6 @@
 	
 	
 	
-	
-	
-		
-	 </form>
 	
 	
 	

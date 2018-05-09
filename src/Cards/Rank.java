@@ -7,6 +7,7 @@ package Cards;
  * (because it is the lowest rank in Klondike solitaire).
  */
 public enum Rank {
+	
 	/** Ace */
 	ACE("A"),
 	/** Two */
@@ -58,4 +59,5 @@ public enum Rank {
 	public String getMemberName() {
 		return super.toString();
 	}
+	
 }

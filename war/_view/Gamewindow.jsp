@@ -64,7 +64,7 @@
 		
 		}
 		
-		.radButton{
+		.checkbox{
 			top-margin: 24px;
 			width: 24px;
 			text-align: left;
@@ -75,7 +75,7 @@
 		}
 		
 		.label{
-			text-align: left;
+			text-align: center;
 			color: white;
 			font-family: "Arial", sans-serif;
 			font-size: 24pt;
@@ -98,6 +98,18 @@
 		    font-size: 16px;
 		    margin-top: 10px;
 		 }
+		 
+		 .buttonLower {
+		    background-color: #f44336; /* Red */
+		    border: none;
+		    color: white;
+		    padding: 15px 35px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 16px;
+		    margin-bottom: 10px;
+		}
 		
 		</style>
 		
@@ -152,7 +164,15 @@
 				</form>
 			</li>
 			<li><form action="${pageContext.servletContext.contextPath}/Game3window" method="get">
-					<input name="newuser" class="buttonHigher" type="submit" value="Yeet Shooter" />
+					<input name="newuser" class="buttonHigher" type="submit" value="Yeet shooter" />
+				</form>
+			</li>
+			<li><form action="${pageContext.servletContext.contextPath}/Game4window" method="get">
+					<input name="newuser" class="buttonHigher" type="submit" value="3d Pong" />
+				</form>
+			</li>
+			<li><form action="${pageContext.servletContext.contextPath}/snakeGame" method="get">
+					<input name="newuser" class="buttonHigher" type="submit" value="snakeGame" />
 				</form>
 			</li>
 		</ul>	
@@ -191,16 +211,16 @@
 					<td class="label">User:</td>
 					<td class="label">${transaction}</td>
 				</tr>
+				<tr>
+					<td class="label"></td>
+					<td class="label">${errorMessage}</td>
+				</tr>
 			</table>
 		</form>
-
-		</div>
-
-
-
-		 <form action="${pageContext.servletContext.contextPath}/index" method="get">
-	 	<input type="Submit" name="chatsubmit" value="home">
-	 </form>
-	
+	</div>
+		<div>
+			<form action="${pageContext.servletContext.contextPath}/index" method="get">
+		 	<input type="Submit" class="buttonLower" name="chatsubmit" value="home">
+	 	</div>
 	</body>
 </html>

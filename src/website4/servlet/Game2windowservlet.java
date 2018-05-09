@@ -41,7 +41,7 @@ public class Game2windowservlet extends HttpServlet {
             currentUser=uc.getuserbyid(userid);
 
         }
-
+        
         if(currentUser==null) {//if user id was not found creates a new guest 
             currentUser= uc.createguestuser() ;
         }
@@ -63,52 +63,36 @@ public class Game2windowservlet extends HttpServlet {
 		String result = " ";
 		String errorMessage = " ";
 		String choice = " ";
-		String transactMsg = "";
+		String transactMsg = " ";
+		
+		choice = req.getParameter("choice");
 		
 		try {
 			
 			userBet = getInteger(req, "userBet");
-			
-			try {
-				
-				if (req.getParameter(choice) != null) {
-					
-					choice = getChoice(req, "choice");
-					
-				}
-				
-			}catch(NullPointerException e) {
-				
-				errorMessage = "Please select an option";
-				
-			}
-			
 
 			if (userBet <= 0) {
 				errorMessage = "Please enter a valid Bet Amount";
 			}
-			
+
 			else {
-				
 				//calculations with decks and cards, and comparisons
 				reward = userBet * 3;
 			}
-			
+
 		} catch (NumberFormatException e) {
-			
 			errorMessage = "Invalid Input";
-			
 		}
-		
+
 		req.setAttribute("userBet", req.getParameter("userBet"));
-		
-		if(userDeck.getTopCard().compareTo(cpuDeck.getTopCard()) == 0) {
+
+		if(((userDeck.pullCard().getRankToCompare() > cpuDeck.pullCard().getRankToCompare()) && choice.equals("higher")) || (userDeck.pullCard().getRankToCompare() < cpuDeck.pullCard().getRankToCompare()) && !choice.equals("higher")) {
 			result = "You have won the card game!";
 			currentUser.setcoins(currentUser.getcoins() + reward);
 			transactMsg = transactMsg.concat(currentUser.getusername() + " has won " + reward + " Coins!");
-			
 			//add user updates here
 		}
+
 		else {
 			result = "You have lost the card game...";
 			reward = 0 - userBet;
@@ -116,7 +100,7 @@ public class Game2windowservlet extends HttpServlet {
 			transactMsg = transactMsg.concat(currentUser.getusername() + " has lost " + userBet + " Coins!");
 			//add user updates here
 		}
-		
+
 		// Forward to view to render the result HTML document
 		req.getSession().setAttribute("userid", currentUser.getuserid());
 		req.setAttribute("userCardResult", userDeck.getTopCard().toString());
@@ -124,15 +108,17 @@ public class Game2windowservlet extends HttpServlet {
 		req.setAttribute("cpuCardIndex", cpuDeck.pullCard().getCardIndex());
 		req.setAttribute("cpuCardResult", cpuDeck.getTopCard().toString());
 		req.setAttribute("transactMsg", transactMsg);
+		req.setAttribute("errorMessage", errorMessage);
 		req.getRequestDispatcher("/_view/Game2window.jsp").forward(req, resp);
 		System.out.println(errorMessage);
 	}
-	
-	
+
 	private int getInteger(HttpServletRequest req, String name) {
 		return Integer.parseInt(req.getParameter(name));
 	}
+
 	private String getChoice(HttpServletRequest req, String choice) {
 		return req.getParameter(choice);
 	}
+
 }
