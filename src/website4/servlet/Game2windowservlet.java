@@ -108,6 +108,7 @@ public class Game2windowservlet extends HttpServlet {
 		req.setAttribute("cpuCardIndex", cpuDeck.pullCard().getCardIndex());
 		req.setAttribute("cpuCardResult", cpuDeck.getTopCard().toString());
 		req.setAttribute("transactMsg", transactMsg);
+		req.setAttribute("errorMessage", errorMessage);
 		req.getRequestDispatcher("/_view/Game2window.jsp").forward(req, resp);
 		System.out.println(errorMessage);
 	}

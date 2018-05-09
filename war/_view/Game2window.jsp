@@ -279,6 +279,14 @@
 					<input name="newuser" class="buttonHigher" type="submit" value="Yeet shooter" />
 				</form>
 			</li>
+			<li><form action="${pageContext.servletContext.contextPath}/Game4window" method="get">
+					<input name="newuser" class="buttonHigher" type="submit" value="3d Pong" />
+				</form>
+			</li>
+			<li><form action="${pageContext.servletContext.contextPath}/snakeGame" method="get">
+					<input name="newuser" class="buttonHigher" type="submit" value="snakeGame" />
+				</form>
+			</li>
 		</ul>	
 		<%= session.getAttribute( "userid" ) %>
 		
@@ -315,6 +323,9 @@
 						<td class = "label">User:</td>
 						<td class = "label">${transactMsg}</td>
 					</tr>
+					<tr>
+						<td class = "label">${errorMessage}</td>
+					</tr>
 				</div>
 			</table>
 		</form>
@@ -329,10 +340,6 @@
 	
 	
 	
-	
-	
-		
-	 </form>
 	
 	
 	

@@ -63,7 +63,11 @@ public class Gamewindowservlet extends HttpServlet {
 		
 		try {
 			
-			userBet = getInteger(req, "userBet");
+			try {
+				userBet = getInteger(req, "userBet");
+			}catch(NumberFormatException e) {
+				errorMessage = "Please enter a valid bet amount";
+			}
 			
 			try {
 				choice = req.getParameter("choice");
