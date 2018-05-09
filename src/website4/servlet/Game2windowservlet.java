@@ -65,19 +65,11 @@ public class Game2windowservlet extends HttpServlet {
 		String choice = " ";
 		String transactMsg = " ";
 		
-		choice = getChoice(req, "choice");
+		choice = req.getParameter("choice");
 		
 		try {
+			
 			userBet = getInteger(req, "userBet");
-			try {
-
-				if (req.getParameter(choice) != null) {
-					choice = getChoice(req, "choice");
-				}
-
-			}catch(NullPointerException e) {
-				errorMessage = "Please select an option";
-			}
 
 			if (userBet <= 0) {
 				errorMessage = "Please enter a valid Bet Amount";

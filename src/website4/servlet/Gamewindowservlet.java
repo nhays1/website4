@@ -49,7 +49,6 @@ public class Gamewindowservlet extends HttpServlet {
 		uc.getuserbyid(currentUser.getuserid());
 		
 		CoinGame cg = new CoinGame();
-		String choice = null;
 		int userBet = 0;
 		int reward = 0;
 		int coinFlip = 0;
@@ -59,143 +58,152 @@ public class Gamewindowservlet extends HttpServlet {
 		String transactMsg = "";
 		
 		// holds the error message text, if there is any
-		String errorMessage = null;
-		
-		choice = req.getParameter("choice");
+		String errorMessage = " ";
+		String choice = null;
 		
 		try {
 			
 			userBet = getInteger(req, "userBet");
 			
+			try {
+				choice = req.getParameter("choice");
+			}catch(NullPointerException e) {
+				errorMessage = "Please choose an option";
+				choice = "tails";
+			}
 			
 			try {
 				
-				if (req.getParameter(choice) != null) {
+				if(choice.equals("heads")) {
+					userSelection = 1;
+				}
+				else{
+					userSelection = 0;
+				}
 					
-					choice = req.getParameter("choice");
+				
+				
+				// check for errors in the form data before using is in a calculation
+				if (userBet <= 0) {
+					errorMessage = "Please enter a valid Bet Amount";
+				}
+				// otherwise, data is good, do the calculation
+				// must create the controller each time, since it doesn't persist between POSTs
+				// the view does not alter data, only controller methods should be used for that
+				// thus, always call a controller method to operate on the data
+				else {
+					cg.flip();
+					cg.setSelection(userSelection);
+					cg.setBet(userBet);
+					coinFlip = cg.getFlip();
+					req.setAttribute("coinFlip", coinFlip);
+					System.out.println("user chose " + cg.getSelection());
+					System.out.println("coin flipped as " + cg.getFlip());
+					isWin = cg.getIsWin();
+					reward = cg.getReward();
 					
 				}
+			} catch (NumberFormatException e) {
+				errorMessage = "Invalid Input";
+			}
+			
+			req.setAttribute("userBet", req.getParameter("userBet"));
+			
+			//if(userBet > currentUser.getcoins()) {
+			//	errorMessage = "User does not have enough coins";
+			//}
+			//else {
+				if(isWin) {
+					result = "You have won the coin toss!";
+					currentUser.setcoins(currentUser.getcoins() + reward);
+					transactMsg = transactMsg.concat(currentUser.getusername() + " has won " + reward + " Coins!");
+					if (cg.getSelection() == 1) {
+		
+						System.out.println("user chose heads");
+						
+						if(cg.getFlip() == 1) {
+							System.out.println("coin flipped as heads");
+						}
+						else {
+							System.out.println("coin flipped as tails");
+						}
+						
+					}
+					else {
+						
+						System.out.println("user chose tails");
+						
+						if(cg.getFlip() == 1) {
+							System.out.println("coin flipped as heads");
+						}
+						else {
+							System.out.println("coin flipped as tails");
+						}
+					}
+					
+					System.out.println(" user should have won here");
+					//add user updates here
+				}
 				
-			}catch(NullPointerException e) {
 				
-				errorMessage = "Please select an option";
 				
-			}
+				else {
+					result = "You have lost the coin toss...";
+					reward = 0 - userBet;
+					currentUser.setcoins(currentUser.getcoins() + reward);
+					transactMsg = transactMsg.concat(currentUser.getusername() + " has lost " + userBet + " Coins!");
+					if (cg.getSelection() == 1) {
+		
+						System.out.println("user chose heads");
+						
+						if(cg.getFlip() == 1) {
+							System.out.println("coin flipped as heads");
+						}
+						else {
+							System.out.println("coin flipped as tails");
+						}
+						
+					}
+					else {
+						
+						System.out.println("user chose tails");
+						
+						if(cg.getFlip() == 1) {
+							System.out.println("coin flipped as heads");
+						}
+						else {
+							System.out.println("coin flipped as tails");
+						}
+					}
+					System.out.println(" user should have lost here");
+					//add user updates here
+				}
+			//}
+	        req.getSession().setAttribute("userid", currentUser.getuserid());
+	        req.setAttribute("errorMessage", errorMessage);
+	        req.setAttribute("choice", choice);
+			req.setAttribute("transaction", transactMsg);
+			req.setAttribute("result", result);
+			req.getRequestDispatcher("/_view/Gamewindow.jsp").forward(req, resp);
+			System.out.println(errorMessage);
+		}catch(NullPointerException e) {
+			errorMessage = "please choose an option";
+			userSelection = 0;
+			userBet = 0;
+			transactMsg = "nothing happened you dunce";
+			result = " ";
 			
-			System.out.println(choice);
 			
-			if(choice.equals("heads")) {
-				userSelection = 1;
-			}
-			else{
-				userSelection = 0;
-			}
-			
-			
-			
-			// check for errors in the form data before using is in a calculation
-			if (userBet <= 0) {
-				errorMessage = "Please enter a valid Bet Amount";
-			}
-			// otherwise, data is good, do the calculation
-			// must create the controller each time, since it doesn't persist between POSTs
-			// the view does not alter data, only controller methods should be used for that
-			// thus, always call a controller method to operate on the data
-			else {
-				cg.flip();
-				cg.setSelection(userSelection);
-				cg.setBet(userBet);
-				coinFlip = cg.getFlip();
-				req.setAttribute("coinFlip", coinFlip);
-				System.out.println("user chose " + cg.getSelection());
-				System.out.println("coin flipped as " + cg.getFlip());
-				isWin = cg.getIsWin();
-				reward = cg.getReward();
-				
-			}
-		} catch (NumberFormatException e) {
-			errorMessage = "Invalid Input";
+			req.getSession().setAttribute("userid", currentUser.getuserid());
+	        req.setAttribute("errorMessage", errorMessage);
+	        req.setAttribute("choice", choice);
+			req.setAttribute("transaction", transactMsg);
+			req.setAttribute("result", result);
+			req.getRequestDispatcher("/_view/Gamewindow.jsp").forward(req, resp);
 		}
-		
-		req.setAttribute("userBet", req.getParameter("userBet"));
-		
-		if(isWin) {
-			result = "You have won the coin toss!";
-			currentUser.setcoins(currentUser.getcoins() + reward);
-			transactMsg = transactMsg.concat("User " + currentUser.getusername() + " has won " + reward + " Coins!");
-			if (cg.getSelection() == 1) {
-
-				System.out.println("user chose heads");
-				
-				if(cg.getFlip() == 1) {
-					System.out.println("coin flipped as heads");
-				}
-				else {
-					System.out.println("coin flipped as tails");
-				}
-				
-			}
-			else {
-				
-				System.out.println("user chose tails");
-				
-				if(cg.getFlip() == 1) {
-					System.out.println("coin flipped as heads");
-				}
-				else {
-					System.out.println("coin flipped as tails");
-				}
-			}
-			
-			System.out.println(" user should have won here");
-			//add user updates here
-		}
-		
-		else {
-			result = "You have lost the coin toss...";
-			reward = 0 - userBet;
-			currentUser.setcoins(currentUser.getcoins() + reward);
-			transactMsg = transactMsg.concat("User " + currentUser.getusername() + " has lost " + userBet + " Coins!");
-			if (cg.getSelection() == 1) {
-
-				System.out.println("user chose heads");
-				
-				if(cg.getFlip() == 1) {
-					System.out.println("coin flipped as heads");
-				}
-				else {
-					System.out.println("coin flipped as tails");
-				}
-				
-			}
-			else {
-				
-				System.out.println("user chose tails");
-				
-				if(cg.getFlip() == 1) {
-					System.out.println("coin flipped as heads");
-				}
-				else {
-					System.out.println("coin flipped as tails");
-				}
-			}
-			System.out.println(" user should have lost here");
-			//add user updates here
-		}
-		
-        req.getSession().setAttribute("userid", currentUser.getuserid());
-        req.setAttribute("choice", choice);
-		req.setAttribute("transaction", transactMsg);
-		req.setAttribute("result", result);
-		req.getRequestDispatcher("/_view/Gamewindow.jsp").forward(req, resp);
-		System.out.println(errorMessage);
 	}
-
 	private int getInteger(HttpServletRequest req, String name) {
 		return Integer.parseInt(req.getParameter(name));
-	}
-	private String getChoice(HttpServletRequest req, String choice) {
-		return req.getParameter("choice");
 	}
 	
 }

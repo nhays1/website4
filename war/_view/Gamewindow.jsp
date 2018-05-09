@@ -64,7 +64,7 @@
 		
 		}
 		
-		.radButton{
+		.checkbox{
 			top-margin: 24px;
 			width: 24px;
 			text-align: left;
@@ -75,7 +75,7 @@
 		}
 		
 		.label{
-			text-align: left;
+			text-align: center;
 			color: white;
 			font-family: "Arial", sans-serif;
 			font-size: 24pt;
@@ -190,6 +190,10 @@
 				<tr>
 					<td class="label">User:</td>
 					<td class="label">${transaction}</td>
+				</tr>
+				<tr>
+					<td class="label"></td>
+					<td class="label">${errorMessage}</td>
 				</tr>
 			</table>
 		</form>
