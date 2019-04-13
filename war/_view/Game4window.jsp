@@ -240,32 +240,8 @@
 
 		}
 		
-		var connection = new WebSocket('ws://localhost:8080/website/Game4scocket');
-		connection.onopen = function () {
-			  connection.send(" "); // Send the message 'Ping' to the server
-			  connection.send('pong');
-			};
-
-			// Log errors
-			connection.onerror = function (error) {
-			  console.log('WebSocket Error ' + error);
-			};
-
-			// Log messages from the server
-			connection.onmessage = function (e) {
-			  console.log('Server: '+e.data);
-			
-			};
-		function gamestateup(){
-			
-			connection.send('ping');
-			
-			
-			//var socket=new WebSocket("ws://localhost:8080/website/Game4scocket");
-			
-			
-			
-		}
+		
+	
 		
 		
 		</script>

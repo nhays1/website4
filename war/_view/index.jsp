@@ -817,7 +817,7 @@
 			<div class= "gamedisplay">
 				<form action="${pageContext.servletContext.contextPath}/Game4window" method="get">
 				
-					<input type="image" src="img/game3snap.png" alt="Submit" onmouseover="this.src='img/giphy.gif'" onmouseout="this.src='img/game3snap.png'"style="width:256px;height:256px;"  > 
+					<input type="image" src="img/pong.png" alt="Submit" onmouseover="this.src='img/giphy.gif'" onmouseout="this.src='img/pong.png'"style="width:256px;height:256px;"  > 
 				</form>
 				<div class="gametitle">
 					<form action="${pageContext.servletContext.contextPath}/Game4window" method="get">

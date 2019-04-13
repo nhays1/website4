@@ -142,7 +142,8 @@
 				console.log(myid);
 				console.log(this.responseText);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-				connection = new WebSocket('ws://192.168.43.86:8080/website/Game4scocket');//!!!!! CHANGE THIS FOR DEMNSTRATION !!!!!!!!!!!!!!!!
+				//connection = new WebSocket('ws://192.168.43.86:8080/website/Game4scocket');//!!!!! CHANGE THIS FOR DEMNSTRATION !!!!!!!!!!!!!!!!
+				connection = new WebSocket('ws://192.168.43.86:8008/website/Game4scocket');
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				connection.onopen = function () {
 					  connection.send("myid :"+myid); // Send the message 'Ping' to the server
@@ -175,7 +176,7 @@
 		
 		function gamestateup(){
 			
-			connection.send('ping');
+			connection.send('ping :   ');
 			
 			
 			//var socket=new WebSocket("ws://localhost:8080/website/Game4scocket");

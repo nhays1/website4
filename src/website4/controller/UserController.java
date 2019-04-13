@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.Instant;
-
-
+import java.util.List;
+import java.util.Map.Entry;
 
 import website4.database.DatabaseProvider;
 import website4.database.IDatabase;
@@ -105,7 +105,18 @@ public class UserController {
 		InitDatabase.init(1);
 		IDatabase db = DatabaseProvider.getInstance();
 		int i=0;
+		Integer id=null;
+		long time = Instant.now().toEpochMilli();
 		usser user = null;
+		List<Entry<Integer, Long>> existing= db.getguestlist(); 
+		for (Entry<Integer, Long> element : existing) {
+		    // 1 - can call methods of element
+			if(time-element.getValue()>86400000) {
+				id=element.getKey();
+				break;
+			}
+		    // !!!!!!!!! make guests reusable
+		}
 		while(i<100) {
 			user=new usser();
 			if (!db.checkdbcontainsuserid(user.getuserid())) {

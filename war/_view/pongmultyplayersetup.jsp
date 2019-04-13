@@ -27,6 +27,10 @@
 		background-color: darkred;
 		
 		}
+		#goplay{
+		visibility: hidden;
+		
+		}
 
 		#banner{
 		

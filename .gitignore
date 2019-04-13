@@ -1,1 +1,4 @@
 /derby.log
+**/.dat
+**/.ctrl
+**/.lck

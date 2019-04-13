@@ -345,7 +345,7 @@
 			var gamescore=${gemescores};
 			
 			//console.log(gamescore);
-			var gravity=.05;
+			var gravity=.0;
 			score=0;
 			var myGamePiece;//this is the black spining ball
 			var piece;//larger stationary circle
@@ -371,7 +371,7 @@
 			
 				document.getElementById("restart").style.visibility="hidden";
 				
-				gravity=.05;
+				gravity=.0;
 				score=0;
 				myGamePiece=null;//this is the black spining ball
 				piece=null;//larger stationary circle
@@ -537,7 +537,7 @@
 												// mybullets is a boolean that signifies wheater or not this bulet was fired by or, at my tank thing
 				       // this.y += this.vy + this.gravitySpeed;
 				     if(mybullets==true){//weather or not this bullet was fired by my tank
-				    	 this.gravitySpeed +=.02;
+				    	 this.gravitySpeed +=gravity;
 				    	 this.position.addvect(this.vel);
 				    	 this.position.y+= this.gravitySpeed;
 				    	
@@ -692,7 +692,7 @@
 			}
 			
 			function updateorigion(){
-				origon.veloicity.y+=.02;
+				origon.veloicity.y+=gravity;
 				if(up){
 					//console.log("up");.02
 					origon.veloicity.y-=.1;

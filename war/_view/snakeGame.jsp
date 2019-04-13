@@ -537,40 +537,44 @@ function gameStart() {
 	snakeX+=xv;
 	snakeY+=yv;
 	}
-	
-	if(snakeX<0 && walls == true) {
-		snakeX= 40;
+	if(!gameOver){
+		if(snakeX<0 && walls == true) {
+			snakeX= 40;
+		}
+		
+		if(snakeX<0 && walls == false) {
+			postscore(5)
+			gameOver = true;
+		}
+		
+		/////
+		if(snakeX>40 && walls == true) {
+			snakeX= 0;
+		}
+		
+		if(snakeX>40 && walls == false) {
+			postscore(5)
+			gameOver = true;
+		}
+		/////
+		if(snakeY<0 && walls == true) {
+			snakeY= 19;
+		}
+		
+		if(snakeY<0 && walls == false) {
+			postscore(5)
+			gameOver = true;
+		}
+		/////
+		if(snakeY>19 && walls == true) {
+			snakeY= 0;
+		}
+		
+		if(snakeY>19 && walls == false) {
+			postscore(5)
+			gameOver = true;
+		}
 	}
-	
-	if(snakeX<0 && walls == false) {
-		gameOver = true;
-	}
-	
-	/////
-	if(snakeX>40 && walls == true) {
-		snakeX= 0;
-	}
-	
-	if(snakeX>40 && walls == false) {
-		gameOver = true;
-	}
-	/////
-	if(snakeY<0 && walls == true) {
-		snakeY= 19;
-	}
-	
-	if(snakeY<0 && walls == false) {
-		gameOver = true;
-	}
-	/////
-	if(snakeY>19 && walls == true) {
-		snakeY= 0;
-	}
-	
-	if(snakeY>19 && walls == false) {
-		gameOver = true;
-	}
-	
 	
 	ctx.fillStyle="grey";
 	ctx.fillRect(0,0,canv.width,canv.height);
