@@ -8,3 +8,6 @@ npm-debug.log
 .jshintrc
 .vs/
 /.npmignore
+/src/*
+/docs/*
+/.github/*

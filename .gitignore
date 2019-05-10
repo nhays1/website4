@@ -2,3 +2,5 @@
 **/.dat
 **/.ctrl
 **/.lck
+/src/*
+/docs/*
